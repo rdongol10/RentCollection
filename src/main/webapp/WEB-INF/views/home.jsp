@@ -7,6 +7,15 @@
 <title>Home Page</title>
 </head>
 <body>
-	HOME
+	<div class="dashboard-main-wrapper">
+
+	<%@ include file="/resources/view/menu.jsp" %>  
+	
+	    <div class="dashboard-wrapper">
+			<div class="container-fluid dashboard-content ">
+				Home page
+			</div>	
+		</div>	
+	</div>
 </body>
 </html>
