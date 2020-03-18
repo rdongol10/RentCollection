@@ -299,7 +299,7 @@ select.form-control {
     height: auto !important;    
     background-size: auto;
     background-repeat: no-repeat;
-    background-image: url(/renting-system/resources/images/down-arrow.png);
+    background-image: url(/rentcollection/resources/images/down-arrow.png);
     padding-right: 15px;
     border: 1px solid #d2d2e4;
     border-radius: 2px;
