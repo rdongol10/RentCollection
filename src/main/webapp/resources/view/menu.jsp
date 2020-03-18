@@ -7,7 +7,7 @@
 <head>
 	<meta charset="ISO-8859-1">
     <link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
-    <link href="<c:url value="resources/css/fonts/fontawesome/css/fontawesome-all.css" />" rel="stylesheet">
+    <link href="<c:url value="/resources/css/fonts/fontawesome/css/fontawesome-all.css" />" rel="stylesheet">
     <link href="<c:url value="/resources/css/style.css" />" rel="stylesheet">
 	<title>Menu</title>
 </head>
@@ -66,7 +66,7 @@
                                             <a class="nav-link" href="#">List Users</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="#">Add Users</a>
+                                            <a class="nav-link" href="${contextPath}/resources/view/addUser.jsp">Add Users</a>
                                         </li>
                                     </ul>
                                 </div>
