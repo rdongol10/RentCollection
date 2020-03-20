@@ -3,18 +3,24 @@ package com.rdongol.rentcollection.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rdongol.rentcollection.model.User;
 import com.rdongol.rentcollection.service.UserService;
+import com.rdongol.rentcollection.service.datatable.AbstractDataTableBackend;
 
 @RestController
 @RequestMapping("/user")
@@ -22,6 +28,13 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	@Qualifier("userListDataTableBackend")
+	private AbstractDataTableBackend userListDataTableBackend;
+
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	@GetMapping
 	public ResponseEntity<List<User>> findAll() {
@@ -40,7 +53,6 @@ public class UserController {
 
 	@PostMapping
 	public ResponseEntity<User> create(User user) {
-		System.out.println(user.toString());
 		return ResponseEntity.ok(userService.save(user));
 	}
 
@@ -72,5 +84,13 @@ public class UserController {
 		userService.deleteById(id);
 
 		return ResponseEntity.ok().build();
+	}
+
+	@PostMapping("/listUsers")
+	public String listUsers(@RequestBody String dataTableRequest) throws Exception {
+
+		userListDataTableBackend.intialize(dataTableRequest);
+		return userListDataTableBackend.getTableData();
+
 	}
 }

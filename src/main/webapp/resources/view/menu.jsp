@@ -63,7 +63,7 @@
                                 <div id="submenu-1" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="#">List Users</a>
+                                            <a class="nav-link" href="${contextPath}/resources/view/listUsers.jsp">List Users</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" href="${contextPath}/resources/view/addUser.jsp">Add Users</a>
