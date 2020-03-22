@@ -53,6 +53,31 @@ public class UserListDataTableBackend extends AbstractDataTableBackend {
 
 		return query.toString();
 	}
+	
+	protected String getActionButtons(String userId) {
+		StringBuffer actionButtons = new StringBuffer();
+		actionButtons.append(getEditUserAction(userId));
+		actionButtons.append("  ");
+		actionButtons.append(getDeleteUserAction(userId));
+		return actionButtons.toString();
+	}
+	
+	protected String getEditUserAction(String userId) {
+		StringBuffer editUser = new StringBuffer();
+		editUser.append("<button class='editUser btn btn-primary btn-sm' userId='"+userId+"' >");
+		editUser.append("<i class='fas fa-edit'> Edit User</i>");
+		editUser.append("</button>");
+		return editUser.toString();
+	}
+	
+	protected String getDeleteUserAction(String userId) {
+		
+		StringBuffer deleteUser = new StringBuffer();
+		deleteUser.append("<button class='deleteUser btn btn-danger btn-sm' userId='"+userId+"' >");
+		deleteUser.append("<i class='fas fa-trash-alt'> Delete User</i>");
+		deleteUser.append("</button>");
+		return deleteUser.toString();
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -74,10 +99,11 @@ public class UserListDataTableBackend extends AbstractDataTableBackend {
 			data.add(String.valueOf(user[6]));
 			data.add(String.valueOf(user[7]));
 			data.add(String.valueOf(user[8]));
+			data.add(getActionButtons(String.valueOf(user[0])));
 
 			tableData.add(data);
 		}
-
+		
 		return tableData;
 
 	}

@@ -200,7 +200,7 @@
 				 loginName : jQuery("#loginName").val() , firstName : jQuery("#firstName").val(),lastName : jQuery("#lastName").val(),middleName : jQuery("#middleName").val(),phoneNumber : jQuery("#phoneNumber").val(),password : jQuery("#password").val(),emailAddress : jQuery("#emailAddress").val(),sex : jQuery("#sex").val(),typeOfUser : jQuery("#typeOfUser").val() 
 			}
 		}).done(function(data){
-			//window.location.href="/template/userList.html";
+			window.location.href="${contextPath}/resources/view/listUsers.jsp";
 		});
 	}
 	
@@ -212,7 +212,7 @@
 				 loginName : jQuery("#loginName").val() , firstName : jQuery("#firstName").val(),lastName : jQuery("#lastName").val(),middleName : jQuery("#middleName").val(),phoneNumber : jQuery("#phoneNumber").val(),emailAddress : jQuery("#emailAddress").val(),sex : jQuery("#sex").val(),typeOfUser : jQuery("#typeOfUser").val() 
 			}
 		}).done(function(data){
-			//window.location.href="/template/userList.html";
+			window.location.href="${contextPath}/resources/view/listUsers.jsp";
 		});
 	}
 	

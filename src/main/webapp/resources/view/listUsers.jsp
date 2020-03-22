@@ -7,6 +7,7 @@
 <title>User list</title>
 </head>
 <body>
+
 	<div class="dashboard-main-wrapper">
 		<%@ include file="menu.jsp" %>  
 	    <div class="dashboard-wrapper">
@@ -45,6 +46,7 @@
 											    <th>Phone Number</th>
 		 									    <th>Email Address</th>
 											    <th>Type of User</th>
+											    <th>Actions </th>
 											</tr>
 										</thead>
 									</table>	
@@ -56,12 +58,39 @@
 			</div>	
 		</div>	
 	</div>
+	
 </body>
 
 <script src="<c:url value="/resources/js/datatables.js" />" ></script>
 
 <script>
 	jQuery(document).ready(function(){
+		loadTableData();
+		
+		jQuery("#userTable").on("click",".editUser",function(){
+			editUser(jQuery(this).attr("userId"));
+		})
+		
+		jQuery("#userTable").on("click",".deleteUser",function(){
+			deleteUser(jQuery(this).attr("userId"));
+		})
+		
+	});
+	
+	function editUser(userId){
+		window.location.href="${contextPath}/resources/view/addUser.jsp?id="+userId;
+	}
+	
+	function deleteUser(userId){
+		jQuery.ajax({
+			method : "DELETE",
+			url : "${contextPath}/user/"+userId,
+		}).done(function(data){
+			$('#userTable').DataTable().ajax.reload();
+		});
+	}
+	
+	function loadTableData(){
 		jQuery("#userTable").DataTable({
 			"processing": true,
 			"serverSide": true,
@@ -81,10 +110,10 @@
 				{data : 4 , name:"sex"},
 				{data : 5 , name:"phoneNumber"},
 				{data : 6 , name:"emailAddress"},
-				{data : 7 , name:"typeOfUser"}
+				{data : 7 , name:"typeOfUser"},
+				{data : 8 , name:"actions",searchable : false , orderable:false}
 			]
 		});
-		
-	})
+	}
 </script>
 </html>
