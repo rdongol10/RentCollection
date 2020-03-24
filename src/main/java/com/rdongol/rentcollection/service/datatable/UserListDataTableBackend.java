@@ -57,25 +57,21 @@ public class UserListDataTableBackend extends AbstractDataTableBackend {
 	protected String getActionButtons(String userId) {
 		StringBuffer actionButtons = new StringBuffer();
 		actionButtons.append(getEditUserAction(userId));
-		actionButtons.append("  ");
+		actionButtons.append(" ");
 		actionButtons.append(getDeleteUserAction(userId));
 		return actionButtons.toString();
 	}
 	
 	protected String getEditUserAction(String userId) {
 		StringBuffer editUser = new StringBuffer();
-		editUser.append("<button class='editUser btn btn-primary btn-sm' userId='"+userId+"' >");
-		editUser.append("<i class='fas fa-edit'> Edit User</i>");
-		editUser.append("</button>");
+		editUser.append("<i class='actionButton editUser fas fa-edit' userId='"+userId+"' style = 'color:blue'> </i>");
 		return editUser.toString();
 	}
 	
 	protected String getDeleteUserAction(String userId) {
 		
 		StringBuffer deleteUser = new StringBuffer();
-		deleteUser.append("<button class='deleteUser btn btn-danger btn-sm' userId='"+userId+"' >");
-		deleteUser.append("<i class='fas fa-trash-alt'> Delete User</i>");
-		deleteUser.append("</button>");
+		deleteUser.append("<i class='actionButton deleteUser fas fa-trash-alt' userId='"+userId+"' style = 'color:red'></i>");
 		return deleteUser.toString();
 	}
 

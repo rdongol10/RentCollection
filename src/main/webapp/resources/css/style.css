@@ -6993,5 +6993,8 @@ Media Query
     font-size: 11px;
 }
 
+.actionButton{
+	cursor:pointer;
+}
 /* Custom, iPhone Retina */
 @media only screen and (max-width:320px) {}
