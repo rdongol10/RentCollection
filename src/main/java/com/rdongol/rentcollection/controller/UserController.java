@@ -33,9 +33,6 @@ public class UserController {
 	@Qualifier("userListDataTableBackend")
 	private AbstractDataTableBackend userListDataTableBackend;
 
-	@PersistenceContext
-	private EntityManager entityManager;
-
 	@GetMapping
 	public ResponseEntity<List<User>> findAll() {
 		return ResponseEntity.ok(userService.findAll());
@@ -49,6 +46,16 @@ public class UserController {
 		}
 
 		return ResponseEntity.ok(user.get());
+	}
+	
+	@GetMapping("/userExists/{loginName}")
+	public String doesUserExists(@PathVariable String loginName) {
+		
+		if(userService.existUserByLoginName(loginName)) {
+			return "true";
+		}
+		
+		return "false";
 	}
 
 	@PostMapping

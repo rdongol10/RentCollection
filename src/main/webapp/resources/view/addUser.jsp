@@ -176,7 +176,7 @@
 		
 		jQuery("#addUser").on("click", function(event) {
 			event.preventDefault()
-
+			removeErrorHighlights()
 			if (validateInputs()) {
 				if(mode =="save"){
 					saveUser()
@@ -191,6 +191,11 @@
 
 	});	
 	
+	function removeErrorHighlights(){
+		jQuery(".errorFeedback").html("");
+		jQuery(".form-control").css("border-color","");
+
+	}
 	function saveUser(){
 		
 		jQuery.ajax({
@@ -289,7 +294,7 @@
 		if(mode == "save"){
 			
 			validatePasswords();
-
+			doesUserNameExists();
 		}
 		
 		return !errorFields.length > 0;
@@ -318,14 +323,6 @@
 
 	}
 	
-	function validateUserName(){
-		
-		if(doesUserNameExists()){
-			errorField.id = "userName"
-			errorField.message = "User Name already exists";
-			errorFields.push(errorField)
-		}
-	}
 	function highlightErrorFields() {
 		if (errorFields.length < 1) {
 			return;
@@ -337,6 +334,23 @@
 			jQuery("#" + id).css("border-color", "red");
 			jQuery("#" + id + "-errorFeedback").html(message)
 		})
+	}
+	
+	function doesUserNameExists(){
+		var userName=jQuery("#loginName").val()
+		jQuery.ajax({
+			method : "GET",
+			url :"${contextPath}/user/userExists/"+userName,
+			async: false,
+			success:function(data){
+				if(data == "true"){
+					var errorField = {};
+					errorField.id = "loginName"
+					errorField.message = "User Name already exists";
+					errorFields.push(errorField)
+				}
+			}
+		});
 	}
 	
 
