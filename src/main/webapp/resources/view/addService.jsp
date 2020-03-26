@@ -302,7 +302,7 @@
 			"contentType": 'application/json; charset=UTF-8',		
 			"data":getServiceData()
 		}).done(function(data){
-			console.log(data)
+			window.location.href="${contextPath}/resources/view/listServices.jsp";
 		});
 		
 	}
