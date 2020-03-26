@@ -46,7 +46,7 @@ public class ServiceListDataTableBackend extends AbstractDataTableBackend {
 			data.add(String.valueOf(service[3]));
 			data.add(String.valueOf(service[4]));
 			data.add(Integer.valueOf(service[5].toString()) == 1 ? "Active" : "Inactive");
-			data.add(getActionButtons(String.valueOf(service[0])));
+			data.add(getActionButtons(String.valueOf(service[0]), Integer.valueOf(service[5].toString())));
 
 			tableData.add(data);
 		}
@@ -54,26 +54,28 @@ public class ServiceListDataTableBackend extends AbstractDataTableBackend {
 		return tableData;
 	}
 
-	protected String getActionButtons(String serviceId) {
+	protected String getActionButtons(String serviceId , int active) {
 		StringBuffer actionButtons = new StringBuffer();
 		actionButtons.append(getEditServiceAction(serviceId));
 		actionButtons.append(" ");
-		actionButtons.append(getDeleteServiceAction(serviceId));
+		actionButtons.append(getDeleteServiceAction(serviceId,active));
 		return actionButtons.toString();
 	}
 
 	protected String getEditServiceAction(String serviceId) {
 		StringBuffer editUser = new StringBuffer();
-		editUser.append("<i class='actionButton editService fas fa-edit' serviceId='" + serviceId
-				+ "' style = 'color:blue'> </i>");
+		editUser.append("<i class='actionButton editService fas fa-edit' serviceId='" + serviceId + "' title='edit' style = 'color:blue'> </i>");
 		return editUser.toString();
 	}
 
-	protected String getDeleteServiceAction(String serviceId) {
+	protected String getDeleteServiceAction(String serviceId, int active) {
 
 		StringBuffer deleteUser = new StringBuffer();
-		deleteUser.append("<i class='actionButton deleteUser fas fa-trash-alt' serviceId='" + serviceId
-				+ "' style = 'color:red'></i>");
+		if(active ==1 ) {
+			deleteUser.append("<i class='actionButton toggleUser fas fa-toggle-off' serviceId='" + serviceId+ "' title='disable' style = 'color:red'></i>");
+		}else {
+			deleteUser.append("<i class='actionButton toggleUser fas fa-toggle-on' serviceId='" + serviceId+ "' title='enable' style = 'color:green'></i>");
+		}
 		return deleteUser.toString();
 	}
 

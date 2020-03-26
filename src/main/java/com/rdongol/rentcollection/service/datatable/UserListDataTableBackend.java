@@ -64,14 +64,14 @@ public class UserListDataTableBackend extends AbstractDataTableBackend {
 	
 	protected String getEditUserAction(String userId) {
 		StringBuffer editUser = new StringBuffer();
-		editUser.append("<i class='actionButton editUser fas fa-edit' userId='"+userId+"' style = 'color:blue'> </i>");
+		editUser.append("<i class='actionButton editUser fas fa-edit' userId='"+userId+"' title='edit' style = 'color:blue'> </i>");
 		return editUser.toString();
 	}
 	
 	protected String getDeleteUserAction(String userId) {
 		
 		StringBuffer deleteUser = new StringBuffer();
-		deleteUser.append("<i class='actionButton deleteUser fas fa-trash-alt' userId='"+userId+"' style = 'color:red'></i>");
+		deleteUser.append("<i class='actionButton deleteUser fas fa-trash-alt' userId='"+userId+"' title='disable' style = 'color:red'></i>");
 		return deleteUser.toString();
 	}
 
