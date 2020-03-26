@@ -6,4 +6,5 @@ import com.rdongol.rentcollection.model.Service;
 
 public interface ServiceRepository extends CrudRepository<Service, Long> {
 
+	boolean existsServiceByName(String name);
 }

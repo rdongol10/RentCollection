@@ -39,12 +39,17 @@ public class ServiceService {
 			}
 		}
 
+		service.setActive(1);
 		return serviceRepository.save(service);
 
 	}
 
 	public void deleteById(Long id) {
 		serviceRepository.deleteById(id);
+	}
+	
+	public boolean existServiceByName(String name) {
+		return serviceRepository.existsServiceByName(name);
 	}
 
 }
