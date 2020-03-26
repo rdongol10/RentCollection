@@ -77,7 +77,7 @@
                                 <div id="serviceMenu" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="#">List Service</a>
+                                            <a class="nav-link" href="${contextPath}/resources/view/listServices.jsp">List Service</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" href="${contextPath}/resources/view/addService.jsp">Add Service</a>
