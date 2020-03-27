@@ -57,6 +57,24 @@ public class ServiceService {
 		return serviceRepository.existsServiceByName(name);
 	}
 
+	public int toggleActiveStatus(Long id) {
+
+		if (findById(id) == null) {
+			ResponseEntity.badRequest().build();
+		}
+
+		com.rdongol.rentcollection.model.Service service = findById(id);
+
+		int active = 1;
+
+		if (service.getActive() == 1) {
+			active = 0;
+		}
+
+		return serviceRepository.updateServiceActiveStatus(id, active);
+
+	}
+	
 	public com.rdongol.rentcollection.model.Service update(Long id, com.rdongol.rentcollection.model.Service service) {
 
 		if (findById(id) == null) {
@@ -117,5 +135,7 @@ public class ServiceService {
 		}
 		return serviceDetailsToDelete;
 	}
+	
+	
 
 }

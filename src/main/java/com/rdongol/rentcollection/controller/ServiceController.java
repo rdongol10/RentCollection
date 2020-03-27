@@ -60,5 +60,10 @@ public class ServiceController {
 		return ResponseEntity.ok(serviceService.update(id ,service));
 		
 	}
+	
+	@PutMapping("/toggleStatus/{id}")
+	public int updateStatus(@PathVariable Long id ) {
+		return serviceService.toggleActiveStatus(id);
+	}
 
 }

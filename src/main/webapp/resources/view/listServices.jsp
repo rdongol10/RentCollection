@@ -71,6 +71,13 @@
 			editService(jQuery(this).attr("serviceId"));
 			
 		})
+		
+		jQuery("#serviceTable").on("click",".toggleService",function(){
+			
+			toggleService(jQuery(this).attr("serviceId"));
+			
+		})
+		
 	});
 
 	function editService(serviceId){
@@ -78,6 +85,16 @@
 		window.location.href="${contextPath}/resources/view/addService.jsp?id="+serviceId;
 
 	}
+	
+	function toggleService(serviceId){
+		jQuery.ajax({
+			method : "PUT",
+			url : "${contextPath}/service/toggleStatus/"+serviceId,
+		}).done(function(data){
+			$('#serviceTable').DataTable().ajax.reload();
+		});
+	}
+	
 	function loadTableData(){
 		jQuery("#serviceTable").DataTable({
 			"processing": true,
