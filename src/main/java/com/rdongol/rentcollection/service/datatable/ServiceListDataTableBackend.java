@@ -73,9 +73,9 @@ public class ServiceListDataTableBackend extends AbstractDataTableBackend {
 
 		StringBuffer deleteUser = new StringBuffer();
 		if(active ==1 ) {
-			deleteUser.append("<i class='actionButton toggleUser fas fa-toggle-off' serviceId='" + serviceId+ "' title='disable' style = 'color:red'></i>");
+			deleteUser.append("<i class='actionButton toggleService fas fa-toggle-off' serviceId='" + serviceId+ "' title='disable' style = 'color:red'></i>");
 		}else {
-			deleteUser.append("<i class='actionButton toggleUser fas fa-toggle-on' serviceId='" + serviceId+ "' title='enable' style = 'color:green'></i>");
+			deleteUser.append("<i class='actionButton toggleService fas fa-toggle-on' serviceId='" + serviceId+ "' title='enable' style = 'color:green'></i>");
 		}
 		return deleteUser.toString();
 	}
