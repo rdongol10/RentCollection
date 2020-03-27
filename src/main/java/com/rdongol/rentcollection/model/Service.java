@@ -84,6 +84,13 @@ public class Service {
 	public void setServiceDetail(List<ServiceDetail> serviceDetail) {
 		this.serviceDetail = serviceDetail;
 	}
+
+	@Override
+	public String toString() {
+		return "Service [id=" + id + ", name=" + name + ", type=" + type + ", minimumCharge=" + minimumCharge
+				+ ", charge=" + charge + ", active=" + active + ", serviceDetail=" + serviceDetail + "]";
+	}
+	
 	
 	
 	
