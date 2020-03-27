@@ -47,7 +47,7 @@ public class ServiceListDataTableBackend extends AbstractDataTableBackend {
 			data.add(String.valueOf(service[3]));
 			data.add(String.valueOf(service[4]));
 			data.add(Integer.valueOf(service[5].toString()) == 1 ? "Active" : "Inactive");
-			data.add(getActionButtons(String.valueOf(service[0]), Integer.valueOf(service[5].toString())));
+			data.add(getActionButtons(String.valueOf(service[0]), Integer.valueOf(service[5].toString()), String.valueOf(service[4])));
 
 			tableData.add(data);
 		}
@@ -55,29 +55,38 @@ public class ServiceListDataTableBackend extends AbstractDataTableBackend {
 		return tableData;
 	}
 
-	protected String getActionButtons(String serviceId , int active) {
+	protected String getActionButtons(String serviceId , int active , String type) {
 		StringBuffer actionButtons = new StringBuffer();
 		actionButtons.append(getEditServiceAction(serviceId));
 		actionButtons.append(" ");
 		actionButtons.append(getDeleteServiceAction(serviceId,active));
+		if(type.equalsIgnoreCase("unit")) {
+			actionButtons.append(" ");
+			actionButtons.append(getDetailAction(serviceId));
+		}
 		return actionButtons.toString();
 	}
 
+	protected String getDetailAction(String serviceId) {
+		StringBuffer detail = new StringBuffer();
+		detail.append("<i class='actionButton showDetails fas fa-angle-double-down' serviceId='" + serviceId + "' title='show details'> </i>");
+		return detail.toString();
+	}
 	protected String getEditServiceAction(String serviceId) {
-		StringBuffer editUser = new StringBuffer();
-		editUser.append("<i class='actionButton editService fas fa-edit' serviceId='" + serviceId + "' title='edit' style = 'color:blue'> </i>");
-		return editUser.toString();
+		StringBuffer editService = new StringBuffer();
+		editService.append("<i class='actionButton editService fas fa-edit' serviceId='" + serviceId + "' title='edit' style = 'color:blue'> </i>");
+		return editService.toString();
 	}
 
 	protected String getDeleteServiceAction(String serviceId, int active) {
 
-		StringBuffer deleteUser = new StringBuffer();
+		StringBuffer deleteService = new StringBuffer();
 		if(active ==1 ) {
-			deleteUser.append("<i class='actionButton toggleService fas fa-toggle-off' serviceId='" + serviceId+ "' title='disable' style = 'color:red'></i>");
+			deleteService.append("<i class='actionButton toggleService fas fa-toggle-off' serviceId='" + serviceId+ "' title='disable' style = 'color:red'></i>");
 		}else {
-			deleteUser.append("<i class='actionButton toggleService fas fa-toggle-on' serviceId='" + serviceId+ "' title='enable' style = 'color:green'></i>");
+			deleteService.append("<i class='actionButton toggleService fas fa-toggle-on' serviceId='" + serviceId+ "' title='enable' style = 'color:green'></i>");
 		}
-		return deleteUser.toString();
+		return deleteService.toString();
 	}
 
 }

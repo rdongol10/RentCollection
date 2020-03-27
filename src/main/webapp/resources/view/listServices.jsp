@@ -62,6 +62,7 @@
 
 <script src="<c:url value="/resources/js/datatables.js" />" ></script>
 <script>
+	var table;
 	jQuery(document).ready(function(){
 		
 		loadTableData();
@@ -78,8 +79,60 @@
 			
 		})
 		
+		jQuery("#serviceTable").on("click",".showDetails",function(){
+			toggleServiceDetails(this);
+		})
+		
 	});
+	
+	function toggleServiceDetails(clickedColumn){
+		var tr = jQuery(clickedColumn).closest("tr");
+		var row= table.row( tr );
+		if ( row.child.isShown() ) {
+		    row.child.hide();
+		    tr.removeClass('shown');
+		    jQuery(clickedColumn).attr("class","actionButton showDetails fas fa-angle-double-down")
+		}
+		else {
+			LoadServiceDetails(clickedColumn , row , tr)
+		} 
+	}
+	
+	function LoadServiceDetails(clickedColumn , row , tr){
+		jQuery.ajax({
+			method : "GET",
+			url : "${contextPath}/service/getServiceDetails/"+jQuery(clickedColumn).attr("serviceId"),
+			async:false,
+			success:function(data){
+				console.log(data)
+				row.child( formatServiceDetailData(data) ).show();
+		   		tr.addClass('shown');
+				jQuery(clickedColumn).attr("class","actionButton showDetails fas fa-angle-double-up")
+			}
+		});
+		
+	}
 
+	function formatServiceDetailData(data){
+		var html = "";
+		html += '<div class="row">';
+		html += '<div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1"></div>'
+		html += '<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">Rate</div>'
+		html += '<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">Volume Cutoff</div>'
+		html += '<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">Service Charge</div>'
+		html += '</div>'
+		
+		for(var i = 0 ; i<data.length ; i++){
+			html += '<div class="row">';
+			html += '<div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1"></div>'
+			html += '<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'+data[i].rate+'</div>'
+			html += '<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'+data[i].volumeCutoff+'</div>'
+			html += '<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'+data[i].serviceCharge+'</div>'
+			html += '</div>'
+		}
+		return html;
+	}
+	
 	function editService(serviceId){
 		
 		window.location.href="${contextPath}/resources/view/addService.jsp?id="+serviceId;
@@ -96,7 +149,7 @@
 	}
 	
 	function loadTableData(){
-		jQuery("#serviceTable").DataTable({
+		table = jQuery("#serviceTable").DataTable({
 			"processing": true,
 			"serverSide": true,
 			"ajax":{

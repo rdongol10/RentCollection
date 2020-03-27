@@ -136,6 +136,12 @@ public class ServiceService {
 		return serviceDetailsToDelete;
 	}
 	
-	
 
+	public List<ServiceDetail> getServiceDetails(Long id){
+		if (findById(id) == null) {
+			ResponseEntity.badRequest().build();
+		}
+		com.rdongol.rentcollection.model.Service service = findById(id);
+		return service.getServiceDetail();
+	}
 }

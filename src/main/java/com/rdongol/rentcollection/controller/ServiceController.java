@@ -1,5 +1,7 @@
 package com.rdongol.rentcollection.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rdongol.rentcollection.model.Service;
+import com.rdongol.rentcollection.model.ServiceDetail;
 import com.rdongol.rentcollection.service.ServiceService;
 import com.rdongol.rentcollection.service.datatable.AbstractDataTableBackend;
 
@@ -64,6 +67,11 @@ public class ServiceController {
 	@PutMapping("/toggleStatus/{id}")
 	public int updateStatus(@PathVariable Long id ) {
 		return serviceService.toggleActiveStatus(id);
+	}
+	
+	@GetMapping("/getServiceDetails/{id}")
+	public ResponseEntity<List<ServiceDetail>> getServiceDetails(@PathVariable Long id) {
+		return ResponseEntity.ok(serviceService.getServiceDetails(id));
 	}
 
 }

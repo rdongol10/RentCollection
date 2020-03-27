@@ -67,6 +67,7 @@
 <script src="<c:url value="/resources/js/datatables.js" />" ></script>
 
 <script>
+	var table;
 	jQuery(document).ready(function(){
 		loadTableData();
 		
@@ -77,6 +78,7 @@
 		jQuery("#userTable").on("click",".deleteUser",function(){
 			deleteUser(jQuery(this).attr("userId"));
 		})
+		
 		
 	});
 	
@@ -94,7 +96,7 @@
 	}
 	
 	function loadTableData(){
-		jQuery("#userTable").DataTable({
+		table = jQuery("#userTable").DataTable({
 			"processing": true,
 			"serverSide": true,
 			"ajax":{
