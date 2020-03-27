@@ -170,6 +170,7 @@
 
 			getUser(id)
 		}else{
+			var mode ="save";
 			jQuery("#addUser").html("Add User")
 			jQuery("#pageheader-title").html("Add User")
 		}
