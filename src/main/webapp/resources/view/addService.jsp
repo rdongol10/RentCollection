@@ -24,7 +24,7 @@
 							                    <h2 class="pageheader-title" id="pageheader-title">
 							 						Add Service
 												</h2>
-												<p class="pageheader-text">Please fill all the required fields(<span class="requiredField">*</span>) to add the user</p>
+												<p class="pageheader-text">Please fill all the required fields(<span class="requiredField">*</span>) to add the service</p>
 								 			</div>
 										</div>
 								 	</div>
@@ -32,6 +32,7 @@
 							 		<form id="serviceForm">
 									 	<div class="card-body">
 								 			<div class="row">
+								 				<input id="id" name="id" type="hidden">
 								 				<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
 	                                                <label for="name" class="col-form-label">Name<span class="requiredField">*</span></label>
 	                                                <input id="name" name="name" type="text" class="form-control requiredInputs" value=''>
@@ -117,7 +118,22 @@
 	var serviceDetailsCount = 0;
 	var errorFields = []
 	var mode ="save";
+	var id=0;
+	
 	jQuery(document).ready(function() {
+		
+		id=getURLParameter("id")
+		
+		if(id != undefined){
+			mode="edit"
+			jQuery("#addService").html("Edit Service")
+			jQuery("#pageheader-title").html("Edit Service")
+			getService(id)
+		}else{
+			mode ="save";
+			jQuery("#addService").html("Add Service")
+			jQuery("#pageheader-title").html("Add Service")
+		}
 		
 		toggleServiceDetail(jQuery("#type").val())
 		
@@ -142,12 +158,85 @@
 			event.preventDefault();
 			removeErrorHighlights()
 			if (validateInputs()) {
-				saveService()
+				if(mode =="save"){
+					saveService()
+				}else{
+					updateService(id)
+				}
 			} else {
 				highlightErrorFields()
 			}
 		})
 	});
+	
+	function getService(id){
+		jQuery.ajax({
+			method:"GET",
+			url:"${contextPath}/service/"+id
+		}).done(function(data){
+			loadServiceData(data)
+		});	
+	}
+	
+	function loadServiceData(data){
+		jQuery("#id").val(data.id);
+		jQuery("#name").val(data.name);
+		jQuery("#minimumCharge").val(data.minimumCharge);
+		jQuery("#charge").val(data.charge);
+		jQuery("#name").val(data.name);
+		jQuery("#type option[value="+data.type+"]").attr("selected","selected");
+		
+		toggleServiceDetail(jQuery("#type").val())
+		if(data.type=="unit"){
+			loadServiceDetailData(data.serviceDetail)
+		}
+
+	}
+	
+	function loadServiceDetailData(serviceDetails){
+
+		var html="";
+		for(var i = 0 ; i<serviceDetails.length; i++){
+			html += '<div class="row serviceDetail" id="serviceDetail-'+serviceDetailsCount+'">'
+			html +='<input id="serviceDetailId-'+serviceDetailsCount+'" name="id" type="hidden" class="serviceDetailId" value="'+serviceDetails[i].id+'">'
+			html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+			html += '<label for="rate-'+serviceDetailsCount+'" class="col-form-label">Rate<span class="requiredField">*</span></label>'
+			html += '<input id="rate-'+serviceDetailsCount+'" name="rate" type="number" class="rate form-control requiredInputs" value="'+serviceDetails[i].rate+'">'
+			html += '<div class="errorFeedback" id="rate-'+serviceDetailsCount+'-errorFeedback"></div>'
+			html += '</div>'
+			html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+			html += '<label for="volumeCutoff-'+serviceDetailsCount+'" class="col-form-label">Volume Cutoff<span class="requiredField">*</span></label>'
+			html += '<input id="volumeCutoff-'+serviceDetailsCount+'" name="volumeCutoff" type="number" class="volumeCutoff form-control requiredInputs" value="'+serviceDetails[i].volumeCutoff+'">'
+			html += '<div class="errorFeedback" id="volumeCutoff-'+serviceDetailsCount+'-errorFeedback"></div>'
+			html += '</div>'
+			html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+			html += '<label for="serviceCharge-'+serviceDetailsCount+'" class="col-form-label">Service Charge</label>'
+			html += '<input id="serviceCharge-'+serviceDetailsCount+'" name="serviceCharge" type="number" class="serviceCharge form-control " value="'+serviceDetails[i].serviceCharge+'">'
+			html += '<div class="errorFeedback" id="serviceCharge-'+serviceDetailsCount+'-errorFeedback"></div>'
+			html += '</div>'
+			html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+			html += '<i class="actionButton RemoveServiceDetail fas fa-trash-alt" style = "color:red" id="RemoveServiceDetail-'+serviceDetailsCount+'" count ="'+serviceDetailsCount+'"></i>'
+			html += '</div>'
+			html += '</div>'
+			
+			serviceDetailsCount++;
+		}
+		
+		jQuery("#serviceDetails").append(html);
+		
+	}
+
+	function getURLParameter(param){
+		
+		var pageURL = window.location.search.substring(1);
+		var urlVariables = pageURL.split('&')
+		for(var i=0;i<urlVariables.length;i++){
+			var parameterName=urlVariables[i].split('=');
+			if(parameterName[0] == param){
+				return decodeURIComponent(parameterName[1]);
+			}
+		}
+	}
 	
 	function highlightErrorFields() {
 		if (errorFields.length < 1) {
@@ -191,7 +280,9 @@
 	function validateOtherFields(){
 		errorFields = []
 	 	validateCharge();
-		doesUserNameExists()
+		if(mode =="save"){
+			doesServiceNameExists()
+		}
 		validateServiceDetails();
 		return !errorFields.length > 0;
 		
@@ -236,6 +327,7 @@
 		var html="";
 		
 		html += '<div class="row serviceDetail" id="serviceDetail-'+serviceDetailsCount+'">'
+		html +='<input id="serviceDetailId-'+serviceDetailsCount+'" name="id" type="hidden" class="serviceDetailId">'
 		html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
 		html += '<label for="rate-'+serviceDetailsCount+'" class="col-form-label">Rate<span class="requiredField">*</span></label>'
 		html += '<input id="rate-'+serviceDetailsCount+'" name="rate" type="number" class="rate form-control requiredInputs" value="">'
@@ -261,8 +353,11 @@
 		return html;
 	}
 	
-	function getServiceData(){
+	function getServiceData(mode){
 		var serviceData= new Object();
+		if(mode=="edit"){
+			serviceData.id=jQuery("#id").val();
+		}
 		serviceData.name=jQuery("#name").val();
 		serviceData.minimumCharge=jQuery("#minimumCharge").val();
 		serviceData.charge=jQuery("#charge").val();
@@ -270,18 +365,21 @@
 
 		if("unit"==jQuery("#type").val()){
 			
-			serviceData.serviceDetail = getServiceDetails()
+			serviceData.serviceDetail = getServiceDetailsData(mode)
 	
 		}
 		
 		return JSON.stringify(serviceData)
 	}
 	
-	function getServiceDetails(){
+	function getServiceDetailsData(mode){
 		var serviceDetails = []
 		
 		jQuery(".serviceDetail").each(function(){
 			var serviceDetail = new Object();
+			if(mode=="edit"){
+				serviceDetail.id=$(this).find('.serviceDetailId').val();
+			}
 			serviceDetail.rate = $(this).find('.rate').val();
 			serviceDetail.volumeCutoff = $(this).find('.volumeCutoff').val();
 			serviceDetail.serviceCharge = $(this).find('.serviceCharge').val();
@@ -295,16 +393,29 @@
 	}
 	
 	function saveService(){
-		
+		console.log(getServiceData(mode))
 		jQuery.ajax({
 			"method" : "POST",
 			"url" : "${contextPath}/service",
 			"contentType": 'application/json; charset=UTF-8',		
-			"data":getServiceData()
+			"data":getServiceData(mode)
 		}).done(function(data){
 			window.location.href="${contextPath}/resources/view/listServices.jsp";
 		});
 		
+	}
+	
+	function updateService(id){
+		console.log(getServiceData(mode))
+		
+		jQuery.ajax({
+		"method" : "PUT",
+		"url" : "${contextPath}/service/"+id,
+		"contentType": 'application/json; charset=UTF-8',		
+		"data":getServiceData(mode)
+		}).done(function(data){
+			window.location.href="${contextPath}/resources/view/listServices.jsp";
+		});
 	}
 	
 	function removeErrorHighlights(){
@@ -314,7 +425,7 @@
 
 	}
 	
-	function doesUserNameExists(){
+	function doesServiceNameExists(){
 		var name=jQuery("#name").val()
 		jQuery.ajax({
 			method : "GET",
