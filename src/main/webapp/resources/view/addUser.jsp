@@ -242,6 +242,8 @@
 		jQuery("#phoneNumber").val(data.phoneNumber);
 		jQuery("#emailAddress").val(data.emailAddress);
 		jQuery("#loginName").val(data.loginName);
+		jQuery("#typeOfUser option[value="+data.typeOfUser+"]").attr("selected","selected");
+		jQuery("#sex option[value="+data.sex+"]").attr("selected","selected");
 
 		
 	}
