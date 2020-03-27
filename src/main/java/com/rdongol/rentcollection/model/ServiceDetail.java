@@ -66,6 +66,13 @@ public class ServiceDetail {
 	public void setServiceCharge(double serviceCharge) {
 		this.serviceCharge = serviceCharge;
 	}
+
+	@Override
+	public String toString() {
+		return "ServiceDetail [id=" + id + ", service=" + service + ", rate=" + rate + ", volumeCutoff=" + volumeCutoff
+				+ ", serviceCharge=" + serviceCharge + "]";
+	}
+	
 	
 	
 
