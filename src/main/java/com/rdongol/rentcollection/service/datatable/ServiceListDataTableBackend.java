@@ -32,6 +32,7 @@ public class ServiceListDataTableBackend extends AbstractDataTableBackend {
 		fromCriteria = " From SERVICE ";
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected List<List<String>> getQueryResults() {
 		List<List<String>> tableData = new LinkedList<List<String>>();
