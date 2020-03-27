@@ -37,7 +37,7 @@
 						 	</div>
 							<div class="card-body">
 								<div class="">
-									<table class="table table-striped table-bordered first" id="userTable">
+									<table class="table table-striped table-bordered first" id="serviceTable">
 										<thead>
 											<tr>
 											    <th>Name</th>
@@ -63,11 +63,23 @@
 <script src="<c:url value="/resources/js/datatables.js" />" ></script>
 <script>
 	jQuery(document).ready(function(){
+		
 		loadTableData();
+		
+		jQuery("#serviceTable").on("click",".editService",function(){
+			
+			editService(jQuery(this).attr("serviceId"));
+			
+		})
 	});
 
+	function editService(serviceId){
+		
+		window.location.href="${contextPath}/resources/view/addService.jsp?id="+serviceId;
+
+	}
 	function loadTableData(){
-		jQuery("#userTable").DataTable({
+		jQuery("#serviceTable").DataTable({
 			"processing": true,
 			"serverSide": true,
 			"ajax":{
