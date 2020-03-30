@@ -39,4 +39,11 @@ public class RentingFacilityModel {
 		this.units = units;
 	}
 
+	@Override
+	public String toString() {
+		return "RentingFacilityModel [id=" + id + ", serviceId=" + serviceId + ", units=" + units + "]";
+	}
+	
+	
+
 }
