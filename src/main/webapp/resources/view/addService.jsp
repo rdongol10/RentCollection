@@ -59,7 +59,7 @@
 														<option value="unit" >Unit</option>
 													</select>
 		
-													<div class="errorFeedback" id="sex-errorFeedback">
+													<div class="errorFeedback" id="type-errorFeedback">
 													</div>
 												</div>									 			
 								 			</div>
