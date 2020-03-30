@@ -86,6 +86,20 @@
                                 </div>
                             </li>
                             
+                            <li class="nav-item ">
+                                <a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false" data-target="#rentingMenu" aria-controls="rentingMenu">Renting</a>
+                                <div id="rentingMenu" class="collapse submenu" style="">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="${contextPath}/resources/view/listRentings.jsp">List Renting</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="${contextPath}/resources/view/addRenting.jsp">Add Renting</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            
                         </ul>
                     </div>
                 </nav>
