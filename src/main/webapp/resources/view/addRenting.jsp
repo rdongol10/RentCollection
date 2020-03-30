@@ -107,6 +107,16 @@
 									 			
 									 		</div>
 									 	</div>
+									 	
+									 	<div class="card-body border-top" >
+									 		<div class="row">
+												<div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">
+													<button class="btn btn-primary" id="addRenting">
+								 						Add Renting
+													</button>
+												</div>	
+											</div>
+									 	</div>
 							 		</form>
 								 		
                         		</div>
@@ -158,7 +168,6 @@
 		});
 		
 		$(".dropzone").change(function() {
-			console.log("la change bhayo khus")
 			readFile(this)
 			$('.dropzone-wrapper').removeClass('dragover');
 		});
@@ -179,7 +188,7 @@
 		}
 		
 		displayImages()
-		
+		jQuery("#rentingImage").val("");
 	}
 	
 	function displayImages(){
