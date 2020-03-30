@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.rdongol.rentcollection.model.ServiceDetail;
+import com.rdongol.rentcollection.model.ServiceModel;
 import com.rdongol.rentcollection.repository.ServiceRepository;
 
 @Service
@@ -74,7 +75,7 @@ public class ServiceService {
 		return serviceRepository.updateServiceActiveStatus(id, active);
 
 	}
-	
+
 	public com.rdongol.rentcollection.model.Service update(Long id, com.rdongol.rentcollection.model.Service service) {
 
 		if (findById(id) == null) {
@@ -135,13 +136,23 @@ public class ServiceService {
 		}
 		return serviceDetailsToDelete;
 	}
-	
 
-	public List<ServiceDetail> getServiceDetails(Long id){
+	public List<ServiceDetail> getServiceDetails(Long id) {
 		if (findById(id) == null) {
 			ResponseEntity.badRequest().build();
 		}
 		com.rdongol.rentcollection.model.Service service = findById(id);
 		return service.getServiceDetail();
+	}
+
+	public List<ServiceModel> getServiceModels() {
+		List<com.rdongol.rentcollection.model.Service> services = findAll();
+
+		List<ServiceModel> serviceModels = new LinkedList<ServiceModel>();
+		for (com.rdongol.rentcollection.model.Service service : services) {
+			ServiceModel serviceModel = new ServiceModel(service.getId(), service.getName());
+			serviceModels.add(serviceModel);
+		}
+		return serviceModels;
 	}
 }

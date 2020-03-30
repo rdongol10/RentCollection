@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rdongol.rentcollection.model.Service;
 import com.rdongol.rentcollection.model.ServiceDetail;
+import com.rdongol.rentcollection.model.ServiceModel;
 import com.rdongol.rentcollection.service.ServiceService;
 import com.rdongol.rentcollection.service.datatable.AbstractDataTableBackend;
 
@@ -56,22 +57,28 @@ public class ServiceController {
 		return serviceListDataTableBackend.getTableData();
 
 	}
-	
+
 	@PutMapping("/{id}")
-	public ResponseEntity<Service> update(@PathVariable Long id , @RequestBody Service service){
-		
-		return ResponseEntity.ok(serviceService.update(id ,service));
-		
+	public ResponseEntity<Service> update(@PathVariable Long id, @RequestBody Service service) {
+
+		return ResponseEntity.ok(serviceService.update(id, service));
+
 	}
-	
+
 	@PutMapping("/toggleStatus/{id}")
-	public int updateStatus(@PathVariable Long id ) {
+	public int updateStatus(@PathVariable Long id) {
 		return serviceService.toggleActiveStatus(id);
 	}
-	
+
 	@GetMapping("/getServiceDetails/{id}")
 	public ResponseEntity<List<ServiceDetail>> getServiceDetails(@PathVariable Long id) {
 		return ResponseEntity.ok(serviceService.getServiceDetails(id));
+	}
+
+	@GetMapping("/getServiceModels")
+	public ResponseEntity<List<ServiceModel>> getServiceModels() {
+
+		return ResponseEntity.ok(serviceService.getServiceModels());
 	}
 
 }
