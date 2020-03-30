@@ -5,6 +5,8 @@ import java.util.List;
 public class RentingModel {
 	private long id;
 
+	private String name;
+	
 	private String type;
 
 	private int numberOfRooms;
@@ -19,6 +21,14 @@ public class RentingModel {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getType() {
@@ -62,6 +72,11 @@ public class RentingModel {
 		this.price = price;
 		this.rentingFacilities = rentingFacilities;
 	}
-
 	
+	@Override
+	public String toString() {
+		return "RentingModel [id=" + id + ", name=" + name + ", type=" + type + ", numberOfRooms=" + numberOfRooms
+				+ ", price=" + price + ", rentingFacilities=" + rentingFacilities + "]";
+	}
+
 }
