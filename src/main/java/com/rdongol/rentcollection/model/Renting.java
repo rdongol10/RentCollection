@@ -16,6 +16,8 @@ public class Renting {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
+	private String name;
+	
 	private String type;
 
 	private int numberOfRooms;
@@ -33,6 +35,14 @@ public class Renting {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getType() {
