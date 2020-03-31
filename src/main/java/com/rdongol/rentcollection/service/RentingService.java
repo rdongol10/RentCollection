@@ -55,31 +55,29 @@ public class RentingService {
 		return findById(id).getRentingFacility();
 	}
 	
-	public Renting save(RentingModel rentingModel ) {
-		
+	public Renting save(RentingModel rentingModel) {
+
 		Renting renting = new Renting(rentingModel);
-		
+
 		List<RentingFacility> rentingFacilities = new LinkedList<RentingFacility>();
-		
-		for(RentingFacilityModel rentingFacilityModel : rentingModel.getRentingFacilities()) {
-		
+
+		for (RentingFacilityModel rentingFacilityModel : rentingModel.getRentingFacilities()) {
+
 			RentingFacility rentingFacility = new RentingFacility(rentingFacilityModel);
 			long serviceId = rentingFacilityModel.getServiceId();
 			com.rdongol.rentcollection.model.Service service = serviceService.findById(serviceId);
-			
-			if(service!=null) {
+
+			if (service != null) {
 				rentingFacility.setService(service);
 			}
-			
+
 			rentingFacility.setRenting(renting);
 			rentingFacilities.add(rentingFacility);
 		}
-		
+
 		renting.setRentingFacility(rentingFacilities);
-		
+		renting.setStatus(1);
 		return rentingRepository.save(renting);
 	}
-	
-
 
 }
