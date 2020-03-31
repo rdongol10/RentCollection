@@ -65,10 +65,23 @@
 	var table;
 	jQuery(document).ready(function(){
 			
-			loadTableData();
+		loadTableData();
+		
+		jQuery("#RentingTable").on("click",".toggleRenting",function(){
 			
+			toggleRenting(jQuery(this).attr("rentingid"))
+		})
 			
 	});
+	
+	function toggleRenting(rentingId){
+		jQuery.ajax({
+			method : "PUT",
+			url : "${contextPath}/renting/toggleStatus/"+rentingId,
+		}).done(function(data){
+			$('#RentingTable').DataTable().ajax.reload();
+		});
+	}
 	
 	function loadTableData(){
 		table = jQuery("#RentingTable").DataTable({

@@ -79,5 +79,21 @@ public class RentingService {
 		renting.setStatus(1);
 		return rentingRepository.save(renting);
 	}
+	
+	public int toggleStatus(long id ) {
+		
+		if (findById(id) == null) {
+			ResponseEntity.badRequest().build();
+		}
+		
+		Renting renting = findById(id);
+		
+		int status=1;
+		if(renting.getStatus() ==1) {
+			status=0;
+		}
+		
+		return rentingRepository.updateRentingStatus(id, status);
+	}
 
 }

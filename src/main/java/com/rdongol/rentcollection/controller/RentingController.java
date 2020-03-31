@@ -3,7 +3,9 @@ package com.rdongol.rentcollection.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -44,6 +46,11 @@ public class RentingController {
 	public String listRentings(@RequestBody String dataTableRequest) throws Exception {
 		rentingListDataTableBackend.intialize(dataTableRequest);
 		return rentingListDataTableBackend.getTableData();
+	}
+	
+	@PutMapping("/toggleStatus/{id}")
+	public int toggleStatus(@PathVariable long id) {
+		return rentingService.toggleStatus(id);
 	}
 	
 }
