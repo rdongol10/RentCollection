@@ -298,7 +298,6 @@
 			errorFields.push(errorField)
 		}
 
-		serviceDetails
 	}
 	
 	function validateCharge(){
