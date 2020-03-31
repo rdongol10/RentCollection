@@ -36,6 +36,12 @@
 								 			<div class="row">
 								 				<input id="id" name="id" type="hidden">
 								 				
+								 				<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+	                                                <label for="name" class="col-form-label">Name<span class="requiredField">*</span></label>
+	                                                <input id="name" name="name" type="text" class="form-control requiredInputs" value=''>
+													<div class="errorFeedback" id="name-errorFeedback"></div>
+	                                            </div>
+	                                            
 							 				    <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
                                             
 		                                            <label for="type" class="col-form-label">Type</label>
@@ -140,7 +146,7 @@
 		
 		
 	jQuery(document).ready(function(){
-		
+
 		getSevices();
 		
 		jQuery("#addRentingFacility").on("click",function(){
@@ -177,18 +183,30 @@
 			files.splice(index,1)
 			displayImages()
 		})
+		
+		
+		jQuery("#addRenting").on("click",function(){
+			event.preventDefault();
+			saveRenting();
+		});
 	})
 	
 	function readFile(input){
-		
+		var errorFiles = []
 		if(input.files && input.files.length >0 ){
 			for(var i = 0 ; i< input.files.length ; i++){
-				files.push(input.files[i])
+				if(input.files[i].type == "image/jpeg" || input.files[i].type == "image/png"){
+					files.push(input.files[i])
+				}else{
+					errorFiles.push(input.files[i].name)
+					//TODO alert error files
+				}
 			} 
 		}
 		
 		displayImages()
 		jQuery("#rentingImage").val("");
+		console.log(errorFiles)
 	}
 	
 	function displayImages(){
@@ -220,7 +238,7 @@
 		html += '<div class="row rentingFacility" id="rentingFacility-'+rentingFacilityCount+'">'
 		html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
 		html += '<label for="serviceId-'+rentingFacilityCount+'" class="col-form-label">Service</label>'
-		html += '<select class="form-control" id="serviceId-'+rentingFacilityCount+'" name="serviceId">'
+		html += '<select class="form-control serviceId" id="serviceId-'+rentingFacilityCount+'" name="serviceId">'
 		for(var i=0;i<serviceModels.length;i++){
 			
 			html += '<option value="'+serviceModels[i].id+'" >'+serviceModels[i].serviceName+'</option>'
@@ -255,6 +273,59 @@
 			
 	}
 
+	
+	function saveRenting(){
+		
+		formData = new FormData();
+
+		var renting = getRentingData(mode)
+	
+		for(var i = 0 ; i<files.length ; i++){
+			formData.append("file",files[i])
+		}
+		formData.append("renting", new Blob([
+			renting
+		],{
+			 type: "application/json"
+		})) ;
+		
+		jQuery.ajax({
+			
+			method : "POST",
+			url : "${contextPath}/renting",
+			processData: false,
+			contentType: false,
+			data : formData
+			
+		}).done(function(data){
+			window.location.href="${contextPath}/resources/view/listRentings.jsp";
+		});
+	}
+	
+	function getRentingData(mode){
+		
+		var rentingData= new Object();
+		rentingData.name=jQuery("#name").val();
+		rentingData.type=jQuery("#type").val();
+		rentingData.numberOfRooms=jQuery("#numberOfRooms").val();
+		rentingData.price=jQuery("#price").val();
+		rentingData.rentingFacilities = getRentingFacilitiesData(mode);
+		
+		return JSON.stringify(rentingData);
+	}
+	
+	function getRentingFacilitiesData(mode){
+		var rentingFacilities = []
+		
+		jQuery(".rentingFacility").each(function(){
+			var rentingFacility = new Object();
+			rentingFacility.serviceId = $(this).find('.serviceId').val();
+			rentingFacility.units = $(this).find('.units').val();
+			rentingFacilities.push(rentingFacility)
+		})
+
+		return rentingFacilities;
+	}
 	
 </script>
 
