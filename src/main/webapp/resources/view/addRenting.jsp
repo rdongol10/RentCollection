@@ -95,6 +95,8 @@
 									 			<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
                                     	    		Upload Renting Image
                                     	    	</div>
+                                    	    	<div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9 errorFeedback" id="images-errorFeedback">
+                                    	    	</div>
 									 		</div>
 									 		
 									 		<div class="row">
@@ -187,9 +189,148 @@
 		
 		jQuery("#addRenting").on("click",function(){
 			event.preventDefault();
-			saveRenting();
+			removeErrorHighlights()
+			if(validateInputs()){
+				
+				saveRenting();
+			}else{
+				highlightErrorFields()
+			}
 		});
 	})
+	
+	function validateInputs() {
+
+		if(!validateRequiredFields()){
+			return false;
+		}
+		
+		if(!validateOtherFields()){
+			return false;
+		}
+		
+		return true;
+	}
+	
+	function validateOtherFields(){
+		errorFields = []
+		validateNumberOfRooms();
+		
+		if(mode =="save"){
+			doesRentingeNameExists()
+		}
+		
+		validateRentingFacilities();
+		
+		validateServiceName();
+		
+		validateImages();
+		return !errorFields.length > 0;
+		
+	}
+	
+	function doesRentingeNameExists(){
+		var name=jQuery("#name").val()
+
+		jQuery.ajax({
+			method : "GET",
+			url :"${contextPath}/renting/rentingExists/"+name,
+			async: false,
+			success:function(data){
+				if(data == "true"){
+					var errorField = {};
+					errorField.id = "name"
+					errorField.message = "Renting Name already exists";
+					errorFields.push(errorField)
+				}
+			}
+		});
+	}
+	function validateImages(){
+		
+		if(files.length == 0){
+			var errorField = {};
+			errorField.id = "images"
+			errorField.message = "Please add Images for renting";
+			errorFields.push(errorField)
+		}
+	}
+	function validateServiceName(){
+		if(jQuery(".rentingFacility").length > 0){
+			for(var i = 0 ; i < jQuery(".serviceId").length; i++){
+
+			    for(var j= 0 ; j<jQuery(".serviceId").length ; j++){
+			        
+			        if(jQuery(jQuery(".serviceId")[i]).val()==jQuery(jQuery(".serviceId")[j]).val() && i!=j){
+			        	var errorField = {};
+						errorField.id = jQuery(jQuery(".serviceId")[j]).attr("id")
+						errorField.message = "Cannot add same facility twice";
+						errorFields.push(errorField)
+			        }
+			    }
+			}
+		}
+	}
+	
+	function validateRentingFacilities(){
+		
+		if(jQuery(".rentingFacility").length == 0){
+			var errorField = {};
+			errorField.id = "rentingFacilities"
+			errorField.message = "Please add renting facilities";
+			errorFields.push(errorField)
+		}
+
+	}
+	
+	function validateNumberOfRooms(){
+		
+		var type=jQuery("#type").val();
+		var charge = jQuery("#numberOfRooms").val();
+		
+		if("flat"== type && (charge.trim()=="")){
+			var errorField = {};
+			errorField.id = "numberOfRooms"
+			errorField.message = "Number of rooms should be filled for 'Flat type' rentings";
+			errorFields.push(errorField)
+			
+		}
+	}
+	
+	function validateRequiredFields() {
+		errorFields = []
+		jQuery(".requiredInputs:visible").each(function() {
+			var errorField = {};
+			if (this.value.trim() == "") {
+				errorField.id = jQuery(this).attr("id");
+				errorField.message = "Required field connot be empty";
+				errorFields.push(errorField)
+			}
+		})
+		return !errorFields.length > 0
+	}
+	
+	function highlightErrorFields() {
+		if (errorFields.length < 1) {
+			return;
+		}
+
+		errorFields.forEach(function(value, index) {
+			var id = value.id;
+			var message = value.message
+			jQuery("#" + id).css("border-color", "red");
+			jQuery("#" + id + "-errorFeedback").html(message)
+		})
+	}
+	
+	function removeErrorHighlights(){
+		
+		jQuery(".errorFeedback").html("");
+		jQuery(".form-control").css("border-color","");
+
+	}
+
+	
 	
 	function readFile(input){
 		var errorFiles = []
@@ -246,7 +387,7 @@
 		}		
 		
 		html += '</select>'
-		html += '<div class="errorFeedback" id="serviceId-'+ rentingFacilityCount+'errorFeedback"></div>'
+		html += '<div class="errorFeedback" id="serviceId-'+ rentingFacilityCount+'-errorFeedback"></div>'
 		html += '</div>'
 		
 		html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
@@ -259,6 +400,9 @@
 		html += '<i class="actionButton RemoveRentingFacility fas fa-trash-alt" style = "color:red" id="RemoveRentingFacility-'+rentingFacilityCount+'" count ="'+rentingFacilityCount+'"></i>'
 		html += '</div>'
 		html +='</div>'
+		
+		rentingFacilityCount++
+		
 		return html;
 	}
 	

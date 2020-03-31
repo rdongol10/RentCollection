@@ -95,5 +95,9 @@ public class RentingService {
 		
 		return rentingRepository.updateRentingStatus(id, status);
 	}
+	
+	public boolean existsRentingByName(String name) {
+		return rentingRepository.existsRentingByName(name);
+	}
 
 }

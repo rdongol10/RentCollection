@@ -3,6 +3,7 @@ package com.rdongol.rentcollection.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -51,6 +52,16 @@ public class RentingController {
 	@PutMapping("/toggleStatus/{id}")
 	public int toggleStatus(@PathVariable long id) {
 		return rentingService.toggleStatus(id);
+	}
+	
+	@GetMapping("/rentingExists/{name}")
+	public String doesRentingExists(@PathVariable String name) {
+		
+		if (rentingService.existsRentingByName(name)) {
+			return "true";
+		}
+
+		return "false";
 	}
 	
 }
