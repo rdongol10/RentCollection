@@ -28,6 +28,25 @@ public class RentingFacility {
 
 	private long units;
 
+	public RentingFacility() {
+		
+	}
+	
+	public RentingFacility(long id, Renting renting, Service service, long units) {
+		super();
+		this.id = id;
+		this.renting = renting;
+		this.service = service;
+		this.units = units;
+	}
+	
+	public RentingFacility(RentingFacilityModel rentingFacilityModel) {
+		
+		this.id=rentingFacilityModel.getId();
+		this.units = rentingFacilityModel.getUnits();
+
+	}
+
 	public long getId() {
 		return id;
 	}

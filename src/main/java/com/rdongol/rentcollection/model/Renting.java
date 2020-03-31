@@ -29,6 +29,31 @@ public class Renting {
 	@OneToMany(mappedBy = "renting" , cascade = CascadeType.ALL)
 	private List<RentingFacility> rentingFacility;
 
+	public Renting() {
+		
+	}
+	
+	public Renting(long id, String name, String type, int numberOfRooms, double price, int status,
+			List<RentingFacility> rentingFacility) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.type = type;
+		this.numberOfRooms = numberOfRooms;
+		this.price = price;
+		this.status = status;
+		this.rentingFacility = rentingFacility;
+	}
+
+	public Renting(RentingModel rentingModel) {
+
+		this.id = rentingModel.getId();
+		this.name = rentingModel.getName();
+		this.type = rentingModel.getType();
+		this.numberOfRooms = rentingModel.getNumberOfRooms();
+		this.price = rentingModel.getPrice();
+	}
+	
 	public long getId() {
 		return id;
 	}
@@ -81,8 +106,8 @@ public class Renting {
 		return rentingFacility;
 	}
 
-	public void setRentingFacility(List<RentingFacility> rentingService) {
-		this.rentingFacility = rentingService;
+	public void setRentingFacility(List<RentingFacility> rentingFacility) {
+		this.rentingFacility = rentingFacility;
 	}
 	
 }
