@@ -408,10 +408,10 @@
 		console.log(getServiceData(mode))
 		
 		jQuery.ajax({
-		"method" : "PUT",
-		"url" : "${contextPath}/service/"+id,
-		"contentType": 'application/json; charset=UTF-8',		
-		"data":getServiceData(mode)
+			"method" : "PUT",
+			"url" : "${contextPath}/service/"+id,
+			"contentType": 'application/json; charset=UTF-8',		
+			"data":getServiceData(mode)
 		}).done(function(data){
 			window.location.href="${contextPath}/resources/view/listServices.jsp";
 		});
