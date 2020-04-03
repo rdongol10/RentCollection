@@ -1,5 +1,6 @@
 package com.rdongol.rentcollection.service;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.rdongol.rentcollection.model.Renting;
 import com.rdongol.rentcollection.model.RentingFacility;
+import com.rdongol.rentcollection.model.RentingFacilityModel;
 import com.rdongol.rentcollection.repository.RentingFacilityRepository;
 
 @Service
@@ -49,6 +51,16 @@ public class RentingFacilityService {
 
 	public List<RentingFacility> getRentingFacilitiesByRengint(Renting renting) {
 		return rentingFacilityRepository.getRentingFacilityByRenting(renting);
+	}
+
+	public List<RentingFacilityModel> getRentingFacilityModels(Renting renting) {
+		List<RentingFacility> rentingFacilities = getRentingFacilitiesByRengint(renting);
+
+		List<RentingFacilityModel> rentingFacilityModels = new LinkedList<RentingFacilityModel>();
+		for (RentingFacility rentingFacility : rentingFacilities) {
+			rentingFacilityModels.add(new RentingFacilityModel(rentingFacility));
+		}
+		return rentingFacilityModels;
 	}
 
 }

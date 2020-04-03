@@ -32,11 +32,22 @@ public class RentingFacilityModel {
 		this.units = units;
 	}
 
+	public  RentingFacilityModel() {
+	
+	}
+
 	public RentingFacilityModel(long id, long serviceId, long units) {
 		super();
 		this.id = id;
 		this.serviceId = serviceId;
 		this.units = units;
+	}
+	
+	public  RentingFacilityModel(RentingFacility rentingFacility) {
+		super();
+		this.id=rentingFacility.getId();
+		this.serviceId=rentingFacility.getService().getId();
+		this.units=rentingFacility.getUnits();
 	}
 
 	@Override

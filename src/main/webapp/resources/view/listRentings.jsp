@@ -71,6 +71,11 @@
 			
 			toggleRenting(jQuery(this).attr("rentingid"))
 		})
+		
+		jQuery("#RentingTable").on("click",".editRenting",function(){
+			
+			editRenting(jQuery(this).attr("rentingid"))
+		})
 			
 	});
 	
@@ -81,6 +86,11 @@
 		}).done(function(data){
 			$('#RentingTable').DataTable().ajax.reload();
 		});
+	}
+	
+	function editRenting(rentingId){
+		window.location.href="${contextPath}/resources/view/addRenting.jsp?id="+rentingId;
+
 	}
 	
 	function loadTableData(){

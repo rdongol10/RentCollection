@@ -145,11 +145,25 @@
 	var mode ="save"
 	var files =[];
 	var id = 0;
+	var imageCounts = 0;
+	
 		
 		
 	jQuery(document).ready(function(){
-
+		id=getURLParameter("id");
+		
 		getSevices();
+		
+		if(id != undefined){
+			mode="edit"
+			jQuery("#addRenting").html("Edit Renting")
+			jQuery("#pageheader-title").html("Edit Renting")
+			getRenting(id)
+		}else{
+			mode ="save";
+			jQuery("#addRenting").html("Add Renting")
+			jQuery("#pageheader-title").html("Add Renting")
+		}
 		
 		jQuery("#addRentingFacility").on("click",function(){
 			event.preventDefault();
@@ -178,27 +192,119 @@
 		$(".dropzone").change(function() {
 			readFile(this)
 			$('.dropzone-wrapper').removeClass('dragover');
+				
 		});
 		
 		jQuery("#displayImages").on("click",".removeImage", function(){
 			var index = jQuery(this).attr("index");
-			files.splice(index,1)
-			displayImages()
+			jQuery("#rentImageRow-"+index).remove();
 		})
-		
 		
 		jQuery("#addRenting").on("click",function(){
 			event.preventDefault();
 			removeErrorHighlights()
 			if(validateInputs()){
+				if(mode =="save"){
+					saveRenting();
+				}else{
+					updateRenting(id)
+				}
 				
-				saveRenting();
 			}else{
 				highlightErrorFields()
 			}
 		});
 	})
 	
+	function getURLParameter(param){
+		
+		var pageURL = window.location.search.substring(1);
+		var urlVariables = pageURL.split('&')
+		for(var i=0;i<urlVariables.length;i++){
+			var parameterName=urlVariables[i].split('=');
+			if(parameterName[0] == param){
+				return decodeURIComponent(parameterName[1]);
+			}
+		}
+	}
+	
+	
+	function getRenting(id){
+		jQuery.ajax({
+			method:"GET",
+			url:"${contextPath}/renting/getRentingModel/"+id
+		}).done(function(data){
+			loadRentingData(data)
+		});	
+	}
+	
+	function loadRentingData(data){
+		
+		jQuery("#id").val(data.id);
+		jQuery("#name").val(data.name);
+		jQuery("#numberOfRooms").val(data.numberOfRooms);
+		jQuery("#price").val(data.price);
+		jQuery("#type option[value="+data.type+"]").attr("selected","selected");
+		loadRentingFacilityData(data.rentingFacilities)
+		loadImageData(data.imageBase64s)
+	}
+	
+	function loadRentingFacilityData(rentingFacilities){
+		var html="";
+		for(var i=0 ; i<rentingFacilities.length ; i++){
+			html += '<div class="row rentingFacility" id="rentingFacility-'+rentingFacilityCount+'" >'
+			html += '<input type="hidden" class="rentingFacilityId" id="rentingFacilityId-'+rentingFacilityCount+'" value="'+rentingFacilities[i].id+'">'
+			html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+			html += '<label for="serviceId-'+rentingFacilityCount+'" class="col-form-label">Service</label>'
+			html += '<select class="form-control serviceId" id="serviceId-'+rentingFacilityCount+'" name="serviceId">'
+			for(var j=0;j<serviceModels.length;j++){
+				
+				html += '<option value="'+serviceModels[j].id+'"';
+				if(rentingFacilities[i].serviceId == serviceModels[j].id ){
+					html += ' selected '; 
+				}
+				html +=	' >'+serviceModels[j].serviceName+'</option>'
+				
+			}		
+			
+			html += '</select>'
+			html += '<div class="errorFeedback" id="serviceId-'+ rentingFacilityCount+'-errorFeedback"></div>'
+			html += '</div>'
+			
+			html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+			html += '<label for="units-'+rentingFacilityCount+'" class="col-form-label">Units</label>'
+			html += '<input id="units-'+rentingFacilityCount+'" name="units" type="number" class="units form-control " value="'+rentingFacilities[i].units+'">'
+			html += '<div class="errorFeedback" id="units-'+rentingFacilityCount+'-errorFeedback"></div>'
+			html += '</div>'
+			
+			html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+			html += '<i class="actionButton RemoveRentingFacility fas fa-trash-alt" style = "color:red" id="RemoveRentingFacility-'+rentingFacilityCount+'" count ="'+rentingFacilityCount+'"></i>'
+			html += '</div>'
+			html +='</div>'
+			
+			rentingFacilityCount++
+		}
+		
+		jQuery("#rentingFacilities").append(html);
+	}
+	
+	function loadImageData(base64s){
+		var html="";
+		for(var i = 0 ; i< base64s.length ; i++){
+			html += '<div class="row rentImageRow" id="rentImageRow-'+imageCounts+'">'
+			html += '<div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2"></div>'
+			html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+			html += '<img src="data:image/png;base64,'+base64s[i]+'" class="img-thumbnail rentImage" alt="Renting image" id="rentImage-'+imageCounts+'">'
+			html += '</div>'
+			html += '<div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1">'
+			html += '<i class="actionButton removeImage fas fa-trash-alt" style = "color:red" id="removeImage-'+imageCounts+'" index ="'+imageCounts+'"></i>'
+			html += '</div>'
+			html += '</div>'
+			
+			imageCounts++;
+		}
+		jQuery("#displayImages").append(html)
+	}
 	function validateInputs() {
 
 		if(!validateRequiredFields()){
@@ -247,8 +353,7 @@
 		});
 	}
 	function validateImages(){
-		
-		if(files.length == 0){
+		if(jQuery(".rentImageRow").length == 0){
 			var errorField = {};
 			errorField.id = "images"
 			errorField.message = "Please add Images for renting";
@@ -331,45 +436,45 @@
 	}
 
 	
-	
+	var base64 = [];
 	function readFile(input){
-		var errorFiles = []
-		if(input.files && input.files.length >0 ){
-			for(var i = 0 ; i< input.files.length ; i++){
-				if(input.files[i].type == "image/jpeg" || input.files[i].type == "image/png"){
-					files.push(input.files[i])
-				}else{
-					errorFiles.push(input.files[i].name)
-					//TODO alert error files
-				}
-			} 
-		}
+		for(var i = 0 ; i< input.files.length ; i++){
+			if(input.files[i].type == "image/jpeg" || input.files[i].type == "image/png"){
+				files.push(input.files[i])
+				getBase64(input.files[i],function(e){
+					jQuery("#displayImages").append(getImagesHTML(e.target.result))
+				})
+			}else{
+				errorFiles.push(input.files[i].name)
+			}
+		} 
 		
-		displayImages()
 		jQuery("#rentingImage").val("");
-		console.log(errorFiles)
 	}
 	
-	function displayImages(){
-		jQuery("#displayImages").html(getImagesHTML())
-	}
-	
-	function getImagesHTML(){
-		var html="";
-		html +="<br>"
-		for(var i = 0 ; i<files.length ; i ++){
-			html += '<div class="row rentImage" id="rentImage-'+i+'">'
-			html += '<div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2"></div>'
-			html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
-			html += '<img src="'+window.URL.createObjectURL(files[i])+'" class="img-thumbnail" alt="Renting image">'
-			html += '</div>'
-				html += '<div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1">'
-			html += '<i class="actionButton removeImage fas fa-trash-alt" style = "color:red" id="removeImage-'+i+'" index ="'+i+'"></i>'
-			html += '</div>'
-
-			html += '</div>'
-		}
+	function getBase64(file, onLoadCallback) {
 		
+	    var reader = new FileReader();
+	    reader.readAsDataURL(file);
+	    reader.onload = onLoadCallback;
+	    reader.onerror = function(error) {
+	        console.log('Error when converting PDF file to base64: ', error);
+	    };
+	}
+	
+	function getImagesHTML(base64){
+		var html="";
+		html += '<div class="row rentImageRow" id="rentImageRow-'+imageCounts+'">'
+		html += '<div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2"></div>'
+		html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+		html += '<img src="'+base64+'" class="img-thumbnail rentImage" alt="Renting image" id="rentImage-'+imageCounts+'">'
+		html += '</div>'
+		html += '<div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1">'
+		html += '<i class="actionButton removeImage fas fa-trash-alt" style = "color:red" id="removeImage-'+imageCounts+'" index ="'+imageCounts+'"></i>'
+		html += '</div>'
+		html += '</div>'
+		
+		imageCounts++;
 		return html;
 	}
 	
@@ -378,6 +483,7 @@
 		var html="";
 		html += '<div class="row rentingFacility" id="rentingFacility-'+rentingFacilityCount+'">'
 		html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+		html += '<input type="hidden" class="rentingFacilityId" id="rentingFacilityId-"'+rentingFacilityCount+'">'
 		html += '<label for="serviceId-'+rentingFacilityCount+'" class="col-form-label">Service</label>'
 		html += '<select class="form-control serviceId" id="serviceId-'+rentingFacilityCount+'" name="serviceId">'
 		for(var i=0;i<serviceModels.length;i++){
@@ -420,26 +526,28 @@
 	
 	function saveRenting(){
 		
-		formData = new FormData();
-
 		var renting = getRentingData(mode)
 	
-		for(var i = 0 ; i<files.length ; i++){
-			formData.append("file",files[i])
-		}
-		formData.append("renting", new Blob([
-			renting
-		],{
-			 type: "application/json"
-		})) ;
-		
 		jQuery.ajax({
 			
 			method : "POST",
 			url : "${contextPath}/renting",
-			processData: false,
-			contentType: false,
-			data : formData
+			contentType: 'application/json; charset=UTF-8',		
+			data : renting
+			
+		}).done(function(data){
+			window.location.href="${contextPath}/resources/view/listRentings.jsp";
+		});
+	}
+	
+	function updateRenting(id){
+		var renting = getRentingData(mode)
+		
+		jQuery.ajax({
+			method : "PUT",
+			url : "${contextPath}/renting/"+id,
+			contentType: 'application/json; charset=UTF-8',		
+			data : renting
 			
 		}).done(function(data){
 			window.location.href="${contextPath}/resources/view/listRentings.jsp";
@@ -449,13 +557,27 @@
 	function getRentingData(mode){
 		
 		var rentingData= new Object();
+		if(mode=="edit"){
+			rentingData.id=jQuery("#id").val();
+		}
 		rentingData.name=jQuery("#name").val();
 		rentingData.type=jQuery("#type").val();
 		rentingData.numberOfRooms=jQuery("#numberOfRooms").val();
 		rentingData.price=jQuery("#price").val();
 		rentingData.rentingFacilities = getRentingFacilitiesData(mode);
-		
+		rentingData.imageBase64s = getImageData(mode)
 		return JSON.stringify(rentingData);
+	}
+	
+	function getImageData(mode){
+		var images = []
+		
+		jQuery(".rentImageRow").each(function(){
+			images.push($(this).find('.rentImage').attr("src"))
+			
+		})
+		
+		return images;
 	}
 	
 	function getRentingFacilitiesData(mode){
@@ -463,6 +585,9 @@
 		
 		jQuery(".rentingFacility").each(function(){
 			var rentingFacility = new Object();
+			if(mode=="edit"){
+				rentingFacility.id=$(this).find('.rentingFacilityId').val();
+			}
 			rentingFacility.serviceId = $(this).find('.serviceId').val();
 			rentingFacility.units = $(this).find('.units').val();
 			rentingFacilities.push(rentingFacility)
@@ -479,8 +604,12 @@
 	}
 	
 	.removeImage{
-		padding-top: 80px;
+		padding-top: 50px;
 		float : right;
+	}
+	
+	.rentImageRow{
+		padding-top:10px;
 	}
 </Style>
 
