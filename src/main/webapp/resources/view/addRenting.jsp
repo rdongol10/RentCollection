@@ -8,6 +8,10 @@
 	<meta charset="ISO-8859-1">
 	<title>Add Renting</title>
 	<link href="<c:url value="/resources/css/fileDrop.css" />" rel="stylesheet">
+	<link href="<c:url value="/resources/css/alertify.css" />" rel="stylesheet"> 
+	<link href="<c:url value="/resources/css/alertify-bootstrap.css" />" rel="stylesheet">
+	
+	
 </head>
 <body>
 	<div class="dashboard-main-wrapper">
@@ -137,6 +141,8 @@
 	</div>
 </body>
 
+<script src="<c:url value="/resources/js/alertify.js" />" ></script>
+
 <script>
 	
 	var serviceModels;
@@ -147,9 +153,17 @@
 	var id = 0;
 	var imageCounts = 0;
 	
-		
+	function initializeAlertifyTheme(){
+		alertify.defaults.transition = "slide";
+		alertify.defaults.theme.ok = "btn btn-primary";
+		alertify.defaults.theme.cancel = "btn btn-danger";
+		alertify.defaults.theme.input = "form-control";
+	}	
 		
 	jQuery(document).ready(function(){
+		
+		initializeAlertifyTheme();
+		
 		id=getURLParameter("id");
 		
 		getSevices();
@@ -436,8 +450,8 @@
 	}
 
 	
-	var base64 = [];
 	function readFile(input){
+		var errorFiles = [];
 		for(var i = 0 ; i< input.files.length ; i++){
 			if(input.files[i].type == "image/jpeg" || input.files[i].type == "image/png"){
 				files.push(input.files[i])
@@ -449,6 +463,11 @@
 			}
 		} 
 		
+		if(errorFiles.length >0){
+			
+			alertify.alert("<div style='color:red'>"+errorFiles + " are invalid files. Only upload .png or .jpg files</div>").setHeader("<b>Error Files</b>");
+		
+		}
 		jQuery("#rentingImage").val("");
 	}
 	
