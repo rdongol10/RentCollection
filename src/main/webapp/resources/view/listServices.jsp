@@ -36,7 +36,7 @@
 								</div>
 						 	</div>
 							<div class="card-body">
-								<div class="">
+								<div class="table-responsive">
 									<table class="table table-striped table-bordered first" id="serviceTable">
 										<thead>
 											<tr>
@@ -83,11 +83,32 @@
 			toggleServiceDetails(this);
 		})
 		
+		
+		jQuery("#serviceTable").on("click",".innerTableDetail",function(){
+			toggleDetailDetail(this)
+		})
+		
+		
 	});
+	
+	function toggleDetailDetail(clickedColumn){
+		var tr = jQuery(clickedColumn).closest("tr");
+		var thistable = $(clickedColumn).closest('table').DataTable();
+		var row = thistable.row(tr)
+		console.log(row)
+		if ( row.child.isShown() ) {
+		    row.child.hide();
+		    tr.removeClass('shown');
+		}else{
+			row.child("this is jus a test").show()
+			tr.addClass('shown')
+		}
+	}
 	
 	function toggleServiceDetails(clickedColumn){
 		var tr = jQuery(clickedColumn).closest("tr");
 		var row= table.row( tr );
+		console.log(row)
 		if ( row.child.isShown() ) {
 		    row.child.hide();
 		    tr.removeClass('shown');
@@ -95,6 +116,7 @@
 		}
 		else {
 			LoadServiceDetails(clickedColumn , row , tr)
+			
 		} 
 	}
 	
@@ -104,10 +126,15 @@
 			url : "${contextPath}/service/getServiceDetails/"+jQuery(clickedColumn).attr("serviceId"),
 			async:false,
 			success:function(data){
-				console.log(data)
 				row.child( formatServiceDetailData(data) ).show();
 		   		tr.addClass('shown');
 				jQuery(clickedColumn).attr("class","actionButton showDetails fas fa-angle-double-up")
+				$(".innerTable").DataTable({
+					destroy: true,
+					"paging":   false,
+					 "searching": false,
+					 "info":     false
+				});
 			}
 		});
 		
@@ -115,21 +142,27 @@
 
 	function formatServiceDetailData(data){
 		var html = "";
-		html += '<div class="row">';
-		html += '<div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1"></div>'
-		html += '<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">Rate</div>'
-		html += '<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">Volume Cutoff</div>'
-		html += '<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">Service Charge</div>'
-		html += '</div>'
-		
+		html += "<table class='innerTable'>"
+		html += "<thead><tr>"
+		html += "<th>Rate</th>"
+		html += "<th>Volume</th>"
+		html += "<th>Service</th>"
+		html += "<th>Action</th>"
+
+		html += "</tr></thead>"
+		html += "<tbody>"
 		for(var i = 0 ; i<data.length ; i++){
-			html += '<div class="row">';
-			html += '<div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1"></div>'
-			html += '<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'+data[i].rate+'</div>'
-			html += '<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'+data[i].volumeCutoff+'</div>'
-			html += '<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'+data[i].serviceCharge+'</div>'
-			html += '</div>'
+			html += '<tr>';
+			html += '<td>'+data[i].rate+'</td>'
+			html += '<td>'+data[i].volumeCutoff+'</td>'
+			html += '<td>'+data[i].serviceCharge+'</td>'
+			html += '<td><button class ="innerTableDetail">Details</button></td>'
+			html += '</tr>';
 		}
+		html += "</tbody>"
+		html += "</table>"
+		
+		
 		return html;
 	}
 	
