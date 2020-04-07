@@ -100,6 +100,20 @@
                                 </div>
                             </li>
                             
+                            <li class="nav-item ">
+                                <a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false" data-target="#renteeMenu" aria-controls="renteeMenu">Rentee</a>
+                                <div id="renteeMenu" class="collapse submenu" style="">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="${contextPath}/resources/view/listRentee.jsp">List Rentee</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="${contextPath}/resources/view/addRentee.jsp">Add Rentee</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            
                         </ul>
                     </div>
                 </nav>
