@@ -1,5 +1,6 @@
 package com.rdongol.rentcollection.model;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -15,26 +16,35 @@ public class Rentee {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	
+
 	private String firstName;
-	
+
 	private String lastName;
-	
+
 	private String middleName;
-	
+
 	private String phoneNumber;
-	
+
 	private long citizenshipNumber;
-	
+
 	private String emailId;
-	
+
 	private String address;
 
-	@OneToMany(mappedBy = "rentee" , cascade = CascadeType.ALL)
+	private String sex;
+
+	private Date dob;
+
+	@OneToMany(mappedBy = "rentee", cascade = CascadeType.ALL)
 	private List<RenteeDependent> renteeDependent;
-	
+
+	public Rentee() {
+
+	}
+
 	public Rentee(long id, String firstName, String lastName, String middleName, String phoneNumber,
-			long citizenshipNumber, String emailId, String address) {
+			long citizenshipNumber, String emailId, String address, String sex, Date dob,
+			List<RenteeDependent> renteeDependent) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -44,6 +54,9 @@ public class Rentee {
 		this.citizenshipNumber = citizenshipNumber;
 		this.emailId = emailId;
 		this.address = address;
+		this.sex = sex;
+		this.dob = dob;
+		this.renteeDependent = renteeDependent;
 	}
 
 	public long getId() {
@@ -109,8 +122,29 @@ public class Rentee {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
-	
-	
-	
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+	public Date getDob() {
+		return dob;
+	}
+
+	public void setDob(Date dob) {
+		this.dob = dob;
+	}
+
+	public List<RenteeDependent> getRenteeDependent() {
+		return renteeDependent;
+	}
+
+	public void setRenteeDependent(List<RenteeDependent> renteeDependent) {
+		this.renteeDependent = renteeDependent;
+	}
+
 }

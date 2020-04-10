@@ -1,5 +1,7 @@
 package com.rdongol.rentcollection.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,32 +17,42 @@ public class RenteeDependent {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "rentee_id", nullable = false, updatable = true, insertable = true)
 	@JsonIgnore
 	private Rentee rentee;
-	
+
 	private String firstName;
-	
+
 	private String lastName;
-	
+
 	private String middleName;
-	
+
 	private String phoneNumber;
-	
+
 	private long citizenshipNumber;
-	
+
 	private String relationship;
-	
+
 	private String emailId;
-	
+
 	private String address;
-	
-	public RenteeDependent(long id, String firstName, String lastName, String middleName, String phoneNumber,
-			long citizenshipNumber, String relationship, String emailId, String address) {
+
+	private String sex;
+
+	private Date dob;
+
+	public RenteeDependent() {
+
+	}
+
+	public RenteeDependent(long id, Rentee rentee, String firstName, String lastName, String middleName,
+			String phoneNumber, long citizenshipNumber, String relationship, String emailId, String address, String sex,
+			Date dob) {
 		super();
 		this.id = id;
+		this.rentee = rentee;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.middleName = middleName;
@@ -49,6 +61,8 @@ public class RenteeDependent {
 		this.relationship = relationship;
 		this.emailId = emailId;
 		this.address = address;
+		this.sex = sex;
+		this.dob = dob;
 	}
 
 	public long getId() {
@@ -122,6 +136,29 @@ public class RenteeDependent {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
-	
+
+	public Rentee getRentee() {
+		return rentee;
+	}
+
+	public void setRentee(Rentee rentee) {
+		this.rentee = rentee;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+	public Date getDob() {
+		return dob;
+	}
+
+	public void setDob(Date dob) {
+		this.dob = dob;
+	}
+
 }
