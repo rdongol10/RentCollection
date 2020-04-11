@@ -1,5 +1,8 @@
 package com.rdongol.rentcollection.model;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -45,6 +48,25 @@ public class RenteeDependent {
 
 	public RenteeDependent() {
 
+	}
+	
+	public RenteeDependent(RenteeDependentModel renteeDependentModel) {
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+		try {
+			this.id = renteeDependentModel.getId();
+			this.firstName = renteeDependentModel.getFirstName();
+			this.lastName = renteeDependentModel.getLastName();
+			this.middleName = renteeDependentModel.getMiddleName();
+			this.phoneNumber = renteeDependentModel.getPhoneNumber();
+			this.citizenshipNumber = renteeDependentModel.getCitizenshipNumber();
+			this.emailId = renteeDependentModel.getEmailId();
+			this.address = renteeDependentModel.getAddress();
+			this.sex = renteeDependentModel.getSex();
+			this.relationship = renteeDependentModel.getRelationship();
+			this.dob = df.parse(renteeDependentModel.getDob());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public RenteeDependent(long id, Rentee rentee, String firstName, String lastName, String middleName,

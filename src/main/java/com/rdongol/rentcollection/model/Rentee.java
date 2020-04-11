@@ -1,5 +1,8 @@
 package com.rdongol.rentcollection.model;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -40,6 +43,24 @@ public class Rentee {
 
 	public Rentee() {
 
+	}
+
+	public Rentee(RenteeModel renteeModel) {
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+		try {
+			this.id = renteeModel.getId();
+			this.firstName = renteeModel.getFirstName();
+			this.lastName = renteeModel.getLastName();
+			this.middleName = renteeModel.getMiddleName();
+			this.phoneNumber = renteeModel.getPhoneNumber();
+			this.citizenshipNumber = renteeModel.getCitizenshipNumber();
+			this.emailId = renteeModel.getEmailId();
+			this.address = renteeModel.getAddress();
+			this.sex = renteeModel.getSex();
+			this.dob = df.parse(renteeModel.getDob());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public Rentee(long id, String firstName, String lastName, String middleName, String phoneNumber,
