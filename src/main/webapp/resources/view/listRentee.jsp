@@ -69,7 +69,16 @@
 	var table;
 	jQuery(document).ready(function(){
 		loadTableData();
+		
+		jQuery("#RenteeTable").on("click",".editRentee",function(){
+			
+			editRentee(jQuery(this).attr("rentee"))
+		})
 	});
+	
+	function editRentee(renteeId){
+		window.location.href="${contextPath}/resources/view/addRentee.jsp?id="+renteeId;
+	}
 	
 	function loadTableData(){
 		table = jQuery("#RenteeTable").DataTable({
