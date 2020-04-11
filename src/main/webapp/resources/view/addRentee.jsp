@@ -159,7 +159,7 @@
 														<i class="fas fa-trash-alt btn imageDelete"></i>
 													</div>
 													
-													<div class="errorFeedback" id="citizenshipImage-errorFeedback"></div>
+													<div class="errorFeedback" id="displayCitizenshipImage-errorFeedback"></div>
 													
 												</div>
 												
@@ -181,7 +181,7 @@
 														<i class="fas fa-trash-alt btn imageDelete"></i>
 													</div>
 													
-													<div class="errorFeedback" id="citizenshipBackImage-errorFeedback"></div>
+													<div class="errorFeedback" id="displayCitizenshipBackImage-errorFeedback"></div>
 													
 												</div>
 												
@@ -313,10 +313,22 @@
 		alertify.defaults.theme.input = "form-control";
 	}	
 	
+	function getURLParameter(param){
+		
+		var pageURL = window.location.search.substring(1);
+		var urlVariables = pageURL.split('&')
+		for(var i=0;i<urlVariables.length;i++){
+			var parameterName=urlVariables[i].split('=');
+			if(parameterName[0] == param){
+				return decodeURIComponent(parameterName[1]);
+			}
+		}
+	}
+	
 	jQuery(document).ready(function(){
 		
 		initializeAlertifyTheme();
-		
+		id=getURLParameter("id");
 		jQuery("#renteeForm").on("focus",".date",function(){
 			initializeDatePicker(this);
 		})
@@ -329,6 +341,17 @@
 			});
 		}
 		
+		
+		if(id != undefined){
+			mode="edit"
+			jQuery("#addRentee").html("Edit Rentee")
+			jQuery("#pageheader-title").html("Edit Rentee")
+			//getRenting(id)
+		}else{
+			mode ="save";
+			jQuery("#addRentee").html("Add Rentee")
+			jQuery("#pageheader-title").html("Add Rentee")
+		}
 		
 		jQuery("#renteeForm").on("mouseover",".imageholder",function(){
 			jQuery(this).find(".btn").show();
@@ -375,14 +398,160 @@
 		
 		jQuery("#addRentee").on("click",function(){
 			event.preventDefault();
+			removeErrorHighlights();
+			if(validateInputs()){
+				saveRentee()
+			}else{
+				highlightErrorFields()
+			}
 		})
-	})
+	});//end of document ready
+	
+	function saveRentee(){
+		var rentee = getRenteeData(mode)
+		
+		jQuery.ajax({
+			
+			method : "POST",
+			url : "${contextPath}/rentee",
+			contentType: 'application/json; charset=UTF-8',		
+			data : rentee
+			
+		}).done(function(data){
+			window.location.href="${contextPath}/resources/view/listRentee.jsp";
+		});
+	}
+	
+	function getRenteeData(mode){
+		var renteeData = new Object();
+		if(mode=="edit"){
+			renteeData.id=jQuery("#id").val();
+		}	
+		renteeData.firstName=jQuery("#firstName").val();
+		renteeData.lastName=jQuery("#lastName").val();
+		renteeData.middleName=jQuery("#middleName").val();
+		renteeData.phoneNumber=jQuery("#phoneNumber").val();
+		renteeData.citizenshipNumber=jQuery("#citizenshipNumber").val();
+		renteeData.emailId=jQuery("#emailId").val();
+		renteeData.address=jQuery("#address").val();
+		renteeData.sex=jQuery("#sex").val();
+		renteeData.dob=jQuery("#dob").val();
+		renteeData.renteeImageBase64=jQuery("#displayRenteeImage").attr("src")
+		renteeData.citizenshipImageBase64=jQuery("#displayCitizenshipImage").attr("src")
+		renteeData.citizenshipBackImageBase64=jQuery("#displayCitizenshipBackImage").attr("src")
+		renteeData.renteeDependentModels=getRenteeDependentsData(mode);
+		return JSON.stringify(renteeData);
+
+	}
+	
+	function getRenteeDependentsData(mode){
+		var renteeDependents = []
+		
+		jQuery(".renteeDependent").each(function(){
+			var renteeDependent = new Object();
+			if(mode=="edit"){
+				renteeDependent.id=$(this).find('.renteeDependentId').val();
+			}
+			renteeDependent.firstName=$(this).find('.renteeDependentFirstName').val();
+			renteeDependent.lastName=$(this).find('.renteeDependentLastName').val();
+			renteeDependent.middleName=$(this).find('.renteeDependentMiddleName').val();
+			renteeDependent.phoneNumber=$(this).find('.renteeDependentPhoneNumber').val();
+			renteeDependent.citizenshipNumber=$(this).find('.renteeDependentCitizenshipNumber').val();
+			renteeDependent.relationship=$(this).find('.renteeDependentRelationship').val();
+			renteeDependent.emailId=$(this).find('.renteeDependentEmailId').val();
+			renteeDependent.address=$(this).find('.renteeDependentAddress').val();
+			renteeDependent.sex=$(this).find('.renteeDependentSex').val();
+			renteeDependent.dob=$(this).find('.renteeDependentDob').val();
+			renteeDependent.renteeDependentImageBase64=$(this).find('.profileDisplayImage').attr("src");
+
+			renteeDependents.push(renteeDependent)	
+			
+		})
+		return renteeDependents;
+
+	}
+	
+	function removeErrorHighlights(){
+		
+		jQuery(".errorFeedback").html("");
+		jQuery(".form-control").css("border-color","");
+
+	}
+	
+	function validateInputs() {
+
+		if(!validateRequiredFields()){
+			return false;
+		}
+		
+		if(!validateOtherFields()){
+			return false;
+		}
+		
+		return true;
+	}
+	
+	function validateRequiredFields() {
+		errorFields = []
+		jQuery(".requiredInputs:visible").each(function() {
+			var errorField = {};
+			if (this.value.trim() == "") {
+				errorField.id = jQuery(this).attr("id");
+				errorField.message = "Required field connot be empty";
+				errorFields.push(errorField)
+			}
+		})
+		return !errorFields.length > 0
+	}
+	
+	function validateOtherFields(){
+		errorFields = []
+		validateImages();
+		validateDate();
+		return !errorFields.length > 0;
+	}
+	
+	function validateDate(){
+		jQuery(".date").each(function(){
+			var errorField = {};
+			var date = jQuery(this).val();	
+			var datePattern =/^(?:(?:31(\/)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/
+			if(!datePattern.test(date)){
+				errorField.id = jQuery(this).attr("id");
+				errorField.message = "Invalid date . Must be MM/DD/YYYY";
+				errorFields.push(errorField)
+			}	
+		})
+		
+	}
+	function validateImages(){
+		jQuery(".displayImage").each(function(){
+			var errorField = {};
+		    if(jQuery(this).attr("src").trim() == ""){
+		    	errorField.id = jQuery(this).attr("id");
+				errorField.message = "Please add the image";
+				errorFields.push(errorField)
+		    }
+		})
+	}
+	
+	function highlightErrorFields() {
+		if (errorFields.length < 1) {
+			return;
+		}
+
+		errorFields.forEach(function(value, index) {
+			var id = value.id;
+			var message = value.message
+			jQuery("#" + id).css("border-color", "red");
+			jQuery("#" + id + "-errorFeedback").html(message)
+		})
+	}
 	
 	function removeRenteeDependent(removeRenteeDependent){
 		var count = jQuery(removeRenteeDependent).attr("count");
 		jQuery("#renteeDependent-"+count).remove();
 
-		renteeDependent
 	}
 	
 	function triggerFileLoader(clickedButton){
@@ -478,7 +647,7 @@
 		html += '<div class="errorFeedback" id="renteeDependentLastName-'+renteeDependentCount+'-errorFeedback"></div>'
 		html += '</div>'
 		html += '<div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">'
-		html += '<label for="renteeDependentSex" class="col-form-label">Sex<span class="requiredField">*</span></label>'
+		html += '<label for="renteeDependentSex" class="col-form-label">Sex</label>'
 		html += '<select class="form-control renteeDependentSex" id="renteeDependentSex-'+renteeDependentCount+'" name="renteeDependentSex">'
 		html += '<option value="male" >Male</option>'
 		html += '<option value="female" >Female</option>'
@@ -505,7 +674,7 @@
 		html += '<div class="errorFeedback" id="renteeDependentEmailId-'+renteeDependentCount+'-errorFeedback"></div>'
 		html += '</div>'
 		html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
-		html += '<label for="renteeDependentCitizenshipNumber" class="col-form-label">Citizenship No.<span class="requiredField">*</span></label>'
+		html += '<label for="renteeDependentCitizenshipNumber" class="col-form-label">Citizenship No.</label>'
 		html += '<input id="renteeDependentCitizenshipNumber-'+renteeDependentCount+'" name="renteeDependentCitizenshipNumber" type="text" class="form-control renteeDependentCitizenshipNumber" value="">'
 		html += '<div class="errorFeedback" id="renteeDependentCitizenshipNumber-'+renteeDependentCount+'-errorFeedback"></div>'
 		html += '</div>'
@@ -513,7 +682,7 @@
 	
 		html += '<div class="row">'
 		html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
-		html += '<label for="renteeDependentRelationship" class="col-form-label">Relationship<span class="requiredField">*</span></label>'
+		html += '<label for="renteeDependentRelationship" class="col-form-label">Relationship</label>'
 		html += '<select class="form-control renteeDependentRelationship" id="renteeDependentRelationship-'+renteeDependentCount+'" name="renteeDependentRelationship">'
 		html += '<option value="spouse" >Spauce</option>'
 		html += '<option value="child" >Child</option>'
