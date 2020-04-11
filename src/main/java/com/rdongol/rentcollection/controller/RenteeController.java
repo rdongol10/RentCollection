@@ -3,6 +3,8 @@ package com.rdongol.rentcollection.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +36,13 @@ public class RenteeController {
 	public String listRentings(@RequestBody String dataTableRequest) throws Exception {
 		renteeListDataTableBackend.intialize(dataTableRequest);
 		return renteeListDataTableBackend.getTableData();
+	}
+
+	@GetMapping("/getRenteeModel/{id}")
+	public ResponseEntity<RenteeModel> getRenteeModel(@PathVariable long id) {
+
+		return ResponseEntity.ok(renteeService.getRenteeModel(id));
+
 	}
 
 }
