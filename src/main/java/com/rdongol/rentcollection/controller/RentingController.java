@@ -1,9 +1,5 @@
 package com.rdongol.rentcollection.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
-
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
