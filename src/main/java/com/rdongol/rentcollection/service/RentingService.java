@@ -127,6 +127,7 @@ public class RentingService {
 		
 		if(rentingFacilityModels == null || rentingFacilityModels.isEmpty()) {
 			rentingFacilityService.deleteAll(currentRentingFacilities);
+			return;
 		}
 		
 		List<RentingFacility> rentingFacilitiesToDelete = getRentingFacilitiesToDelete(currentRentingFacilities , rentingFacilityModels);
@@ -138,6 +139,7 @@ public class RentingService {
 	
 	private List<RentingFacility> getRentingFacilitiesToDelete(List<RentingFacility> currentRentingFacilities,
 			List<RentingFacilityModel> rentingFacilityModels) {
+		
 		List<RentingFacility> rentingFacilitiesToDelete = new LinkedList<RentingFacility>();
 
 		for (RentingFacility curRentingFacility : currentRentingFacilities) {
