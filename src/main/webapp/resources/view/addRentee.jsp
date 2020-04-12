@@ -431,6 +431,7 @@
 		jQuery("#emailId").val(data.emailId);
 		jQuery("#sex option[value="+data.sex+"]").attr("selected","selected");
 		jQuery("#dob").val(data.dob);
+		jQuery("#address").val(data.address);
 		jQuery("#displayRenteeImage").attr("src","data:image/png;base64,"+data.renteeImageBase64)
 		jQuery("#displayCitizenshipImage").attr("src","data:image/png;base64,"+data.citizenshipImageBase64)
 		jQuery("#displayCitizenshipBackImage").attr("src","data:image/png;base64,"+data.citizenshipBackImageBase64)
@@ -484,11 +485,24 @@
 			html += '<div class="errorFeedback" id="renteeDependentLastName-'+renteeDependentCount+'-errorFeedback"></div>'
 			html += '</div>'
 			html += '<div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">'
+			var sex = renteeDependentModels[i].sex;
 			html += '<label for="renteeDependentSex" class="col-form-label">Sex</label>'
 			html += '<select class="form-control renteeDependentSex" id="renteeDependentSex-'+renteeDependentCount+'" name="renteeDependentSex">'
-			html += '<option value="male" >Male</option>'
-			html += '<option value="female" >Female</option>'
-			html += '<option value="others" >others</option>'	
+			html += '<option value="male"' 
+			if(sex == "male"){
+				html += ' selected '				
+			}
+			html += '>Male</option>'
+			html += '<option value="female" '
+				if(sex == "female"){
+					html += ' selected '				
+				}
+			html += '>Female</option>'
+			html += '<option value="others" '
+				if(sex == "others"){
+					html += ' selected '				
+				}
+			html += '>Others</option>'
 			html += '</select>'
 			html += '<div class="errorFeedback" id="renteeDependentRelationship-'+renteeDependentCount+'-errorFeedback"></div>'
 			html += '</div>'
@@ -517,15 +531,38 @@
 			html += '</div>'
 			html += '</div>'
 		
+			var relationship = renteeDependentModels[i].relationship;
 			html += '<div class="row">'
 			html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
 			html += '<label for="renteeDependentRelationship" class="col-form-label">Relationship</label>'
 			html += '<select class="form-control renteeDependentRelationship" id="renteeDependentRelationship-'+renteeDependentCount+'" name="renteeDependentRelationship">'
-			html += '<option value="spouse" >Spauce</option>'
-			html += '<option value="child" >Child</option>'
-			html += '<option value="siblings" >Siblings</option>'
-			html += '<option value="friend" >Friend</option>'
-			html += '<option value="others" >others</option>'	
+			html += '<option value="spouse" ';
+			
+			if(relationship == "spouse"){
+				html += 'selected'
+			}
+				
+			html += '>Spauce</option>'
+			html += '<option value="child"'
+				if(relationship == "child"){
+					html += 'selected'
+				}
+			html += '>Child</option>'
+			html += '<option value="siblings"'
+				if(relationship == "siblings"){
+					html += 'selected'
+				}
+			html += '>siblings</option>'
+			html += '<option value="friend" '
+				if(relationship == "friend"){
+					html += 'selected'
+				}
+			html += '>friend</option>'
+			html += '<option value="others"'	
+				if(relationship == "others"){
+					html += 'selected'
+				}
+			html += '>others</option>'
 			html += '</select>'
 			html += '<div class="errorFeedback" id="renteeDependentRelationship-'+renteeDependentCount+'-errorFeedback"></div>'
 			html += '</div>'
