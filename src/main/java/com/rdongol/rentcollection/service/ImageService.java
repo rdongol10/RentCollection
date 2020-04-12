@@ -78,7 +78,7 @@ public class ImageService {
 		}
 		return images;
 	}
-	
+
 	public void deleteImages(Long objectId, String objectType) {
 		List<Image> images = getImageByObjectTypeAndObjectId(objectType, objectId);
 		for (Image image : images) {
@@ -87,6 +87,34 @@ public class ImageService {
 				deleteById(image.getId());
 			}
 		}
+	}
+
+	public Image update(Long objectId, String objectType, String imageBase64) {
+		List<Image> images = getImageByObjectTypeAndObjectId(objectType, objectId);
+
+		if (images == null || images.isEmpty()) {
+			return save(objectId, objectType, imageBase64);
+		}
+
+		Image image = images.get(0);
+		try {
+			File imageFile = new File(image.getImageLocation(), image.getImageName());
+			if (deleteFile(imageFile)) {
+				byte[] imageByte = Base64.decodeBase64(imageBase64.split(",")[1]);
+				ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+				BufferedImage bufferedImage = ImageIO.read(bis);
+				String filename = getImageName(objectId, objectType);
+				File outputfile = new File(IMAGE_FOLDER, filename);
+				ImageIO.write(bufferedImage, "png", outputfile);
+				bis.close();
+				image.setImageName(filename);
+				image.setImageLocation(IMAGE_FOLDER);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return save(image);
 	}
 
 	public boolean deleteFile(File imageFile) {
@@ -103,6 +131,15 @@ public class ImageService {
 
 	public List<Image> getImageByObjectTypeAndObjectId(String objectType, long objectId) {
 		return imageRepository.getImageByObjectTypeAndObjectId(objectType, objectId);
+	}
+
+	public String getImageBase64(long objectId, String objectType) {
+		List<Image> images = getImageByObjectTypeAndObjectId(objectType, objectId);
+		if (images == null || images.isEmpty()) {
+			return null;
+		}
+
+		return getImageBase64(images.get(0));
 	}
 
 	public List<String> getImageBase64s(long objectId, String objectType) {
