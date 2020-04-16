@@ -164,6 +164,9 @@ public class RentingListDataTableBackend extends AbstractDataTableBackend {
 			return "";
 		}
 
+		if(active != 1) {
+			return "";
+		}
 		StringBuffer contractRenting = new StringBuffer();
 
 		contractRenting.append("<i class='actionButton contractRenting fas fa-plus' rentingId='" + rentingId
@@ -176,10 +179,9 @@ public class RentingListDataTableBackend extends AbstractDataTableBackend {
 	protected BigInteger getTotalRecords() {
 
 		StringBuffer query = new StringBuffer();
-		query.append(" Select count(renting.id) ");
+		query.append(" Select count(distinct(renting.id)) ");
 		query.append(fromCriteria);
 		query.append(whereCriteria);
-		query.append(groupCriteria);
 
 		return (BigInteger) entityManager.createNativeQuery(query.toString()).getSingleResult();
 
@@ -188,11 +190,10 @@ public class RentingListDataTableBackend extends AbstractDataTableBackend {
 	@Override
 	protected BigInteger getTotalFilteredRecords() {
 		StringBuffer query = new StringBuffer();
-		query.append(" Select count(renting.id) ");
+		query.append(" Select count(distinct(renting.id)) ");
 		query.append(fromCriteria);
 		query.append(whereCriteria);
 		query.append(searchFilterCriteria);
-		query.append(groupCriteria);
 
 		return (BigInteger) entityManager.createNativeQuery(query.toString()).getSingleResult();
 	}
