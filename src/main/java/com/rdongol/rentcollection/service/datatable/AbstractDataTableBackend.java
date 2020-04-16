@@ -61,6 +61,8 @@ public abstract class AbstractDataTableBackend {
 
 		if (!whereCriteria.toUpperCase().contains("WHERE")) {
 			searchFilter.append(" WHERE ");
+		}else {
+			searchFilter.append(" AND ");
 		}
 
 		searchFilter.append(" ( ");
@@ -116,6 +118,7 @@ public abstract class AbstractDataTableBackend {
 
 		if (dataTableRequest == null || dataTableRequest.isEmpty()) {
 			setDefaultTableData();
+			return;
 		}
 
 		ObjectMapper mapper = new ObjectMapper();
