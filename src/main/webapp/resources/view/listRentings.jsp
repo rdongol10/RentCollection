@@ -36,6 +36,15 @@
 								</div>
 						 	</div>
 							<div class="card-body">
+								<div class="form-group row">
+                                     <label class="col-1 col-sm-1 col-form-label text-sm-right">Available</label>
+                                     <div class="col-1 col-sm-1 col-lg-1 pt-1">
+                                         <div class="switch-button switch-button-xs">
+                                             <input type="checkbox" name="available" id="available" checked><span>
+                                         <label for="available"></label></span>
+                                         </div>
+                                     </div>
+                                 </div>
 								<div class="table-responsive">
 									<table class="table table-striped table-bordered first" id="RentingTable">
 										<thead>
@@ -76,6 +85,10 @@
 			
 			editRenting(jQuery(this).attr("rentingid"))
 		})
+		
+		jQuery("#available").on("change",function(){
+			$('#RentingTable').DataTable().ajax.reload();
+		})
 			
 	});
 	
@@ -102,6 +115,7 @@
 				 "type": "POST",
 				 "contentType": "application/json",
 				 "data": function(data){
+				 	data.available = $("#available").prop("checked");
 					return JSON.stringify(data);
 				}
 			},
