@@ -138,7 +138,7 @@ public class RentingListDataTableBackend extends AbstractDataTableBackend {
 	protected String getEditRengingAction(String rentingId) {
 		StringBuffer editRenting = new StringBuffer();
 		editRenting.append("<i class='actionButton editRenting fas fa-edit' rentingId='" + rentingId
-				+ "' title='edit' style = 'color:blue'> </i>");
+				+ "' title='edit' style = 'color:#3559BA'> </i>");
 		return editRenting.toString();
 	}
 
@@ -151,10 +151,10 @@ public class RentingListDataTableBackend extends AbstractDataTableBackend {
 		StringBuffer deleteRenting = new StringBuffer();
 		if (active == 1) {
 			deleteRenting.append("<i class='actionButton toggleRenting fas fa-toggle-off' rentingId='" + rentingId
-					+ "' title='disable' style = 'color:red'></i>");
+					+ "' title='disable' style = 'color:#FF686B'></i>");
 		} else {
 			deleteRenting.append("<i class='actionButton toggleRenting fas fa-toggle-on' rentingId='" + rentingId
-					+ "' title='enable' style = 'color:green'></i>");
+					+ "' title='enable' style = 'color:#009B33'></i>");
 		}
 		return deleteRenting.toString();
 	}
