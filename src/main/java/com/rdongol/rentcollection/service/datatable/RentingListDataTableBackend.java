@@ -169,8 +169,8 @@ public class RentingListDataTableBackend extends AbstractDataTableBackend {
 		}
 		StringBuffer contractRenting = new StringBuffer();
 
-		contractRenting.append("<i class='actionButton contractRenting fas fa-plus' rentingId='" + rentingId
-				+ "' title='add contract ' style = 'color:green'></i>");
+		contractRenting.append("<i class='actionButton contractRenting fas fa-file-signature' rentingId='" + rentingId
+				+ "' title='add contract' style ='color : #1CBC94' ></i>");
 		return contractRenting.toString();
 	}
 	
