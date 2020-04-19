@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.rdongol.rentcollection.model.Rentee;
+import com.rdongol.rentcollection.model.RenteeContractModel;
 import com.rdongol.rentcollection.model.RenteeDependent;
 import com.rdongol.rentcollection.model.RenteeDependentModel;
 import com.rdongol.rentcollection.model.RenteeModel;
@@ -167,6 +168,19 @@ public class RenteeService {
 		renteeModel.setRenteeDependentModels(renteeDependentService.getRenteeDependentModels(rentee));
 
 		return renteeModel;
+	}
+
+	public List<RenteeContractModel> getRenteeContractModels() {
+		List<Rentee> rentees = findAll();
+		List<RenteeContractModel> renteeContractModels = new LinkedList<RenteeContractModel>();
+		for (Rentee rentee : rentees) {
+			RenteeContractModel renteeContractModel = new RenteeContractModel(rentee.getId(),
+					rentee.getFirstName() + " " + rentee.getMiddleName() + " " + rentee.getLastName());
+			renteeContractModels.add(renteeContractModel);
+		}
+
+		return renteeContractModels;
+
 	}
 
 }

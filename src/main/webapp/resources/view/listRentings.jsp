@@ -23,7 +23,7 @@
 				                    <h2 class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9 topCardHeader">
 					 				
 						 				Renting Lists
-						 				
+									
 									</h2>
 									
 				                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
@@ -89,8 +89,16 @@
 		jQuery("#available").on("change",function(){
 			$('#RentingTable').DataTable().ajax.reload();
 		})
+		
+		jQuery("#RentingTable").on("click",".contractRenting",function(){
+			createContract(jQuery(this).attr("rentingid"))
+		})
 			
 	});
+	
+	function createContract(rentingId){
+		window.location.href="${contextPath}/resources/view/createContract.jsp?rentingId="+rentingId;
+	}
 	
 	function toggleRenting(rentingId){
 		jQuery.ajax({

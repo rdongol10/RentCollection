@@ -1,5 +1,7 @@
 package com.rdongol.rentcollection.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rdongol.rentcollection.model.Rentee;
+import com.rdongol.rentcollection.model.RenteeContractModel;
 import com.rdongol.rentcollection.model.RenteeModel;
 import com.rdongol.rentcollection.service.RenteeService;
 import com.rdongol.rentcollection.service.datatable.AbstractDataTableBackend;
@@ -51,4 +54,8 @@ public class RenteeController {
 		return ResponseEntity.ok(renteeService.update(id, renteeModel));
 	}
 
+	@GetMapping("/getRenteeContractModel")
+	public ResponseEntity<List<RenteeContractModel>> getRenteeContractModels() {
+		return ResponseEntity.ok(renteeService.getRenteeContractModels());
+	}
 }

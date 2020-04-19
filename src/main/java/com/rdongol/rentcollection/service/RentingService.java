@@ -4,11 +4,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.rdongol.rentcollection.model.Renting;
+import com.rdongol.rentcollection.model.RentingContractModel;
 import com.rdongol.rentcollection.model.RentingFacility;
 import com.rdongol.rentcollection.model.RentingFacilityModel;
 import com.rdongol.rentcollection.model.RentingModel;
@@ -28,7 +33,10 @@ public class RentingService {
 
 	@Autowired
 	private ImageService imageService;
-
+	
+	@PersistenceContext
+	protected EntityManager entityManager;
+	
 	public List<Renting> findAll() {
 
 		return (List<Renting>) rentingRepository.findAll();
@@ -192,7 +200,45 @@ public class RentingService {
 
 	}
 	
-	
+	public List<RentingContractModel> getAvailableRentingContractModels() {
+		List<Renting> rentings = getAvailableRentings();
+
+		List<RentingContractModel> rentingContractModels = new LinkedList<RentingContractModel>();
+
+		for (Renting renting : rentings) {
+			RentingContractModel rentingContractModel = new RentingContractModel(renting.getId(), renting.getName());
+			rentingContractModels.add(rentingContractModel);
+		}
+		return rentingContractModels;
+
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Renting> getAvailableRentings() {
+
+		StringBuilder stringQuery = new StringBuilder();
+		stringQuery.append(" Select renting.id,renting.name,renting.type,renting.number_of_rooms,renting.price,renting.status From renting LEFT JOIN contract ON renting.id = contract.renting_id ");
+		stringQuery.append(" WHERE (contract.id is null AND renting.status = 1 )");
+		stringQuery.append(" GROUP BY renting.id ");
+		Query query = entityManager.createNativeQuery(stringQuery.toString());
+		List<Object[]> rentingObjects = query.getResultList();
+		
+		List<Renting> rentings = new LinkedList<Renting>();
+		for (Object[] rentingObject : rentingObjects) {
+			
+			Renting renting = new Renting();
+			renting.setId(Long.valueOf(rentingObject[0].toString()));
+			renting.setName(rentingObject[1].toString());
+			renting.setType(rentingObject[2].toString());
+			renting.setNumberOfRooms(Integer.valueOf(rentingObject[3].toString()));
+			renting.setPrice(Double.valueOf(rentingObject[4].toString()));
+			renting.setStatus(Integer.valueOf(rentingObject[5].toString()));
+			rentings.add(renting);
+			
+		}
+		
+		return rentings;
+	}
 	
 
 }
