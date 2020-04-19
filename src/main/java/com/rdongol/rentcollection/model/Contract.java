@@ -30,29 +30,26 @@ public class Contract {
 
 	private Date startDate;
 
-	private Date endDate;
-
-	private int active;
-
 	private String paymentType;
 
-	private Date lasPaidDate;
+	private Date lastPaidDate;
+
+	private Date expireDate;
 
 	public Contract() {
 
 	}
 
-	public Contract(long id, Rentee rentee, Renting renting, Date startDate, Date endDate, int active,
-			String paymentType, Date lasPaidDate) {
+	public Contract(long id, Rentee rentee, Renting renting, Date startDate, String paymentType, Date lastPaidDate,
+			Date expireDate) {
 		super();
 		this.id = id;
 		this.rentee = rentee;
 		this.renting = renting;
 		this.startDate = startDate;
-		this.endDate = endDate;
-		this.active = active;
 		this.paymentType = paymentType;
-		this.lasPaidDate = lasPaidDate;
+		this.lastPaidDate = lastPaidDate;
+		this.expireDate = expireDate;
 	}
 
 	public long getId() {
@@ -87,22 +84,6 @@ public class Contract {
 		this.startDate = startDate;
 	}
 
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
-
-	public int getActive() {
-		return active;
-	}
-
-	public void setActive(int active) {
-		this.active = active;
-	}
-
 	public String getPaymentType() {
 		return paymentType;
 	}
@@ -111,12 +92,20 @@ public class Contract {
 		this.paymentType = paymentType;
 	}
 
-	public Date getLasPaidDate() {
-		return lasPaidDate;
+	public Date getLastPaidDate() {
+		return lastPaidDate;
 	}
 
-	public void setLasPaidDate(Date lasPaidDate) {
-		this.lasPaidDate = lasPaidDate;
+	public void setLastPaidDate(Date lastPaidDate) {
+		this.lastPaidDate = lastPaidDate;
+	}
+
+	public Date getExpireDate() {
+		return expireDate;
+	}
+
+	public void setExpireDate(Date expireDate) {
+		this.expireDate = expireDate;
 	}
 
 }
