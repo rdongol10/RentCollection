@@ -61,7 +61,6 @@ public class RentingListDataTableBackend extends AbstractDataTableBackend {
 		query.append(groupCriteria);
 		query.append(orderCriteria);
 		query.append(paginationCriteria);
-
 		return query.toString();
 	}
 
@@ -76,7 +75,7 @@ public class RentingListDataTableBackend extends AbstractDataTableBackend {
 
 	@Override
 	protected void setSelectCriteria() {
-		selectCriteria = " Select renting.id,renting.name,renting.type,renting.number_of_rooms,renting.price,renting.status, contract.id as contract_id, contract.end_date ";
+		selectCriteria = " Select renting.id,renting.name,renting.type,renting.number_of_rooms,renting.price,renting.status, contract.id as contract_id ";
 
 	}
 
@@ -88,7 +87,7 @@ public class RentingListDataTableBackend extends AbstractDataTableBackend {
 
 	protected void setWhereCriteria() {
 		if (available) {
-			whereCriteria = " WHERE ((contract.id is null OR contract.end_date is null) AND renting.status = 1 ) ";
+			whereCriteria = " WHERE (contract.id is null  AND renting.status = 1 ) ";
 		} else {
 
 			whereCriteria = "";
@@ -115,8 +114,7 @@ public class RentingListDataTableBackend extends AbstractDataTableBackend {
 			data.add(String.valueOf(renting[3]));
 			data.add(String.valueOf(renting[4]));
 			data.add(Integer.valueOf(renting[5].toString()) == 1 ? "Active" : "Inactive");
-			data.add(getActionButtons(String.valueOf(renting[0]), Integer.valueOf(renting[5].toString()), renting[6],
-					renting[7]));
+			data.add(getActionButtons(String.valueOf(renting[0]), Integer.valueOf(renting[5].toString()), renting[6]));
 
 			tableData.add(data);
 		}
@@ -125,13 +123,13 @@ public class RentingListDataTableBackend extends AbstractDataTableBackend {
 
 	}
 
-	protected String getActionButtons(String rentingId, int active, Object contractId, Object contractEndDate) {
+	protected String getActionButtons(String rentingId, int active, Object contractId) {
 		StringBuffer actionButtons = new StringBuffer();
 		actionButtons.append(getEditRengingAction(rentingId));
 		actionButtons.append(" ");
-		actionButtons.append(getDeleteRentingAction(rentingId, active, contractId, contractEndDate));
+		actionButtons.append(getDeleteRentingAction(rentingId, active, contractId));
 		actionButtons.append(" ");
-		actionButtons.append(getAddContractAction(rentingId, active, contractId, contractEndDate));
+		actionButtons.append(getAddContractAction(rentingId, active, contractId));
 		return actionButtons.toString();
 	}
 
@@ -142,9 +140,9 @@ public class RentingListDataTableBackend extends AbstractDataTableBackend {
 		return editRenting.toString();
 	}
 
-	protected String getDeleteRentingAction(String rentingId, int active, Object contractId, Object contractEndDate) {
+	protected String getDeleteRentingAction(String rentingId, int active, Object contractId) {
 
-		if (contractId != null && contractEndDate != null) {
+		if (contractId != null) {
 			return "";
 		}
 
@@ -159,12 +157,12 @@ public class RentingListDataTableBackend extends AbstractDataTableBackend {
 		return deleteRenting.toString();
 	}
 
-	protected String getAddContractAction(String rentingId, int active, Object contractId, Object contractEndDate) {
-		if (contractId != null && contractEndDate != null) {
+	protected String getAddContractAction(String rentingId, int active, Object contractId) {
+		if (contractId != null) {
 			return "";
 		}
 
-		if(active != 1) {
+		if (active != 1) {
 			return "";
 		}
 		StringBuffer contractRenting = new StringBuffer();
@@ -173,8 +171,7 @@ public class RentingListDataTableBackend extends AbstractDataTableBackend {
 				+ "' title='add contract' style ='color : #1CBC94' ></i>");
 		return contractRenting.toString();
 	}
-	
-	
+
 	@Override
 	protected BigInteger getTotalRecords() {
 
