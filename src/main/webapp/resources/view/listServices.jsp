@@ -84,26 +84,8 @@
 		})
 		
 		
-		jQuery("#serviceTable").on("click",".innerTableDetail",function(){
-			toggleDetailDetail(this)
-		})
-		
-		
 	});
 	
-	function toggleDetailDetail(clickedColumn){
-		var tr = jQuery(clickedColumn).closest("tr");
-		var thistable = $(clickedColumn).closest('table').DataTable();
-		var row = thistable.row(tr)
-		console.log(row)
-		if ( row.child.isShown() ) {
-		    row.child.hide();
-		    tr.removeClass('shown');
-		}else{
-			row.child("this is jus a test").show()
-			tr.addClass('shown')
-		}
-	}
 	
 	function toggleServiceDetails(clickedColumn){
 		var tr = jQuery(clickedColumn).closest("tr");
@@ -147,8 +129,6 @@
 		html += "<th>Rate</th>"
 		html += "<th>Volume</th>"
 		html += "<th>Service</th>"
-		html += "<th>Action</th>"
-
 		html += "</tr></thead>"
 		html += "<tbody>"
 		for(var i = 0 ; i<data.length ; i++){
@@ -156,7 +136,6 @@
 			html += '<td>'+data[i].rate+'</td>'
 			html += '<td>'+data[i].volumeCutoff+'</td>'
 			html += '<td>'+data[i].serviceCharge+'</td>'
-			html += '<td><button class ="innerTableDetail">Details</button></td>'
 			html += '</tr>';
 		}
 		html += "</tbody>"
