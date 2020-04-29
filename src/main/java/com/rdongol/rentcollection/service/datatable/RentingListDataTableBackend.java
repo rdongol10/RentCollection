@@ -130,7 +130,16 @@ public class RentingListDataTableBackend extends AbstractDataTableBackend {
 		actionButtons.append(getDeleteRentingAction(rentingId, active, contractId));
 		actionButtons.append(" ");
 		actionButtons.append(getAddContractAction(rentingId, active, contractId));
+		actionButtons.append(" ");
+		actionButtons.append(getRentingDetailsAction(rentingId));
 		return actionButtons.toString();
+	}
+	
+	protected String getRentingDetailsAction(String rentingId) {
+		StringBuffer rentingDetails = new StringBuffer();
+		rentingDetails.append("<i class='actionButton details fas fa-info-circle' rentingId='" + rentingId
+				+ "' title='details' style = 'color:#666666'> </i>");
+		return rentingDetails.toString();
 	}
 
 	protected String getEditRengingAction(String rentingId) {
