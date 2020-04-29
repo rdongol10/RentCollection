@@ -128,7 +128,7 @@
 		html += "<thead><tr>"
 		html += "<th>Rate</th>"
 		html += "<th>Volume</th>"
-		html += "<th>Service</th>"
+		html += "<th>Service Charge</th>"
 		html += "</tr></thead>"
 		html += "<tbody>"
 		for(var i = 0 ; i<data.length ; i++){
