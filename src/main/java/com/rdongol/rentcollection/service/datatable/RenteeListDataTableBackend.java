@@ -42,22 +42,22 @@ public class RenteeListDataTableBackend extends AbstractDataTableBackend {
 	protected List<List<String>> getQueryResults() {
 		List<List<String>> tableData = new LinkedList<List<String>>();
 		Query query = entityManager.createNativeQuery(getQuery());
-		List<Object[]> rentings = query.getResultList();
-		for (Object[] renting : rentings) {
+		List<Object[]> rentees = query.getResultList();
+		for (Object[] rentee : rentees) {
 
 			List<String> data = new LinkedList<String>();
 
-			data.add(String.valueOf(renting[1]));
-			data.add(String.valueOf(renting[2]));
-			data.add(String.valueOf(renting[3]));
-			data.add(String.valueOf(renting[4]));
-			data.add(String.valueOf(renting[5]));
-			data.add(String.valueOf(renting[6]));
-			data.add(String.valueOf(renting[7]));
-			data.add(String.valueOf(renting[8]));
-			data.add(String.valueOf(renting[9]));
+			data.add(String.valueOf(rentee[1]));
+			data.add(String.valueOf(rentee[2]));
+			data.add(String.valueOf(rentee[3]));
+			data.add(String.valueOf(rentee[4]));
+			data.add(String.valueOf(rentee[5]));
+			data.add(String.valueOf(rentee[6]));
+			data.add(String.valueOf(rentee[7]));
+			data.add(String.valueOf(rentee[8]));
+			data.add(String.valueOf(rentee[9]));
 
-			data.add(getActionButtons(String.valueOf(renting[0])));
+			data.add(getActionButtons(String.valueOf(rentee[0])));
 
 			tableData.add(data);
 		}
@@ -66,17 +66,26 @@ public class RenteeListDataTableBackend extends AbstractDataTableBackend {
 
 	}
 
-	protected String getActionButtons(String rentingId) {
+	protected String getActionButtons(String renteeId) {
 		StringBuffer actionButtons = new StringBuffer();
-		actionButtons.append(getEditRengingAction(rentingId));
+		actionButtons.append(getEditRenteeAction(renteeId));
+		actionButtons.append(" ");
+		actionButtons.append(getRenteeDetailsAction(renteeId));
 		return actionButtons.toString();
 	}
 
-	protected String getEditRengingAction(String renteeId) {
-		StringBuffer editRenting = new StringBuffer();
-		editRenting.append("<i class='actionButton editRentee fas fa-edit' rentee='" + renteeId
-				+ "' title='edit' style = 'color:blue'> </i>");
-		return editRenting.toString();
+	protected String getEditRenteeAction(String renteeId) {
+		StringBuffer editRentee = new StringBuffer();
+		editRentee.append("<i class='actionButton editRentee fas fa-edit' rentee='" + renteeId
+				+ "' title='edit' style = 'color:#3559BA'> </i>");
+		return editRentee.toString();
+	}
+	
+	protected String getRenteeDetailsAction(String renteeId) {
+		StringBuffer renteeDetails = new StringBuffer();
+		renteeDetails.append("<i class='actionButton details fas fa-info-circle' rentee='" + renteeId
+				+ "' title='details' style = 'color:#666666'> </i>");
+		return renteeDetails.toString();
 	}
 
 }
