@@ -115,6 +115,20 @@
                                 </div>
                             </li>
                             
+                            <li class="nav-item ">
+                                <a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false" data-target="#contractMenu" aria-controls="#contractMenu">Contract</a>
+                                <div id="contractMenu" class="collapse submenu" style="">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="${contextPath}/resources/view/listContracts.jsp">List Contracts</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="${contextPath}/resources/view/createContract.jsp">Create Contract</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            
                         </ul>
                     </div>
                 </nav>
