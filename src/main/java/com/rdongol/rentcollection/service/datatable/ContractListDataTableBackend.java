@@ -69,6 +69,8 @@ public class ContractListDataTableBackend extends AbstractDataTableBackend {
 	protected String getActionButtons(String contractId) {
 		StringBuffer actionButtons = new StringBuffer();
 		actionButtons.append(getDeleteContractAction(contractId));
+		actionButtons.append(" ");
+		actionButtons.append(getContractDetailsAction(contractId));
 		return actionButtons.toString();
 	}
 
@@ -76,9 +78,16 @@ public class ContractListDataTableBackend extends AbstractDataTableBackend {
 
 		StringBuffer deleteContract = new StringBuffer();
 		deleteContract.append("<i class='actionButton deleteContract fas fa-trash-alt' contractId='" + contractId
-				+ "' title='terminate contract' style = 'color:red'></i>");
+				+ "' title='terminate contract' style = 'color:#FF686B'></i>");
 		return deleteContract.toString();
 
+	}
+	
+	protected String getContractDetailsAction(String contractId) {
+		StringBuffer contractDetails = new StringBuffer();
+		contractDetails.append("<i class='actionButton details fas fa-info-circle' contractId='" + contractId
+				+ "' title='details' style = 'color:#666666'> </i>");
+		return contractDetails.toString();
 	}
 	
 	protected BigInteger getTotalRecords() {

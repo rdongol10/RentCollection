@@ -74,7 +74,7 @@ public class ServiceListDataTableBackend extends AbstractDataTableBackend {
 	}
 	protected String getEditServiceAction(String serviceId) {
 		StringBuffer editService = new StringBuffer();
-		editService.append("<i class='actionButton editService fas fa-edit' serviceId='" + serviceId + "' title='edit' style = 'color:blue'> </i>");
+		editService.append("<i class='actionButton editService fas fa-edit' serviceId='" + serviceId + "' title='edit' style = 'color:#3559BA'> </i>");
 		return editService.toString();
 	}
 
@@ -82,9 +82,9 @@ public class ServiceListDataTableBackend extends AbstractDataTableBackend {
 
 		StringBuffer deleteService = new StringBuffer();
 		if(active ==1 ) {
-			deleteService.append("<i class='actionButton toggleService fas fa-toggle-off' serviceId='" + serviceId+ "' title='disable' style = 'color:red'></i>");
+			deleteService.append("<i class='actionButton toggleService fas fa-toggle-off' serviceId='" + serviceId+ "' title='disable' style = 'color:#FF686B'></i>");
 		}else {
-			deleteService.append("<i class='actionButton toggleService fas fa-toggle-on' serviceId='" + serviceId+ "' title='enable' style = 'color:green'></i>");
+			deleteService.append("<i class='actionButton toggleService fas fa-toggle-on' serviceId='" + serviceId+ "' title='enable'  style = 'color:#009B33'></i>");
 		}
 		return deleteService.toString();
 	}
