@@ -12,8 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.rdongol.rentcollection.model.Contract;
+import com.rdongol.rentcollection.model.Rentee;
+import com.rdongol.rentcollection.model.RenteeModel;
 import com.rdongol.rentcollection.model.Renting;
 import com.rdongol.rentcollection.model.RentingContractModel;
+import com.rdongol.rentcollection.model.RentingDisplayModal;
 import com.rdongol.rentcollection.model.RentingFacility;
 import com.rdongol.rentcollection.model.RentingFacilityModel;
 import com.rdongol.rentcollection.model.RentingModel;
@@ -33,10 +37,13 @@ public class RentingService {
 
 	@Autowired
 	private ImageService imageService;
-	
+
+	@Autowired
+	private ContractService contractService;
+
 	@PersistenceContext
 	protected EntityManager entityManager;
-	
+
 	public List<Renting> findAll() {
 
 		return (List<Renting>) rentingRepository.findAll();
@@ -100,22 +107,22 @@ public class RentingService {
 		}
 
 		Renting currentRenting = findById(id);
-		
+
 		adjustRentingFacilitiesForUpdate(currentRenting, rentingModel.getRentingFacilities());
 
 		Renting renting = new Renting(rentingModel);
 		List<RentingFacility> rentingFacilities = new LinkedList<RentingFacility>();
 		for (RentingFacilityModel rentingFacilityModel : rentingModel.getRentingFacilities()) {
-			
+
 			RentingFacility rentingFacility = new RentingFacility(rentingFacilityModel);
-			
+
 			long serviceId = rentingFacilityModel.getServiceId();
 			com.rdongol.rentcollection.model.Service service = serviceService.findById(serviceId);
-			
+
 			if (service != null) {
 				rentingFacility.setService(service);
 			}
-			
+
 			rentingFacility.setRenting(renting);
 			rentingFacilities.add(rentingFacility);
 		}
@@ -125,29 +132,30 @@ public class RentingService {
 
 		return rentingRepository.save(renting);
 	}
-	
-	private void adjustRentingFacilitiesForUpdate(Renting renting , List<RentingFacilityModel> rentingFacilityModels) {
+
+	private void adjustRentingFacilitiesForUpdate(Renting renting, List<RentingFacilityModel> rentingFacilityModels) {
 		List<RentingFacility> currentRentingFacilities = rentingFacilityService.getRentingFacilitiesByRengint(renting);
-		
-		if(currentRentingFacilities == null || currentRentingFacilities.isEmpty() ) {
+
+		if (currentRentingFacilities == null || currentRentingFacilities.isEmpty()) {
 			return;
 		}
-		
-		if(rentingFacilityModels == null || rentingFacilityModels.isEmpty()) {
+
+		if (rentingFacilityModels == null || rentingFacilityModels.isEmpty()) {
 			rentingFacilityService.deleteAll(currentRentingFacilities);
 			return;
 		}
-		
-		List<RentingFacility> rentingFacilitiesToDelete = getRentingFacilitiesToDelete(currentRentingFacilities , rentingFacilityModels);
-		if(!rentingFacilitiesToDelete.isEmpty()) {
+
+		List<RentingFacility> rentingFacilitiesToDelete = getRentingFacilitiesToDelete(currentRentingFacilities,
+				rentingFacilityModels);
+		if (!rentingFacilitiesToDelete.isEmpty()) {
 			rentingFacilityService.deleteAll(currentRentingFacilities);
 		}
-		
+
 	}
-	
+
 	private List<RentingFacility> getRentingFacilitiesToDelete(List<RentingFacility> currentRentingFacilities,
 			List<RentingFacilityModel> rentingFacilityModels) {
-		
+
 		List<RentingFacility> rentingFacilitiesToDelete = new LinkedList<RentingFacility>();
 
 		for (RentingFacility curRentingFacility : currentRentingFacilities) {
@@ -165,7 +173,7 @@ public class RentingService {
 		}
 		return rentingFacilitiesToDelete;
 	}
-	
+
 	public int toggleStatus(long id) {
 
 		if (findById(id) == null) {
@@ -199,7 +207,7 @@ public class RentingService {
 		return rentingModel;
 
 	}
-	
+
 	public List<RentingContractModel> getAvailableRentingContractModels() {
 		List<Renting> rentings = getAvailableRentings();
 
@@ -217,15 +225,16 @@ public class RentingService {
 	public List<Renting> getAvailableRentings() {
 
 		StringBuilder stringQuery = new StringBuilder();
-		stringQuery.append(" Select renting.id,renting.name,renting.type,renting.number_of_rooms,renting.price,renting.status From renting LEFT JOIN contract ON renting.id = contract.renting_id ");
+		stringQuery.append(
+				" Select renting.id,renting.name,renting.type,renting.number_of_rooms,renting.price,renting.status From renting LEFT JOIN contract ON renting.id = contract.renting_id ");
 		stringQuery.append(" WHERE (contract.id is null AND renting.status = 1 )");
 		stringQuery.append(" GROUP BY renting.id ");
 		Query query = entityManager.createNativeQuery(stringQuery.toString());
 		List<Object[]> rentingObjects = query.getResultList();
-		
+
 		List<Renting> rentings = new LinkedList<Renting>();
 		for (Object[] rentingObject : rentingObjects) {
-			
+
 			Renting renting = new Renting();
 			renting.setId(Long.valueOf(rentingObject[0].toString()));
 			renting.setName(rentingObject[1].toString());
@@ -234,11 +243,90 @@ public class RentingService {
 			renting.setPrice(Double.valueOf(rentingObject[4].toString()));
 			renting.setStatus(Integer.valueOf(rentingObject[5].toString()));
 			rentings.add(renting);
-			
+
 		}
-		
+
 		return rentings;
 	}
-	
 
+	public RentingDisplayModal getRentingDetails(long rentingId) {
+		RentingDisplayModal rentingDisplayModal = new RentingDisplayModal();
+
+		Renting renting = findById(rentingId);
+		if (renting == null) {
+			ResponseEntity.badRequest().build();
+		}
+
+		rentingDisplayModal.setImageBase64s(imageService.getImageBase64s(renting.getId(), "RENTING"));
+		rentingDisplayModal.setName(renting.getName());
+		rentingDisplayModal.setType(renting.getType());
+		rentingDisplayModal.setNumberOfRooms(rentingDisplayModal.getNumberOfRooms());
+		rentingDisplayModal.setPrice(renting.getPrice());
+		rentingDisplayModal.setRentingFacilities(renting.getRentingFacility());
+		rentingDisplayModal.setRenteeModel(getRenteeModelRentedTo(renting));
+
+		return rentingDisplayModal;
+	}
+
+	public List<com.rdongol.rentcollection.model.Service> getServicesForRenting(long rentingId) {
+		Renting renting = findById(rentingId);
+		if (renting == null) {
+			return null;
+		}
+
+		return getServicesForRenting(renting);
+	}
+
+	public List<com.rdongol.rentcollection.model.Service> getServicesForRenting(Renting renting) {
+
+		List<com.rdongol.rentcollection.model.Service> services = new LinkedList<com.rdongol.rentcollection.model.Service>();
+		List<RentingFacility> rentingFacilities = rentingFacilityService.getRentingFacilitiesByRengint(renting);
+		for (RentingFacility rentingFacility : rentingFacilities) {
+			services.add(rentingFacility.getService());
+		}
+		return services;
+	}
+
+	public Rentee getRenteeRentedTo(long rentingId) {
+		Renting renting = findById(rentingId);
+		if (renting == null) {
+			return null;
+		}
+
+		return getRenteeRentedTo(renting);
+
+	}
+
+	public Rentee getRenteeRentedTo(Renting renting) {
+		List<Contract> contracts = contractService.getContractByRenting(renting);
+		if (contracts == null || contracts.isEmpty()) {
+			return null;
+		}
+
+		Contract contract = contracts.get(0);
+
+		Rentee rentee = contract.getRentee();
+
+		return rentee;
+	}
+
+	public RenteeModel getRenteeModelRentedTo(long rentingId) {
+		Renting renting = findById(rentingId);
+		if (renting == null) {
+			return null;
+		}
+
+		return getRenteeModelRentedTo(renting);
+	}
+
+	public RenteeModel getRenteeModelRentedTo(Renting renting) {
+		Rentee rentee = getRenteeRentedTo(renting);
+		if (rentee == null) {
+			return null;
+		}
+
+		RenteeModel renteeModel = new RenteeModel(rentee);
+		renteeModel.setRenteeImageBase64(imageService.getImageBase64(rentee.getId(), "RenteeProfile"));
+		return renteeModel;
+	}
 }

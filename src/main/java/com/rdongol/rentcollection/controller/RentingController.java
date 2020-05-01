@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rdongol.rentcollection.model.Renting;
 import com.rdongol.rentcollection.model.RentingContractModel;
+import com.rdongol.rentcollection.model.RentingDisplayModal;
 import com.rdongol.rentcollection.model.RentingModel;
 import com.rdongol.rentcollection.service.ImageService;
 import com.rdongol.rentcollection.service.RentingService;
@@ -39,17 +40,18 @@ public class RentingController {
 
 		Renting renting = rentingService.save(rentingModel);
 		imageService.save(renting.getId(), "RENTING", rentingModel.getImageBase64s());
-		
+
 		return ResponseEntity.ok(renting);
 
 	}
-	
+
 	@PutMapping("/{id}")
-	public ResponseEntity<Renting> update(@PathVariable long id ,@RequestBody RentingModel rentingModel) throws Exception {
-		
+	public ResponseEntity<Renting> update(@PathVariable long id, @RequestBody RentingModel rentingModel)
+			throws Exception {
+
 		Renting renting = rentingService.update(id, rentingModel);
 		imageService.deleteImages(renting.getId(), "RENTING");
-		imageService.save(renting.getId(),"RENTING",rentingModel.getImageBase64s());
+		imageService.save(renting.getId(), "RENTING", rentingModel.getImageBase64s());
 		return ResponseEntity.ok(renting);
 	}
 
@@ -80,10 +82,15 @@ public class RentingController {
 		return ResponseEntity.ok(rentingService.getRentingModel(id));
 
 	}
-	
+
 	@GetMapping("/getAvailableRentings")
 	public ResponseEntity<List<RentingContractModel>> getAvailableRentings() {
 		return ResponseEntity.ok(rentingService.getAvailableRentingContractModels());
 	}
-	
+
+	@GetMapping("/getRentingDetails/{id}")
+	public ResponseEntity<RentingDisplayModal> getRentingDetails(@PathVariable long id) {
+		return ResponseEntity.ok(rentingService.getRentingDetails(id));
+	}
+
 }
