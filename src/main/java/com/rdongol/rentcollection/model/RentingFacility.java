@@ -23,7 +23,6 @@ public class RentingFacility {
 
 	@ManyToOne
 	@JoinColumn(name = "service_id", nullable = false, updatable = true, insertable = true)
-	@JsonIgnore
 	private Service service;
 
 	private long units;
