@@ -22,11 +22,10 @@ public class ContractService {
 
 	@Autowired
 	private RenteeService renteeService;
-	
-	@Autowired 
+
+	@Autowired
 	private RentingService rentingService;
-	
-	
+
 	public List<Contract> findAll() {
 
 		return (List<Contract>) contractRepository.findAll();
@@ -45,7 +44,7 @@ public class ContractService {
 	public Contract save(Contract contract) {
 		return contractRepository.save(contract);
 	}
-	
+
 	public Contract save(ContractModel contractModel) {
 		Contract contract = new Contract();
 		Rentee rentee = renteeService.findById(contractModel.getRenteeId());
@@ -69,6 +68,14 @@ public class ContractService {
 
 	public void deleteById(Long id) {
 		contractRepository.deleteById(id);
+	}
+
+	public List<Contract> getContractByRenting(Renting renting) {
+		return contractRepository.getContractByRenting(renting);
+	}
+
+	public List<Contract> getContractByRentee(Rentee rentee) {
+		return contractRepository.getContractByRentee(rentee);
 	}
 
 }
