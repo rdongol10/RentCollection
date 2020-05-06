@@ -7,7 +7,9 @@
 <head>
 <meta charset="ISO-8859-1">
 <link href="<c:url value="/resources/css/datatables.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/displayDetails.css" />" rel="stylesheet">
 <title>Rentees</title>
+
 </head>
 <body>
 	<div class="dashboard-main-wrapper">
@@ -62,8 +64,29 @@
 			</div>	
 		</div>	
 	</div>
+	
+	<div class="modal fade" id="renteeModal" tabindex="-1" role="dialog" aria-labelledby="renteeModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title" id="renteeModalLabel"></h3>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 <script src="<c:url value="/resources/js/datatables.js" />" ></script>
+<script src="<c:url value="/resources/js/bootstrap.bundle.js" />" ></script>
+<script src="<c:url value="/resources/js/displayDetails.js" />" ></script>
+
 
 <script type="text/javascript">
 	var table;
@@ -74,7 +97,27 @@
 			
 			editRentee(jQuery(this).attr("rentee"))
 		})
+		
+		jQuery("#RenteeTable").on("click",".details",function(){
+			getRenteeDetails(jQuery(this).attr("rentee"))
+		})
 	});
+	
+	function getRenteeDetails(id){
+		jQuery.ajax({
+			method:"GET",
+			url:"${contextPath}/rentee/getRenteeModel/"+id
+		}).done(function(data){
+			displayRenteeDetails(data)
+		});	
+	}
+	
+	function displayRenteeDetails(data){
+		jQuery(".modal-title").html("Rentee Details")
+		jQuery(".modal-body").html(getRenteeDetailsHTML(data))
+		jQuery('#renteeModal').modal('show');
+	}
+	
 	
 	function editRentee(renteeId){
 		window.location.href="${contextPath}/resources/view/addRentee.jsp?id="+renteeId;
