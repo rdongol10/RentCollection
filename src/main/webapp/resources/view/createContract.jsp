@@ -6,6 +6,8 @@
 <head>
 <meta charset="ISO-8859-1">
 <link href="<c:url value="/resources/css/select2.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/displayDetails.css" />" rel="stylesheet">
+
 <title>create contract</title>
 </head>
 <body>
@@ -41,7 +43,8 @@
 													</div>
 								                </div>
 							                 	<div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1">
-							                 	
+							                 		<br>
+							                 		<i class="actionButton details fas fa-info-circle" id ="rentingDetails"></i>
 							                 	</div>
 							                 	
 												<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
@@ -54,7 +57,8 @@
 				                                </div>
 				                                
 				                                <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1">
-							                 	
+					                                <br>
+								                 	<i class="actionButton details fas fa-info-circle" id ="renteeDetails"></i>
 							                 	</div>
 							                 	
 							                 	<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
@@ -87,8 +91,28 @@
 			</div>
 		</div>			
 	</div>
+	
+	<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title" id="detailModalLabel"></h3>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 <script src="<c:url value="/resources/js/select2.min.js" />" ></script>
+<script src="<c:url value="/resources/js/displayDetails.js" />" ></script>
+
 <script type="text/javascript">
 	
 	var errorFields = []
@@ -113,7 +137,58 @@
 			
 		})
 		
+		jQuery("#rentingDetails").on("click",function(){
+			var rentingId=jQuery("#renting").val();
+			if(rentingId !=null){
+				getRentingDetails(rentingId)
+			}
+		})
+		
+		jQuery("#renteeDetails").on("click",function(){
+			var renteeId=jQuery("#rentee").val();
+			if(renteeId !=null){
+				getRenteeDetails(renteeId)
+			}
+		})
+		
 	});
+	
+	function getRenteeDetails(id){
+		jQuery.ajax({
+			method:"GET",
+			url:"${contextPath}/rentee/getRenteeModel/"+id
+		}).done(function(data){
+			displayRenteeDetails(data)
+		});	
+	}
+	
+	function displayRenteeDetails(data){
+		jQuery(".modal-title").html("Rentee Details")
+		jQuery(".modal-body").html(getRenteeDetailsHTML(data))
+		jQuery('#detailModal').modal('show');
+	}
+	
+	function getRentingDetails(rentingId){
+		
+		jQuery.ajax({
+			
+			method : "GET",
+			url : "${contextPath}/renting/getRentingDetails/"+rentingId,
+			
+		}).done(function(data){
+			displayRentingDetails(data)
+		})
+		
+		
+	}
+	
+	function displayRentingDetails(data){
+		console.log(data)
+		jQuery(".modal-title").html("Renting Details")
+		
+		jQuery(".modal-body").html(getRentingDetailsHTML(data));
+		jQuery('#detailModal').modal('show');
+	}
 	
 	function saveContract(){
 		var contract = getContractData();
