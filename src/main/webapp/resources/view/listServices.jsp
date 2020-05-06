@@ -6,7 +6,6 @@
 <html>
 <head>
 	<meta charset="ISO-8859-1">
-	<link href="<c:url value="/resources/css/datatables.css" />" rel="stylesheet">
 	<title>Services</title>
 </head>
 <body>
@@ -60,7 +59,6 @@
 	
 </body>
 
-<script src="<c:url value="/resources/js/datatables.js" />" ></script>
 <script>
 	var table;
 	jQuery(document).ready(function(){

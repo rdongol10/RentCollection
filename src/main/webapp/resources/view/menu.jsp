@@ -7,6 +7,7 @@
 <head>
 	<meta charset="ISO-8859-1">
     <link href="<c:url value="/resources/css/jquery-ui.css" />" rel="stylesheet">
+    <link href="<c:url value="/resources/css/datatables.css" />" rel="stylesheet">
     <link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
     <link href="<c:url value="/resources/css/fonts/fontawesome/css/fontawesome-all.css" />" rel="stylesheet">
     <link href="<c:url value="/resources/css/style.css" />" rel="stylesheet">
@@ -141,6 +142,7 @@
 </body>
 <script src="<c:url value="/resources/js/jquery-3.3.1.min.js" />" ></script>
 <script src="<c:url value="/resources/js/jquery-ui.js" />" ></script>
+<script src="<c:url value="/resources/js/datatables.js" />" ></script>
 <script src="<c:url value="/resources/js/bootstrap.bundle.js" />" ></script>
 </html>
  

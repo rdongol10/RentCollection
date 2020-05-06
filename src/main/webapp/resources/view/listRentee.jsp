@@ -6,7 +6,6 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<link href="<c:url value="/resources/css/datatables.css" />" rel="stylesheet">
 <link href="<c:url value="/resources/css/displayDetails.css" />" rel="stylesheet">
 <title>Rentees</title>
 
@@ -83,8 +82,6 @@
 		</div>
 	</div>
 </body>
-<script src="<c:url value="/resources/js/datatables.js" />" ></script>
-<script src="<c:url value="/resources/js/bootstrap.bundle.js" />" ></script>
 <script src="<c:url value="/resources/js/displayDetails.js" />" ></script>
 
 
