@@ -1,11 +1,14 @@
 package com.rdongol.rentcollection.model;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Transaction {
@@ -30,12 +33,15 @@ public class Transaction {
 
 	private double totalCharge;
 
+	@OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
+	private List<TransactionDetail> transactionDetail;
+
 	public Transaction() {
 
 	}
 
 	public Transaction(long id, String transactionNumber, long contractId, Date billedDate, int paid, Date paidDate,
-			int numberOfMonths, double contractCharge, double totalCharge) {
+			int numberOfMonths, double contractCharge, double totalCharge, List<TransactionDetail> transactionDetail) {
 		super();
 		this.id = id;
 		this.transactionNumber = transactionNumber;
@@ -46,6 +52,7 @@ public class Transaction {
 		this.numberOfMonths = numberOfMonths;
 		this.contractCharge = contractCharge;
 		this.totalCharge = totalCharge;
+		this.transactionDetail = transactionDetail;
 	}
 
 	public long getId() {
@@ -118,6 +125,14 @@ public class Transaction {
 
 	public void setTotalCharge(double totalCharge) {
 		this.totalCharge = totalCharge;
+	}
+
+	public List<TransactionDetail> getTransactionDetail() {
+		return transactionDetail;
+	}
+
+	public void setTransactionDetail(List<TransactionDetail> transactionDetail) {
+		this.transactionDetail = transactionDetail;
 	}
 
 }
