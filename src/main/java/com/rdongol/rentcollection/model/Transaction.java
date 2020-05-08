@@ -33,6 +33,8 @@ public class Transaction {
 
 	private double totalCharge;
 
+	private String note;
+
 	@OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
 	private List<TransactionDetail> transactionDetail;
 
@@ -41,7 +43,8 @@ public class Transaction {
 	}
 
 	public Transaction(long id, String transactionNumber, long contractId, Date billedDate, int paid, Date paidDate,
-			int numberOfMonths, double contractCharge, double totalCharge, List<TransactionDetail> transactionDetail) {
+			int numberOfMonths, double contractCharge, double totalCharge, List<TransactionDetail> transactionDetail,
+			String note) {
 		super();
 		this.id = id;
 		this.transactionNumber = transactionNumber;
@@ -53,6 +56,7 @@ public class Transaction {
 		this.contractCharge = contractCharge;
 		this.totalCharge = totalCharge;
 		this.transactionDetail = transactionDetail;
+		this.note = note;
 	}
 
 	public long getId() {
@@ -133,6 +137,14 @@ public class Transaction {
 
 	public void setTransactionDetail(List<TransactionDetail> transactionDetail) {
 		this.transactionDetail = transactionDetail;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
 	}
 
 }
