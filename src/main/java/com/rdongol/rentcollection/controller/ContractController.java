@@ -1,13 +1,18 @@
 package com.rdongol.rentcollection.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rdongol.rentcollection.model.BillContractServiceModel;
 import com.rdongol.rentcollection.model.Contract;
 import com.rdongol.rentcollection.model.ContractModel;
 import com.rdongol.rentcollection.service.ContractLogService;
@@ -39,6 +44,13 @@ public class ContractController {
 	public String listContracts(@RequestBody String dataTableRequest) throws Exception {
 		rentingListDataTableBackend.intialize(dataTableRequest);
 		return rentingListDataTableBackend.getTableData();
+	}
+
+	@GetMapping("/billContractService/{id}")
+	public ResponseEntity<List<BillContractServiceModel>> getBillContractService(@PathVariable Long id) {
+
+		return ResponseEntity.ok(contractService.getBillContractServiceModels(id));
+
 	}
 
 }

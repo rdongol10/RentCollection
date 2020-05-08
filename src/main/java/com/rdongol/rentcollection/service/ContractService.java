@@ -1,6 +1,7 @@
 package com.rdongol.rentcollection.service;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.rdongol.rentcollection.model.BillContractServiceModel;
 import com.rdongol.rentcollection.model.Contract;
 import com.rdongol.rentcollection.model.ContractModel;
 import com.rdongol.rentcollection.model.Rentee;
 import com.rdongol.rentcollection.model.Renting;
+import com.rdongol.rentcollection.model.RentingFacility;
 import com.rdongol.rentcollection.repository.ContractRepository;
 
 @Service
@@ -78,4 +81,37 @@ public class ContractService {
 		return contractRepository.getContractByRentee(rentee);
 	}
 
+	public List<BillContractServiceModel> getBillContractServiceModels(long contractId) {
+		Contract contract = findById(contractId);
+		if (contract == null) {
+			ResponseEntity.badRequest().build();
+		}
+
+		Renting renting = contract.getRenting();
+
+		List<RentingFacility> rentingFacilities = renting.getRentingFacility();
+
+		List<BillContractServiceModel> billContractServiceModels = new LinkedList<BillContractServiceModel>();
+		if (rentingFacilities == null || rentingFacilities.isEmpty()) {
+			return billContractServiceModels;
+		}
+
+		for (RentingFacility rentingFacility : rentingFacilities) {
+			BillContractServiceModel billContractServiceModel = new BillContractServiceModel();
+			billContractServiceModel.setRentingFacilityId(rentingFacility.getId());
+			billContractServiceModel.setLastUnit(rentingFacility.getUnits());
+			com.rdongol.rentcollection.model.Service service = rentingFacility.getService();
+
+			billContractServiceModel.setServiceName(service.getName());
+			billContractServiceModel.setServiceType(service.getType());
+
+			billContractServiceModel.setServiceCharge(service.getCharge());
+
+			billContractServiceModels.add(billContractServiceModel);
+
+		}
+
+		return billContractServiceModels;
+
+	}
 }
