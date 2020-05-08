@@ -7,6 +7,19 @@ function getRenteeDetailsHTML(data){
 	html += '<img class="displayImage profileDisplayImage" src="data:image/png;base64,'+data.renteeImageBase64+'">'
 	html += '</div>'
 	
+	html +=	'<div class="col-4 ">'
+	html +=	'<img src="data:image/png;base64,'+data.citizenshipImageBase64+'"  id="displayCitizenshipImage" class="displayImage"></img>'
+	html += '</div>'
+		
+	html +=	'<div class="col-4 ">'
+	html +=	'<img src="data:image/png;base64,'+data.citizenshipBackImageBase64+'"  id="displayCitizenshipImage" class="displayImage"></img>'
+	html += '</div>'
+	
+	html += '</div>'
+	
+	html+="<br>"
+	html += '<div class="row">'
+
 	html += '<div class="col-4">'
 	html += '<label class="col-form-lable">Name : ' + data.firstName +'  ' +data.lastName +'</label><br>'
 	html += '<label class="col-form-lable">DOB : ' + data.dob +'</label><br>'
