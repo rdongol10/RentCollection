@@ -66,7 +66,17 @@
 		
 		loadTableData();
 		
+		jQuery("#contractTable").on("click",".billContract",function(){
+			
+			billContract(jQuery(this).attr("contractid"))
+
+		})
+		
 	});
+	
+	function billContract(contractId){
+		window.location.href="${contextPath}/resources/view/billContract.jsp?id="+contractId;
+	}
 	
 	function loadTableData(){
 		table = jQuery("#contractTable").DataTable({
