@@ -67,10 +67,14 @@ public class ContractListDataTableBackend extends AbstractDataTableBackend {
 	}
 
 	protected String getActionButtons(String contractId) {
+		
 		StringBuffer actionButtons = new StringBuffer();
 		actionButtons.append(getDeleteContractAction(contractId));
 		actionButtons.append(" ");
 		actionButtons.append(getContractDetailsAction(contractId));
+		actionButtons.append(" ");
+		actionButtons.append(getBillContractAaction(contractId));
+
 		return actionButtons.toString();
 	}
 
@@ -82,14 +86,23 @@ public class ContractListDataTableBackend extends AbstractDataTableBackend {
 		return deleteContract.toString();
 
 	}
-	
+
 	protected String getContractDetailsAction(String contractId) {
 		StringBuffer contractDetails = new StringBuffer();
 		contractDetails.append("<i class='actionButton details fas fa-info-circle' contractId='" + contractId
 				+ "' title='details' style = 'color:#666666'> </i>");
 		return contractDetails.toString();
 	}
-	
+
+	protected String getBillContractAaction(String contractId) {
+
+		StringBuffer billContract = new StringBuffer();
+		billContract.append("<i class='actionButton billContract fas fa-file-invoice-dollar' contractId='" + contractId
+				+ "' title='bill contract' ></i>");
+		return billContract.toString();
+
+	}
+
 	protected BigInteger getTotalRecords() {
 
 		StringBuffer query = new StringBuffer();
@@ -100,7 +113,7 @@ public class ContractListDataTableBackend extends AbstractDataTableBackend {
 		return (BigInteger) entityManager.createNativeQuery(query.toString()).getSingleResult();
 
 	}
-	
+
 	protected BigInteger getTotalFilteredRecords() {
 		StringBuffer query = new StringBuffer();
 		query.append(" Select count(distinct(contract.id)) ");
