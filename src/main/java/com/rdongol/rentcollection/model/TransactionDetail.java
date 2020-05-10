@@ -33,6 +33,8 @@ public class TransactionDetail {
 
 	private long currentUnit;
 
+	private double charge;
+
 	private double serviceCharge;
 
 	private double minimumCharge;
@@ -48,7 +50,7 @@ public class TransactionDetail {
 
 	public TransactionDetail(long id, Transaction transaction, long rentingFacilityId, String serviceName,
 			long lastUnit, long currentUnit, double serviceCharge, double minimumCharge, double total,
-			List<TransactionServiceDetail> transactionServiceDetail) {
+			List<TransactionServiceDetail> transactionServiceDetail, double charge) {
 		super();
 		this.id = id;
 		this.transaction = transaction;
@@ -60,6 +62,7 @@ public class TransactionDetail {
 		this.minimumCharge = minimumCharge;
 		this.total = total;
 		this.transactionServiceDetail = transactionServiceDetail;
+		this.charge = charge;
 	}
 
 	public long getId() {
@@ -108,6 +111,14 @@ public class TransactionDetail {
 
 	public void setCurrentUnit(long currentUnit) {
 		this.currentUnit = currentUnit;
+	}
+
+	public double getCharge() {
+		return charge;
+	}
+
+	public void setCharge(double charge) {
+		this.charge = charge;
 	}
 
 	public double getServiceCharge() {
