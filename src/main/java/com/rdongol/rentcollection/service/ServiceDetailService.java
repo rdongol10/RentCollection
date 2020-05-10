@@ -39,9 +39,16 @@ public class ServiceDetailService {
 	public List<ServiceDetail> getServiceDetailByService(com.rdongol.rentcollection.model.Service service) {
 		return serviceDetailRepository.getServiceDetailByServiceId(service);
 	}
-	
+
 	public void deleteServiceDetails(List<ServiceDetail> serviceDetails) {
 		serviceDetailRepository.deleteAll(serviceDetails);
+	}
+
+	public List<ServiceDetail> getServiceDetailByServiceIdOrderByVolumeCutoff(
+			com.rdongol.rentcollection.model.Service service) {
+		
+		return serviceDetailRepository.getServiceDetailByServiceIdOrderByVolumeCutoff(service);
+
 	}
 
 }

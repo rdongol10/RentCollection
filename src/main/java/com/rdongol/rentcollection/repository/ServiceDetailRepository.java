@@ -12,4 +12,7 @@ public interface ServiceDetailRepository extends CrudRepository<ServiceDetail, L
 
 	@Query(value="select s from ServiceDetail s where s.service= :service")
 	List<ServiceDetail> getServiceDetailByServiceId(Service service);
+	
+	@Query(value="select s from ServiceDetail s where s.service= :service order by volumeCutoff")
+	List<ServiceDetail> getServiceDetailByServiceIdOrderByVolumeCutoff(Service service);
 }
