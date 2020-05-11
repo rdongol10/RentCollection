@@ -3,16 +3,19 @@ function getRenteeDetailsHTML(data){
 		
 	html += '<div class="row">'
 	
-	html += '<div class="col-3">'
+	html += '<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12">'
+	html += '<label class="col-form-label">Rentee Image</label><br>'
 	html += '<img class="displayImage profileDisplayImage" src="data:image/png;base64,'+data.renteeImageBase64+'">'
 	html += '</div>'
 	
-	html +=	'<div class="col-4 ">'
-	html +=	'<img src="data:image/png;base64,'+data.citizenshipImageBase64+'"  id="displayCitizenshipImage" class="displayImage"></img>'
+	html +=	'<div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">'
+	html += '<label class="col-form-label">Citizenship Image</label><br>'
+	html +=	'<img src="data:image/png;base64,'+data.citizenshipImageBase64+'"   class="displayImage displayCitizenshipImage"></img>'
 	html += '</div>'
 		
-	html +=	'<div class="col-4 ">'
-	html +=	'<img src="data:image/png;base64,'+data.citizenshipBackImageBase64+'"  id="displayCitizenshipImage" class="displayImage"></img>'
+	html +=	'<div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">'
+	html += '<label class="col-form-label">Citizenship Back Image</label><br>'
+	html +=	'<img src="data:image/png;base64,'+data.citizenshipBackImageBase64+'"  class="displayImage displayCitizenshipImage"></img>'
 	html += '</div>'
 	
 	html += '</div>'
@@ -44,11 +47,11 @@ function getRenteeDetailsHTML(data){
 			html += '<hr>'
 			html += '<div class="row">'
 				
-			html += '<div class="col-3">'
+			html += '<div class="col-3 col-xl-3 col-lg-3 col-md-12 col-sm-12">'
 			html += '<img class="displayImage profileDisplayImage" src="data:image/png;base64,'+data.renteeDependentModels[i].renteeDependentImageBase64+'">'
 			html += '</div>'
 			
-			html += '<div class="col-4">'
+			html += '<div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">'
 			html += '<label class="col-form-lable">Name : ' + data.renteeDependentModels[i].firstName +'  ' +data.renteeDependentModels[i].lastName +'</label><br>'
 			html += '<label class="col-form-lable">DOB : ' + data.renteeDependentModels[i].dob +'</label><br>'
 			html += '<label class="col-form-lable">Sex : ' + data.renteeDependentModels[i].sex +'</label><br>'
@@ -194,14 +197,14 @@ function getRentingDetailsHTML(data){
 		
 		html += '<div class="row">'
 		
-		html += '<div class="col-3">'
+		html += '<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12">'
 		html += '<img class="displayImage profileDisplayImage" src="data:image/png;base64,'+data.renteeModel.renteeImageBase64+'">'
 		html += '</div>'
-		html += '<div class="col-3">'
-		html += '<label class="col-form-lable">Name : ' + data.renteeModel.firstName +'  ' +data.renteeModel.lastName +'</label>'
-		html += '<label class="col-form-lable">DOB : ' + data.renteeModel.dob +'</label>'
-		html += '<label class="col-form-lable">Sex : ' + data.renteeModel.sex +'</label>'
-		html += '<label class="col-form-lable">Number : ' + data.renteeModel.phoneNumber +'</label>'
+		html += '<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12">'
+		html += '<label class="col-form-lable">Name : ' + data.renteeModel.firstName +'  ' +data.renteeModel.lastName +'</label><br>'
+		html += '<label class="col-form-lable">DOB : ' + data.renteeModel.dob +'</label><br>'
+		html += '<label class="col-form-lable">Sex : ' + data.renteeModel.sex +'</label><br>'
+		html += '<label class="col-form-lable">Number : ' + data.renteeModel.phoneNumber +'</label><br>'
 		html += '<label class="col-form-lable">Citizenship Number : ' + data.renteeModel.citizenshipNumber +'</label>'
 
 		html += '</div>'
@@ -213,3 +216,135 @@ function getRentingDetailsHTML(data){
 	
 	return html;
 }
+
+
+function getTransactionDetailHTML(data){
+	var html="";
+	html += '<div class="row">'
+
+	html += '<div class="col-12 ">'
+	if(data.id >0){
+		html+= '<strong>Inoice #'+data.id+'</strong>'
+		html+= '<br>'
+	}
+	var today = new Date(data.billedDate);
+	var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+	html += 'Date : ' + date
+	html += '</div>'
+	html += '</div>'
+	html += '<br>'
+	
+	html += '<div class="table-responsive">'
+	html += '<table class="table table-striped table-bordered " >'
+	
+	html += '<thead><tr>'
+	html += '<th><strong>#</strong></th>'
+	html += '<th> <strong>Item</strong> </th>'
+	html += '<th><strong> Description </strong></th>'
+	html += '<th> <strong>Unit Cost </strong></th>'
+	html += '<th><strong> Qty </strong></th>'
+	html += '<th> <strong>Total </strong></th>'
+	html += '</tr></thead></strong>'
+	
+	var itemCount=1;
+	html += '<tbody>'
+	html += '<tr>'
+	html += '<td class="align-top">'+ itemCount++ +  '</td>'
+	html += '<td class="align-top"> Rent </td>'
+	html += '<td></td>'
+	html += '<td>'+ data.contractCharge+'</td>'
+	html += '<td>'+ data.numberOfMonths+'</td>'
+
+	html += '<td>'+ parseInt(data.contractCharge) * parseInt(data.numberOfMonths) +'</td>'
+
+	html += '</tr>'
+	
+	for( var i=0 ; i <data.transactionDetail.length ;i++){
+		html += '<tr>'
+		html += '<td class="align-top">'+ itemCount++ +  '</td>'
+		html += '<td class="align-top">'+ data.transactionDetail[i].serviceName + '</td>'
+		var transactionServiceDetail = data.transactionDetail[i].transactionServiceDetail;
+		
+		if(transactionServiceDetail != null){
+			html += '<td>'
+			
+			html += '<div class="table-responsive">'
+			html += 'Last Unit =' +data.transactionDetail[i].lastUnit
+			html += ' Current Unit =' +data.transactionDetail[i].currentUnit
+			
+			html += '<table class="table table-striped table-bordered" >'
+			
+			html += '<thead><tr>'
+			html += '<th>Volume Cutoff</th>'
+			html += '<th>Units</th>'
+			html += '<th>Rate</th>'
+			html += '<th>Service Charge</th>'
+			html += '<th>Charge</th>'
+			html += '</tr></thead>'
+
+			html += '<tbody>'
+			for(var j =0 ; j<transactionServiceDetail.length ; j++){
+				html += '<tr>'
+				html += '<td>'+transactionServiceDetail[j].volumeCuttoff+'</td>'
+				html += '<td>'+transactionServiceDetail[j].unit+'</td>'
+				html += '<td>'+transactionServiceDetail[j].rate+'</td>'
+				html += '<td>'+transactionServiceDetail[j].serviceCharge+'</td>'
+				html += '<td>'+transactionServiceDetail[j].total+'</td>'
+				html += '</tr>'
+			}
+			
+			html += '<tr>'
+			html += '<td colSpan="4" class="text-right" ><strong>Service Charge</strong></td>'
+			html += '<td colSpan="4" class="text-right" ><strong>'+data.transactionDetail[i].serviceCharge+'</strong></td>'
+			html += '</tr>'
+			
+			html += '<tr>'
+			html += '<td colSpan="4" class="text-right" ><strong>Minimum Charge</strong></td>'
+			html += '<td colSpan="4" class="text-right" ><strong>'+data.transactionDetail[i].minimumCharge+'</strong></td>'
+			html += '</tr>'
+						
+			html += '<tr>'
+			html += '<td colSpan="4" class="text-right" ><strong>Total</strong></td>'
+			html += '<td colSpan="4" class="text-right" ><strong>'+data.transactionDetail[i].total+'</strong></td>'
+			html += '</tr>'
+
+			html += '</tbody>'
+
+			html += '</table>'
+			html += '</div>'
+
+			
+			html += '</td>'
+			html += '<td>-</td>'
+			html += '<td>-</td>'
+			html += '<td class="align-bottom">'+ data.transactionDetail[i].total +'</td>'
+			
+				
+		}else{
+			
+			html += '<td></td>'
+			html += '<td>'+ data.transactionDetail[i].charge +'</td>'
+			html += '<td>'+ data.numberOfMonths +'</td>'
+			html += '<td>'+ data.transactionDetail[i].total +'</td>'
+		}
+		html += '</tr>'
+		
+	}
+	
+	
+	html += '<tr>'
+	html += '<td colSpan="5" class="text-right" ><strong>Total</strong></td>'
+	html += '<td ><strong>'+ data.totalCharge +  '</strong></td>'
+	html += '</tr>'
+	
+	
+	html += '</tbody>'
+	
+	html += '</table>'
+	html += '</div>'
+	
+	return html;
+}
+
+
+
