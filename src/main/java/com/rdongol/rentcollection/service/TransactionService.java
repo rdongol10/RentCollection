@@ -1,5 +1,6 @@
 package com.rdongol.rentcollection.service;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -72,7 +73,7 @@ public class TransactionService {
 		transaction.setContractId(contractId);
 		transaction.setNumberOfMonths(numberOfMonths);
 		transaction.setContractCharge(renting.getPrice());
-
+		transaction.setBilledDate(new Date());
 		List<TransactionDetail> transactionDetails = new LinkedList<TransactionDetail>();
 		for (BillContractServiceModel billContractServiceModel : billContractServiceModels) {
 
@@ -200,7 +201,7 @@ public class TransactionService {
 
 				long unit = upperRange - lowerRange;
 
-				transactionServiceDetail.setVolumeCuttoff(upperRange - 1);
+				transactionServiceDetail.setVolumeCuttoff(String.valueOf((upperRange - 1)));
 
 				if (unit < ramainingUnit) {
 					transactionServiceDetail.setUnit(unit);
@@ -218,8 +219,9 @@ public class TransactionService {
 				}
 
 			} else {
-				
-				transactionServiceDetail.setVolumeCuttoff(serviceDetail.getVolumeCutoff());
+
+				String volumeCutoff = String.valueOf(serviceDetail.getVolumeCutoff()) + "+";
+				transactionServiceDetail.setVolumeCuttoff(volumeCutoff);
 				transactionServiceDetail.setUnit(ramainingUnit);
 				transactionServiceDetail.setTotal(ramainingUnit * serviceDetail.getRate());
 				transactionServiceDetails.add(transactionServiceDetail);
