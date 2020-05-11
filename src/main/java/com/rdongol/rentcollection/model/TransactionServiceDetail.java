@@ -21,7 +21,7 @@ public class TransactionServiceDetail {
 	@JsonIgnore
 	private TransactionDetail transactionDetail;
 
-	private long volumeCuttoff;
+	private String volumeCuttoff;
 
 	private double rate;
 
@@ -35,7 +35,7 @@ public class TransactionServiceDetail {
 
 	}
 
-	public TransactionServiceDetail(long id, TransactionDetail transactionDetail, long volumeCuttoff, double rate,
+	public TransactionServiceDetail(long id, TransactionDetail transactionDetail, String volumeCuttoff, double rate,
 			long unit, double serviceCharge, double total) {
 		super();
 		this.id = id;
@@ -63,11 +63,11 @@ public class TransactionServiceDetail {
 		this.transactionDetail = transactionDetail;
 	}
 
-	public long getVolumeCuttoff() {
+	public String getVolumeCuttoff() {
 		return volumeCuttoff;
 	}
 
-	public void setVolumeCuttoff(long volumeCuttoff) {
+	public void setVolumeCuttoff(String volumeCuttoff) {
 		this.volumeCuttoff = volumeCuttoff;
 	}
 
