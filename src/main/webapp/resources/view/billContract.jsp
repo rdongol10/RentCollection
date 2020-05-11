@@ -7,6 +7,9 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Bill Contract</title>
+
+<link href="<c:url value="/resources/css/displayDetails.css" />" rel="stylesheet">
+
 </head>
 <body>
 	<div class="dashboard-main-wrapper">
@@ -75,7 +78,27 @@
 		</div>
 	</div>
 			
+			
+	<div class="modal fade" id="transactionModal" tabindex="-1" role="dialog" aria-labelledby="transactionModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-xlg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title" id="transactionModalLabel"></h3>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>		
 </body>
+
+<script src="<c:url value="/resources/js/displayDetails.js" />" ></script>
 
 <script type="text/javascript">
 	var id=0;
@@ -110,9 +133,16 @@
 			data:getBillData()
 			
 		}).done(function(data){
-			console.log(data)
+			displayTransactionsDetail(data)
 		})
 	}
+	
+	function displayTransactionsDetail(data){
+		jQuery(".modal-title").html("Transaction");
+		jQuery(".modal-body").html(getTransactionDetailHTML(data));
+		jQuery('#transactionModal').modal('show');
+	}
+	
 	
 	function getBillData(){
 		var billData = new Object();
