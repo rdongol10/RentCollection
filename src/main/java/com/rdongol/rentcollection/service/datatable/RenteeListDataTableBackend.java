@@ -52,7 +52,7 @@ public class RenteeListDataTableBackend extends AbstractDataTableBackend {
 			data.add(String.valueOf(rentee[3]));
 			data.add(String.valueOf(rentee[4]));
 			data.add(String.valueOf(rentee[5]));
-			data.add(String.valueOf(rentee[6]));
+			data.add(String.valueOf(formatDate(rentee[6])));
 			data.add(String.valueOf(rentee[7]));
 			data.add(String.valueOf(rentee[8]));
 			data.add(String.valueOf(rentee[9]));

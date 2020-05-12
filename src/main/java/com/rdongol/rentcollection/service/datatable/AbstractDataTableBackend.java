@@ -210,13 +210,13 @@ public abstract class AbstractDataTableBackend {
 	
 	protected String formatDate(Object object) {
 		
-		DateFormat df = new SimpleDateFormat("YYYY-MM-dd");
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		if (object == null) {
 			return "";
 		}
 
 		if (!(object instanceof Date)) {
-			return "";
+			return String.valueOf(object);
 		}
 
 		Date date = (Date) object;
