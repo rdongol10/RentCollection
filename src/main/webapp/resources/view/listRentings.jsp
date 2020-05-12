@@ -89,7 +89,6 @@
 	
 </body>
 
-<script src="<c:url value="/resources/js/bootstrap.bundle.js" />" ></script>
 <script src="<c:url value="/resources/js/displayDetails.js" />" ></script>
 
 <script>
