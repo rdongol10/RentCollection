@@ -219,21 +219,45 @@ function getRentingDetailsHTML(data){
 
 
 function getTransactionDetailHTML(data){
+	var transaction = data.transaction
 	var html="";
 	html += '<div class="row">'
-
-	html += '<div class="col-12 ">'
-	if(data.id >0){
-		html+= '<strong>Inoice #'+data.id+'</strong>'
+		
+	html += '<div class="col-xl-9 col-lg-9 col-md-9 col-sm-12 ">'
+	html += '<strong>Invoice for January 2019</strong>'
+	html += '</div>'
+		
+	html += '<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 ">'
+	if(transaction.id >0){
+		html+= '<strong>Inoice #</strong>'+transaction.id
 		html+= '<br>'
 	}
-	var today = new Date(data.billedDate);
+	var today = new Date(transaction.billedDate);
 	var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-	html += 'Date : ' + date
+	html += '<strong>Date : </strong>' + date
 	html += '</div>'
+		
+	html += '</div>'
+	
+	html += '<hr>'
+		
+	html += '<div class="row">'	
+	
+	html += '<div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 ">'	
+	html += '<strong>Invoice for Renting:</strong><br>'	
+	html += data.rentingName	
+	html += '</div>'
+	
+	html += '<div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 ">'	
+	html += '<strong>Billed To:</strong><br>'	
+	html += data.renteeName+'<br>'
+	html += data.address+'<br>'
+	html += 'Phone : '+data.number	
+	html += '</div>'
+		
 	html += '</div>'
 	html += '<br>'
-	
+		
 	html += '<div class="table-responsive">'
 	html += '<table class="table table-striped table-bordered " >'
 	
@@ -252,25 +276,25 @@ function getTransactionDetailHTML(data){
 	html += '<td class="align-top">'+ itemCount++ +  '</td>'
 	html += '<td class="align-top"> Rent </td>'
 	html += '<td></td>'
-	html += '<td>'+ data.contractCharge+'</td>'
-	html += '<td>'+ data.numberOfMonths+'</td>'
+	html += '<td>'+ transaction.contractCharge+'</td>'
+	html += '<td>'+ transaction.numberOfMonths+'</td>'
 
-	html += '<td>'+ parseInt(data.contractCharge) * parseInt(data.numberOfMonths) +'</td>'
+	html += '<td>'+ parseInt(transaction.contractCharge) * parseInt(transaction.numberOfMonths) +'</td>'
 
 	html += '</tr>'
 	
-	for( var i=0 ; i <data.transactionDetail.length ;i++){
+	for( var i=0 ; i <transaction.transactionDetail.length ;i++){
 		html += '<tr>'
 		html += '<td class="align-top">'+ itemCount++ +  '</td>'
-		html += '<td class="align-top">'+ data.transactionDetail[i].serviceName + '</td>'
-		var transactionServiceDetail = data.transactionDetail[i].transactionServiceDetail;
+		html += '<td class="align-top">'+ transaction.transactionDetail[i].serviceName + '</td>'
+		var transactionServiceDetail = transaction.transactionDetail[i].transactionServiceDetail;
 		
 		if(transactionServiceDetail != null){
 			html += '<td>'
 			
 			html += '<div class="table-responsive">'
-			html += 'Last Unit =' +data.transactionDetail[i].lastUnit
-			html += ' Current Unit =' +data.transactionDetail[i].currentUnit
+			html += 'Last Unit =' +transaction.transactionDetail[i].lastUnit
+			html += ' Current Unit =' +transaction.transactionDetail[i].currentUnit
 			
 			html += '<table class="table table-striped table-bordered" >'
 			
@@ -295,17 +319,17 @@ function getTransactionDetailHTML(data){
 			
 			html += '<tr>'
 			html += '<td colSpan="4" class="text-right" ><strong>Service Charge</strong></td>'
-			html += '<td colSpan="4" class="text-right" ><strong>'+data.transactionDetail[i].serviceCharge+'</strong></td>'
+			html += '<td colSpan="4" class="text-right" ><strong>'+transaction.transactionDetail[i].serviceCharge+'</strong></td>'
 			html += '</tr>'
 			
 			html += '<tr>'
 			html += '<td colSpan="4" class="text-right" ><strong>Minimum Charge</strong></td>'
-			html += '<td colSpan="4" class="text-right" ><strong>'+data.transactionDetail[i].minimumCharge+'</strong></td>'
+			html += '<td colSpan="4" class="text-right" ><strong>'+transaction.transactionDetail[i].minimumCharge+'</strong></td>'
 			html += '</tr>'
 						
 			html += '<tr>'
 			html += '<td colSpan="4" class="text-right" ><strong>Total</strong></td>'
-			html += '<td colSpan="4" class="text-right" ><strong>'+data.transactionDetail[i].total+'</strong></td>'
+			html += '<td colSpan="4" class="text-right" ><strong>'+transaction.transactionDetail[i].total+'</strong></td>'
 			html += '</tr>'
 
 			html += '</tbody>'
@@ -317,15 +341,15 @@ function getTransactionDetailHTML(data){
 			html += '</td>'
 			html += '<td>-</td>'
 			html += '<td>-</td>'
-			html += '<td class="align-bottom">'+ data.transactionDetail[i].total +'</td>'
+			html += '<td class="align-bottom">'+ transaction.transactionDetail[i].total +'</td>'
 			
 				
 		}else{
 			
 			html += '<td></td>'
-			html += '<td>'+ data.transactionDetail[i].charge +'</td>'
-			html += '<td>'+ data.numberOfMonths +'</td>'
-			html += '<td>'+ data.transactionDetail[i].total +'</td>'
+			html += '<td>'+ transaction.transactionDetail[i].charge +'</td>'
+			html += '<td>'+ transaction.numberOfMonths +'</td>'
+			html += '<td>'+ transaction.transactionDetail[i].total +'</td>'
 		}
 		html += '</tr>'
 		
@@ -334,7 +358,7 @@ function getTransactionDetailHTML(data){
 	
 	html += '<tr>'
 	html += '<td colSpan="5" class="text-right" ><strong>Total</strong></td>'
-	html += '<td ><strong>'+ data.totalCharge +  '</strong></td>'
+	html += '<td ><strong>'+ transaction.totalCharge +  '</strong></td>'
 	html += '</tr>'
 	
 	

@@ -11,11 +11,14 @@ import org.springframework.stereotype.Service;
 
 import com.rdongol.rentcollection.model.BillContractServiceModel;
 import com.rdongol.rentcollection.model.Contract;
+import com.rdongol.rentcollection.model.ContractLog;
+import com.rdongol.rentcollection.model.Rentee;
 import com.rdongol.rentcollection.model.Renting;
 import com.rdongol.rentcollection.model.RentingFacility;
 import com.rdongol.rentcollection.model.ServiceDetail;
 import com.rdongol.rentcollection.model.Transaction;
 import com.rdongol.rentcollection.model.TransactionDetail;
+import com.rdongol.rentcollection.model.TransactionDetailModel;
 import com.rdongol.rentcollection.model.TransactionServiceDetail;
 import com.rdongol.rentcollection.repository.TransactionRepository;
 
@@ -33,6 +36,15 @@ public class TransactionService {
 
 	@Autowired
 	private RentingFacilityService rentingFacilityService;
+
+	@Autowired
+	private ContractLogService contractLogService;
+
+	@Autowired
+	private RentingService rentingService;
+
+	@Autowired
+	private RenteeService renteeService;
 
 	public List<Transaction> findAll() {
 		return (List<Transaction>) transactionRepository.findAll();
@@ -56,6 +68,33 @@ public class TransactionService {
 
 	public void deleteById(Long id) {
 		transactionRepository.deleteById(id);
+	}
+
+	public TransactionDetailModel getTransactDetail(Transaction transaction) {
+
+		ContractLog contractLog = contractLogService.getContractLogByContractId(transaction.getContractId());
+
+		Renting renting = rentingService.findById(contractLog.getRentingId());
+
+		Rentee rentee = renteeService.findById(contractLog.getRenteeId());
+
+		TransactionDetailModel transactionDetailModel = new TransactionDetailModel();
+
+		transactionDetailModel.setTransaction(transaction);
+		transactionDetailModel.setRentingName(renting.getName());
+		transactionDetailModel.setRenteeName(rentee.getFirstName() + " " + rentee.getLastName());
+		transactionDetailModel.setAddress(rentee.getAddress());
+		transactionDetailModel.setNumber(rentee.getPhoneNumber());
+		return transactionDetailModel;
+
+	}
+
+	public TransactionDetailModel getTransactionDetail(long contractId, int numberOfMonths,
+			List<BillContractServiceModel> billContractServiceModels) {
+
+		Transaction transaction = calculateBill(contractId, numberOfMonths, billContractServiceModels);
+
+		return getTransactDetail(transaction);
 	}
 
 	public Transaction calculateBill(long contractId, int numberOfMonths,

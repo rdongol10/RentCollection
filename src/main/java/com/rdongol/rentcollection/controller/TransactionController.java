@@ -14,7 +14,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rdongol.rentcollection.model.BillContractServiceModel;
-import com.rdongol.rentcollection.model.Transaction;
+import com.rdongol.rentcollection.model.TransactionDetailModel;
 import com.rdongol.rentcollection.service.TransactionService;
 
 @RestController
@@ -25,17 +25,18 @@ public class TransactionController {
 	TransactionService transactionService;
 
 	@PostMapping("/calculateBill")
-	public ResponseEntity<Transaction> calculateBill(@RequestBody String billData) throws Exception {
+	public ResponseEntity<TransactionDetailModel> calculateBill(@RequestBody String billData) throws Exception {
 		ObjectMapper mapper = new ObjectMapper();
 
 		JsonNode rootNode = mapper.readTree(new StringReader(billData));
 		int numberOfMonths = rootNode.get("numberOfMonths").asInt();
-		long contractId=rootNode.get("contractId").asLong();
+		long contractId = rootNode.get("contractId").asLong();
 		List<BillContractServiceModel> billContractServiceModels = mapper.readValue(
 				rootNode.get("billContractServices").toString(), new TypeReference<List<BillContractServiceModel>>() {
 				});
 
-		return ResponseEntity.ok(transactionService.calculateBill(contractId,numberOfMonths, billContractServiceModels));
+		return ResponseEntity
+				.ok(transactionService.getTransactionDetail(contractId, numberOfMonths, billContractServiceModels));
 
 	}
 }
