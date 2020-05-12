@@ -6,6 +6,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<link href="<c:url value="/resources/css/displayDetails.css" />" rel="stylesheet">
 
 <title>Contracts</title>
 </head>
@@ -57,7 +58,28 @@
 			</div>	
 		</div>	
 	</div>
+	
+	<div class="modal fade" id="contractModal" tabindex="-1" role="dialog" aria-labelledby="contractModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title" id="contractModalLabel"></h3>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 </body>
+
+<script src="<c:url value="/resources/js/displayDetails.js" />" ></script>
 
 <script type="text/javascript">
 	var table;
@@ -71,7 +93,31 @@
 
 		})
 		
+		jQuery("#contractTable").on("click",".details",function(){
+			getDetails(jQuery(this).attr("rentingId"))
+		})
+		
 	});
+	
+	function getDetails(rentingId){
+
+		jQuery.ajax({
+			
+			method : "GET",
+			url : "${contextPath}/renting/getRentingDetails/"+rentingId,
+			
+		}).done(function(data){
+			displayDetails(data)
+		})
+	}
+	
+	function displayDetails(data){
+		console.log(data)
+		jQuery(".modal-title").html("Details")
+		
+		jQuery(".modal-body").html(getRentingDetailsHTML(data));
+		jQuery('#contractModal').modal('show');
+	}
 	
 	function billContract(contractId){
 		window.location.href="${contextPath}/resources/view/billContract.jsp?id="+contractId;
