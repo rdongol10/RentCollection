@@ -61,17 +61,6 @@
 								                 	<i class="actionButton details fas fa-info-circle" id ="renteeDetails"></i>
 							                 	</div>
 							                 	
-							                 	<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
-													<label for="paymentType" class="col-form-label">Payment Type</label>
-													<select class="form-control" id="paymentType" name="paymentType">
-														<option value ="prepaid">Prepaid</option>
-														<option value ="postpaid">Postpaid</option>
-													</select>
-													<div class="errorFeedback" id="paymentType-errorFeedback">
-														
-													</div>
-				                                </div>
-								                
                                             </div>
                                             
                                             <div class="row">
@@ -207,8 +196,6 @@
 		
 		contractData.rentingId = jQuery("#renting").val()
 		contractData.renteeId = jQuery("#rentee").val()
-
-		contractData.paymentType = jQuery("#paymentType").val()
 
 		return JSON.stringify(contractData);
 

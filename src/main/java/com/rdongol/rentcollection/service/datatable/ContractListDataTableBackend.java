@@ -18,7 +18,6 @@ public class ContractListDataTableBackend extends AbstractDataTableBackend {
 		tableColumns.add("renting.name");
 		tableColumns.add("rentee.first_name");
 		tableColumns.add("contract.start_date");
-		tableColumns.add("contract.payment_type");
 		tableColumns.add("contract.last_paid_date");
 		tableColumns.add("contract.expire_date");
 
@@ -26,7 +25,7 @@ public class ContractListDataTableBackend extends AbstractDataTableBackend {
 
 	@Override
 	protected void setSelectCriteria() {
-		selectCriteria = "Select contract.id,renting.name,rentee.first_name,contract.start_date , contract.payment_type , contract.last_paid_date,contract.expire_date ";
+		selectCriteria = "Select contract.id,renting.name,rentee.first_name,contract.start_date , contract.last_paid_date,contract.expire_date ";
 
 	}
 
@@ -54,10 +53,10 @@ public class ContractListDataTableBackend extends AbstractDataTableBackend {
 
 			data.add(String.valueOf(renting[1]));
 			data.add(String.valueOf(renting[2]));
-			data.add(String.valueOf(renting[3]));
-			data.add(String.valueOf(renting[4]));
-			data.add(String.valueOf(renting[5]));
-			data.add(String.valueOf(renting[6]));
+			
+			data.add(formatDate(renting[3]));
+			data.add(formatDate(renting[4]));
+			data.add(formatDate(renting[5]));
 			data.add(getActionButtons(String.valueOf(renting[0])));
 
 			tableData.add(data);
@@ -65,7 +64,7 @@ public class ContractListDataTableBackend extends AbstractDataTableBackend {
 
 		return tableData;
 	}
-
+	
 	protected String getActionButtons(String contractId) {
 		
 		StringBuffer actionButtons = new StringBuffer();
@@ -81,7 +80,7 @@ public class ContractListDataTableBackend extends AbstractDataTableBackend {
 	protected String getDeleteContractAction(String contractId) {
 
 		StringBuffer deleteContract = new StringBuffer();
-		deleteContract.append("<i class='actionButton deleteContract fas fa-trash-alt' contractId='" + contractId
+		deleteContract.append("<i class='actionButton deleteContract fas fa-store-alt-slash' contractId='" + contractId
 				+ "' title='terminate contract' style = 'color:#FF686B'></i>");
 		return deleteContract.toString();
 
@@ -98,7 +97,7 @@ public class ContractListDataTableBackend extends AbstractDataTableBackend {
 
 		StringBuffer billContract = new StringBuffer();
 		billContract.append("<i class='actionButton billContract fas fa-file-invoice-dollar' contractId='" + contractId
-				+ "' title='bill contract' ></i>");
+				+ "' title='bill contract' style = 'color:#009B33'></i>");
 		return billContract.toString();
 
 	}

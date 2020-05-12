@@ -22,7 +22,7 @@
 						 		<div class="row">
 				                    <h2 class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9 topCardHeader">
 					 				
-						 				Service Lists
+						 				Contract Lists
 						 				
 									</h2>
 									
@@ -43,7 +43,6 @@
 											    <th>Renting Name</th>
 											    <th>Rentee Name</th>
 											    <th>Start Date</th>
-											    <th>Payment Type</th>
 											    <th>Last Paid Date</th>
 											    <th>Expire Date</th>
    											    <th>Actions</th>
@@ -94,10 +93,9 @@
 				{data : 0 , name:"name"},
 				{data : 1 , name:"first_name"},
 				{data : 2 , name:"start_date"},
-				{data : 3 , name:"payment_type"},
+				{data : 3 , name:"last_paid_date"},
 				{data : 4 , name:"last_paid_date"},
-				{data : 5 , name:"last_paid_date"},
-				{data : 6 , name:"actions",searchable : false , orderable:false}
+				{data : 5 , name:"actions",searchable : false , orderable:false}
 			]
 		});
 	}

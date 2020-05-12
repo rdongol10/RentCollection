@@ -30,8 +30,6 @@ public class Contract {
 
 	private Date startDate;
 
-	private String paymentType;
-
 	private Date lastPaidDate;
 
 	private Date expireDate;
@@ -40,14 +38,13 @@ public class Contract {
 
 	}
 
-	public Contract(long id, Rentee rentee, Renting renting, Date startDate, String paymentType, Date lastPaidDate,
+	public Contract(long id, Rentee rentee, Renting renting, Date startDate, Date lastPaidDate,
 			Date expireDate) {
 		super();
 		this.id = id;
 		this.rentee = rentee;
 		this.renting = renting;
 		this.startDate = startDate;
-		this.paymentType = paymentType;
 		this.lastPaidDate = lastPaidDate;
 		this.expireDate = expireDate;
 	}
@@ -82,14 +79,6 @@ public class Contract {
 
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
-	}
-
-	public String getPaymentType() {
-		return paymentType;
-	}
-
-	public void setPaymentType(String paymentType) {
-		this.paymentType = paymentType;
 	}
 
 	public Date getLastPaidDate() {

@@ -4,17 +4,15 @@ public class ContractModel {
 
 	long rentingId;
 	long renteeId;
-	String paymentType;
 
 	public ContractModel() {
 
 	}
 
-	public ContractModel(long rentingId, long renteeId, String paymentType) {
+	public ContractModel(long rentingId, long renteeId) {
 		super();
 		this.rentingId = rentingId;
 		this.renteeId = renteeId;
-		this.paymentType = paymentType;
 	}
 
 	public long getRentingId() {
@@ -32,13 +30,4 @@ public class ContractModel {
 	public void setRenteeId(long renteeId) {
 		this.renteeId = renteeId;
 	}
-
-	public String getPaymentType() {
-		return paymentType;
-	}
-
-	public void setPaymentType(String paymentType) {
-		this.paymentType = paymentType;
-	}
-
 }
