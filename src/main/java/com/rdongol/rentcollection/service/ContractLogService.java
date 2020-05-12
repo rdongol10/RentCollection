@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.rdongol.rentcollection.model.Contract;
 import com.rdongol.rentcollection.model.ContractLog;
 import com.rdongol.rentcollection.repository.ContractLogRepository;
+import com.rdongol.rentcollection.repository.ContractRepository;
 
 @Service
 public class ContractLogService {
@@ -47,6 +48,15 @@ public class ContractLogService {
 
 	public void deleteById(Long id) {
 		contractLogRepository.deleteById(id);
+	}
+	
+	public ContractLog getContractLogByContractId(long contractId) {
+		List<ContractLog> contractLogs = contractLogRepository.getContractLogByContractId(contractId);
+		if (contractLogs != null && !contractLogs.isEmpty()) {
+			return contractLogs.get(0);
+		}
+
+		return null;
 	}
 
 }
