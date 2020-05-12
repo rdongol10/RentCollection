@@ -46,7 +46,7 @@ public class Rentee {
 	}
 
 	public Rentee(RenteeModel renteeModel) {
-		DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 			this.id = renteeModel.getId();
 			this.firstName = renteeModel.getFirstName();
