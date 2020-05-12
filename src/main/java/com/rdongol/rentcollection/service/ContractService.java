@@ -1,5 +1,6 @@
 package com.rdongol.rentcollection.service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -63,8 +64,12 @@ public class ContractService {
 
 		contract.setRentee(rentee);
 		contract.setRenting(renting);
-		contract.setPaymentType(contractModel.getPaymentType());
 		contract.setStartDate(new Date());
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		calendar.add(Calendar.DAY_OF_MONTH, 30);
+		contract.setExpireDate(calendar.getTime());
 
 		return save(contract);
 	}
