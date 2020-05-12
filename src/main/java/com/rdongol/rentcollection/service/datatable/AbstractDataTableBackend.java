@@ -2,6 +2,9 @@ package com.rdongol.rentcollection.service.datatable;
 
 import java.io.StringReader;
 import java.math.BigInteger;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -203,5 +206,21 @@ public abstract class AbstractDataTableBackend {
 		tableData.put("draw", draw);
 
 		return mapper.writeValueAsString(tableData);
+	}
+	
+	protected String formatDate(Object object) {
+		
+		DateFormat df = new SimpleDateFormat("YYYY-MM-dd");
+		if (object == null) {
+			return "";
+		}
+
+		if (!(object instanceof Date)) {
+			return "";
+		}
+
+		Date date = (Date) object;
+		return df.format(date);
+
 	}
 }
