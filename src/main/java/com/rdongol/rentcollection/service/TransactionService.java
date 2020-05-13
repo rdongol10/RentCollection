@@ -65,7 +65,27 @@ public class TransactionService {
 	}
 
 	public Transaction save(Transaction transaction) {
+
+		List<TransactionDetail> transactionDetails = transaction.getTransactionDetail();
+		if (transactionDetails != null) {
+			for (TransactionDetail transactionDetail : transactionDetails) {
+				transactionDetail.setTransaction(transaction);
+
+				List<TransactionServiceDetail> transactionServiceDetails = transactionDetail
+						.getTransactionServiceDetail();
+
+				if (transactionServiceDetails != null) {
+
+					for (TransactionServiceDetail transactionServiceDetail : transactionServiceDetails) {
+						transactionServiceDetail.setTransactionDetail(transactionDetail);
+					}
+				}
+			}
+
+		}
+		
 		return transactionRepository.save(transaction);
+		
 	}
 
 	public void deleteById(Long id) {
@@ -300,5 +320,46 @@ public class TransactionService {
 			count++;
 		}
 		return transactionServiceDetails;
+	}
+	
+	public Transaction billTransaction(Transaction transaction) {
+		transaction.setPaid(0);
+		transaction.setPaidDate(null);
+		return save(transaction, true);
+	}
+	
+	public Transaction payTransaction(Transaction transaction) {
+		
+		transaction.setPaid(1);
+		transaction.setPaidDate(new Date());
+		
+		return save(transaction, true);
+	}
+	
+	public Transaction save(Transaction transaction, boolean updateRelated) {
+
+		Contract contract = contractService.findById(transaction.getContractId());
+
+		if (transaction.getPaidDate() != null) {
+			contract.setLastPaidDate(transaction.getPaidDate());
+			contractService.save(contract);
+		}
+
+		if (updateRelated) {
+
+			contract.setExpireDate(
+					contractService.getExpireDate(contract.getExpireDate(), transaction.getNumberOfMonths()));
+			contractService.save(contract);
+		}
+		
+		for(TransactionDetail transactionDetail : transaction.getTransactionDetail()) {
+			RentingFacility rentingFacility = rentingFacilityService.findById(transactionDetail.getRentingFacilityId());
+			if(rentingFacility.getService().getType().equalsIgnoreCase("unit")) {
+				rentingFacility.setUnits(transactionDetail.getCurrentUnit());
+				rentingFacilityService.save(rentingFacility);
+			}
+		}
+
+		return save(transaction);
 	}
 }

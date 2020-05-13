@@ -91,7 +91,9 @@
 				<div class="modal-body">
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" id="bilInvoice">Bill</button>
+					<button type="button" class="btn btn-success"id="payInvoice">Pay</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 				</div>
 			</div>
 		</div>
@@ -103,6 +105,7 @@
 <script type="text/javascript">
 	var id=0;
 	var errorFields = []
+	var transactionData="";
 	
 	jQuery(document).ready(function() {
 		
@@ -122,7 +125,44 @@
 			}
 		})
 		
+		jQuery('#transactionModal').on('hidden.bs.modal', function (e) {
+			transactionData="";
+		})
+		
+		jQuery('#bilInvoice').on('click',function(){
+			billInvoice()
+		})
+		
+		jQuery('#payInvoice').on('click',function(){
+			payInvoice()
+		})
 	});	
+	
+	function billInvoice(){
+		jQuery.ajax({
+			
+			method:"POST",
+			url:"${contextPath}/transaction/billInvoice",
+			contentType:'application/json; charset=UTF-8',
+			data:transactionData
+			
+		}).done(function(data){
+			window.location.href="${contextPath}/resources/view/listContracts.jsp";
+		})
+	}
+	
+	function payInvoice(){
+		jQuery.ajax({
+			
+			method:"POST",
+			url:"${contextPath}/transaction/payInvoice",
+			contentType:'application/json; charset=UTF-8',
+			data:transactionData
+			
+		}).done(function(data){
+			window.location.href="${contextPath}/resources/view/listContracts.jsp";
+		})
+	}
 	
 	function submitBill(){
 		
@@ -138,6 +178,7 @@
 	}
 	
 	function displayTransactionsDetail(data){
+		transactionData = JSON.stringify(data.transaction)
 		jQuery(".modal-title").html("Transaction");
 		jQuery(".modal-body").html(getTransactionDetailHTML(data));
 		jQuery('#transactionModal').modal('show');
@@ -236,6 +277,7 @@
 	}
 	
 	function validateNumberofMonths(){
+		
 		if(parseInt(jQuery("#months").val())<=0){
 			
 			var errorField = {};

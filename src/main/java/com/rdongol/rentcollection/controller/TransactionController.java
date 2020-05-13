@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rdongol.rentcollection.model.BillContractServiceModel;
+import com.rdongol.rentcollection.model.Transaction;
 import com.rdongol.rentcollection.model.TransactionDetailModel;
 import com.rdongol.rentcollection.service.TransactionService;
 
@@ -39,4 +40,15 @@ public class TransactionController {
 				.ok(transactionService.getTransactionDetail(contractId, numberOfMonths, billContractServiceModels));
 
 	}
+
+	@PostMapping("/billInvoice")
+	public ResponseEntity<Transaction> billTransaction(@RequestBody Transaction transaction) {
+		return ResponseEntity.ok(transactionService.billTransaction(transaction));
+	}
+
+	@PostMapping("/payInvoice")
+	public ResponseEntity<Transaction> payTransaction(@RequestBody Transaction transaction) {
+		return ResponseEntity.ok(transactionService.payTransaction(transaction));
+	}
+
 }
