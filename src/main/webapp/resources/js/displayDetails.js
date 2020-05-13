@@ -224,7 +224,11 @@ function getTransactionDetailHTML(data){
 	html += '<div class="row">'
 		
 	html += '<div class="col-xl-9 col-lg-9 col-md-9 col-sm-12 ">'
-	html += '<strong>Invoice for January 2019</strong>'
+	
+	if(transaction.note != null){	
+		html += '<strong>'+transaction.note+'</strong>'
+	}
+
 	html += '</div>'
 		
 	html += '<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 ">'

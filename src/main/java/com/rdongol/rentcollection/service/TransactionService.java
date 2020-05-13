@@ -1,8 +1,10 @@
 package com.rdongol.rentcollection.service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,8 +129,36 @@ public class TransactionService {
 		transaction.setTransactionDetail(transactionDetails);
 
 		transaction.setTotalCharge(getTransactionTotal(transactionDetails, renting.getPrice() * numberOfMonths));
-
+		transaction.setNote(getTransactionNote(numberOfMonths, contract.getExpireDate()));
 		return transaction;
+	}
+	
+	private String getTransactionNote(int numberOfMonths, Date expireDate) {
+		
+		StringBuffer note = new StringBuffer();
+		
+		int monthCounts =-1;
+		for(int i =1;i<=numberOfMonths ; i++) {
+			Calendar paymentDate = Calendar.getInstance();
+			paymentDate.setTime(expireDate);
+			paymentDate.add(Calendar.DAY_OF_MONTH, monthCounts*30);
+			note.append(paymentDate.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.US));
+			note.append(" ");
+			note.append(paymentDate.get(Calendar.YEAR));
+			
+			if(i<numberOfMonths) {
+				note.append(" , ");
+			}
+			
+			monthCounts++;
+			
+		}
+		if(note.toString().trim().isEmpty()) {
+			return "";
+					
+		}
+		return "Invoice for " + note.toString();		
+		
 	}
 
 	public TransactionDetail calculateTransactionDetail(int numberOfMonths,
