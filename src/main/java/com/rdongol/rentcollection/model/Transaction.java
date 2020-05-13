@@ -12,12 +12,10 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class Transaction {
-
-	private long id;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private String transactionNumber;
+	private long id;
 
 	private long contractId;
 
@@ -47,7 +45,6 @@ public class Transaction {
 			String note) {
 		super();
 		this.id = id;
-		this.transactionNumber = transactionNumber;
 		this.contractId = contractId;
 		this.billedDate = billedDate;
 		this.paid = paid;
@@ -65,14 +62,6 @@ public class Transaction {
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public String getTransactionNumber() {
-		return transactionNumber;
-	}
-
-	public void setTransactionNumber(String transactionNumber) {
-		this.transactionNumber = transactionNumber;
 	}
 
 	public long getContractId() {
