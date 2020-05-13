@@ -66,12 +66,16 @@ public class ContractService {
 		contract.setRenting(renting);
 		contract.setStartDate(new Date());
 
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(new Date());
-		calendar.add(Calendar.DAY_OF_MONTH, 30);
-		contract.setExpireDate(calendar.getTime());
+		contract.setExpireDate(getExpireDate(new Date(), 1));
 
 		return save(contract);
+	}
+	
+	public Date getExpireDate(Date previousExpiredDate, int numberOfMpnths) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(previousExpiredDate);
+		calendar.add(Calendar.DAY_OF_MONTH, 30*numberOfMpnths);
+		return calendar.getTime();
 	}
 
 	public void deleteById(Long id) {
