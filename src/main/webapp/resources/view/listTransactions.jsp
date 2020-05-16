@@ -50,34 +50,29 @@
 										<select class="form-control rentee" id="rentee"></select>
 									</div>
 									
-									<div class="col-xl-1 col-lg-1 col-md-1 col-sm-12  col1 form-group text-center">
-										<br><br>	
-										<i class="fas fa-sync-alt fa-lg actionButton" id="clearRentee"></i>
-									
-									</div>
-									
 									<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12  col3 form-group">
 										<label for="renting" class="col-form-label col3" > Renting </label>
 										<select class="form-control rentee" id="renting"></select>
 										
 									</div>
 									
-									<div class="col-xl-1 col-lg-1 col-md-1 col-sm-12  col1 form-group text-center">
-										<br><br>
-										<i class="fas fa-sync-alt fa-lg actionButton" id="clearRenting"></i>
+	                   			</div>
+	                   			<br>
+	                   			<div class="row">
+	                   				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 form-group">
+									
+										<button class="btn btn-success" id="clearSelection"><i class="fas fa-sync-alt" ></i>&nbsp; Clear</button>
+										
+										<button class="btn btn-success" id="searchTransaction"><i class="fas fa-search"></i> &nbsp; Search</button>
 									
 									</div>
 									
-	                   			</div>
-	                   			
-	                   			<div class="row">
-									<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 form-group">
-											<br>
-											<button class="btn btn-success" id="searchTransaction"><i class="fas fa-search"></i> &nbsp; Search</button>
+									<div class="col-xl-2 col-lg-2 col-md-2 col-sm-12 form-group">
+											
 									</div>
 								</div>	
 									
-	                   			<br><hr>
+	                   			<hr>
 	                   			<div class="table-responsive">
 	                   				<table class="table table-striped table-bordered first" id="transactionTable">
 										<thead>
@@ -174,14 +169,6 @@
 			}
 		});
 		
-		jQuery("#clearRentee").on("click",function(){
-			clearRentee()
-		})
-		
-		jQuery("#clearRenting").on("click",function(){
-			clearRenting()
-		})
-		
 		jQuery("#searchTransaction").on("click",function(){
 			$('#transactionTable').DataTable().ajax.reload();
 		})
@@ -189,6 +176,12 @@
 		jQuery("#transactionTable").on("click",".details",function(){
 			displayTransactionsDetail(jQuery(this).attr("transactionid"))
 		})
+		
+		jQuery("#clearSelection").on("click",function(){
+			clearRentee();
+			clearRenting();
+		})
+		
 		loadTableData()
 		
 		
