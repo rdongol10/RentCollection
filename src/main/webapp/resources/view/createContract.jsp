@@ -111,13 +111,40 @@
 		
 		var rentingId = getURLParameter("rentingId")
 		
-		loadSelectOptions(rentingId);
-		
 		jQuery("#renting").select2({
-			theme: "bootstrap"
+			theme: "bootstrap",
+			ajax:{
+				method : "POST",
+				url :"${contextPath}/renting/getRentingForSelect2",
+				dataType: 'json',
+				data:function(param){
+					var value ={search : param.term}
+					return value;
+				}, 
+				processResults: function (data) {
+					return {
+						results: data
+					};
+				}
+			}
 		});
+		
 		jQuery("#rentee").select2({
-			theme: "bootstrap"
+			theme: "bootstrap",
+			ajax:{
+				method : "POST",
+				url :"${contextPath}/rentee/getRenteeForSelect2",
+				dataType: 'json',
+				data:function(param){
+					var value ={search : param.term}
+					return value;
+				}, 
+				processResults: function (data) {
+					return {
+						results: data
+					};
+				}
+			}
 		});
 		
 		jQuery("#createContract").on("click",function(){
@@ -249,51 +276,6 @@
 		jQuery(".errorFeedback").html("");
 		jQuery(".form-control").css("border-color","");
 
-	}
-	
-	function loadSelectOptions(rentingId){
-		getAvailableRentings(rentingId)
-		getRenteeCotract()
-	}
-	
-	function getAvailableRentings(rentingId){
-		jQuery.ajax({
-			method : "GET",
-			url:"${contextPath}/renting/getAvailableRentings",
-			async:false
-		}).done(function(data){
-			jQuery("#renting").html(getOptions(data,rentingId))
-		})	
-	}
-	
-	function getRenteeCotract(){
-		jQuery.ajax({
-			method : "GET",
-			url:"${contextPath}/rentee/getRenteeContractModel",
-			async:false
-		}).done(function(data){
-			jQuery("#rentee").html(getOptions(data))
-		})	
-	}
-	
-	
-	function getOptions(data,id){
-		var html= '<option disabled '
-		if(id == undefined){
-			
-			html +='selected ';
-			
-		}
-		
-		html +='> -- select an option -- </option>';
-		for(var i =0 ; i<data.length;i++){
-			html += '<option value ="'+ data[i].id+'"'
-			if(id == data[i].id){
-				html +='selected ';
-			}
-			html += ' >'+data[i].name+'</option>' 
-		}
-		return html;
 	}
 	
 	function getURLParameter(param){
