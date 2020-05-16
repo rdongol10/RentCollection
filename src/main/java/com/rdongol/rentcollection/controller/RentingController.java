@@ -89,9 +89,17 @@ public class RentingController {
 	}
 
 	@PostMapping("/getRentingForSelect2")
-	public ResponseEntity<List<Select2Model>> getRentingForSelect2(String search) {
+	public ResponseEntity<List<Select2Model>> getAvailableRentingForSelect2(String search) {
 
 		return ResponseEntity.ok(rentingService.getAvailableRentingsForSelect2(search));
 
 	}
+	
+	@PostMapping("/getAllRentingForSelect2")
+	public ResponseEntity<List<Select2Model>> getAllRentingForSelect2(String search) {
+
+		return ResponseEntity.ok(rentingService.getAllRentingForSelect2(search));
+
+	}
+	
 }

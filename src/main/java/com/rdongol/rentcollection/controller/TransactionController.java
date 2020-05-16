@@ -4,6 +4,7 @@ import java.io.StringReader;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ import com.rdongol.rentcollection.model.BillContractServiceModel;
 import com.rdongol.rentcollection.model.Transaction;
 import com.rdongol.rentcollection.model.TransactionDetailModel;
 import com.rdongol.rentcollection.service.TransactionService;
+import com.rdongol.rentcollection.service.datatable.AbstractDataTableBackend;
 
 @RestController
 @RequestMapping("/transaction")
@@ -25,6 +27,10 @@ public class TransactionController {
 	@Autowired
 	TransactionService transactionService;
 
+	@Autowired
+	@Qualifier("transactionListDataTableBackend")
+	private AbstractDataTableBackend transactionListDataTableBackend;
+	
 	@PostMapping("/calculateBill")
 	public ResponseEntity<TransactionDetailModel> calculateBill(@RequestBody String billData) throws Exception {
 		ObjectMapper mapper = new ObjectMapper();
@@ -51,4 +57,9 @@ public class TransactionController {
 		return ResponseEntity.ok(transactionService.payTransaction(transaction));
 	}
 
+	@PostMapping("/listTransactions")
+	public String listTransactions(@RequestBody String dataTableRequest) throws Exception{
+		transactionListDataTableBackend.intialize(dataTableRequest);
+		return transactionListDataTableBackend.getTableData();
+	}
 }

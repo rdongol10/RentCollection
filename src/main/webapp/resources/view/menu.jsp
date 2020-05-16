@@ -130,6 +130,20 @@
                                 </div>
                             </li>
                             
+                            <li class="nav-item ">
+                                <a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false" data-target="#transactionMenu" aria-controls="#transactionMenu">Transactions</a>
+                                <div id="transactionMenu" class="collapse submenu" style="">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="${contextPath}/resources/view/listTransactions.jsp">List Transactions</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#">Remaining Payments</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            
                         </ul>
                     </div>
                 </nav>

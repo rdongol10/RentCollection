@@ -208,9 +208,32 @@ public class RentingService {
 
 	}
 
-	public List<Select2Model> getAvailableRentingsForSelect2(String searchParam) {
-		List<Renting> rentings = getAvailableRentings(searchParam);
+	public List<Select2Model> getAllRentingForSelect2(String searchParam) {
+		List<Renting> rentings = getRentings(searchParam, false);
 		List<Select2Model> select2Models = new LinkedList<Select2Model>();
+
+		if (searchParam == null || searchParam.trim().isEmpty()) {
+			return select2Models;
+		}
+
+		for (Renting renting : rentings) {
+			Select2Model select2Model = new Select2Model();
+			select2Model.setId(String.valueOf(renting.getId()));
+			select2Model.setText(renting.getName());
+			select2Models.add(select2Model);
+		}
+
+		return select2Models;
+	}
+
+	public List<Select2Model> getAvailableRentingsForSelect2(String searchParam) {
+		List<Renting> rentings = getRentings(searchParam, true);
+		List<Select2Model> select2Models = new LinkedList<Select2Model>();
+
+		if (searchParam == null || searchParam.trim().isEmpty()) {
+			return select2Models;
+		}
+
 		for (Renting renting : rentings) {
 			Select2Model select2Model = new Select2Model();
 			select2Model.setId(String.valueOf(renting.getId()));
@@ -222,15 +245,17 @@ public class RentingService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Renting> getAvailableRentings(String searchParam) {
+	public List<Renting> getRentings(String searchParam, boolean available) {
 		StringBuilder stringQuery = new StringBuilder();
 		stringQuery.append(
 				" Select renting.id,renting.name,renting.type,renting.number_of_rooms,renting.price,renting.status From renting LEFT JOIN contract ON renting.id = contract.renting_id ");
-		stringQuery.append(" WHERE (contract.id is null AND renting.status = 1 )");
+		if (available) {
+			stringQuery.append(" WHERE (contract.id is null ");
+			stringQuery.append(" AND renting.status = 1 )");
+		}
 		stringQuery.append(" And renting.name like '%" + searchParam + "%' ");
 		stringQuery.append(" GROUP BY renting.id ");
-		
-		
+
 		Query query = entityManager.createNativeQuery(stringQuery.toString());
 		List<Object[]> rentingObjects = query.getResultList();
 
