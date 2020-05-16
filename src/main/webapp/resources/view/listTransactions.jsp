@@ -102,6 +102,26 @@
 			</div>
 		</div>
 	</div>
+	
+	<div class="modal fade" id="transactionModal" tabindex="-1" role="dialog" aria-labelledby="transactionModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-xlg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title" id="transactionModalLabel"></h3>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</div>
+			
+</body>
 </body>
 
 <script src="<c:url value="/resources/js/select2.min.js" />" ></script>
@@ -166,10 +186,24 @@
 			$('#transactionTable').DataTable().ajax.reload();
 		})
 		
+		jQuery("#transactionTable").on("click",".details",function(){
+			displayTransactionsDetail(jQuery(this).attr("transactionid"))
+		})
 		loadTableData()
 		
 		
 	})
+	
+	function displayTransactionsDetail(transactionId){
+		jQuery.ajax({
+			method:"GET",
+			url:"${contextPath}/transaction/getTransactionDetail/"+transactionId,
+		}).done(function(data){
+			jQuery(".modal-title").html("Transaction");
+			jQuery(".modal-body").html(getTransactionDetailHTML(data));
+			jQuery('#transactionModal').modal('show');
+		})
+	}
 	
 	function clearRentee(){
 		jQuery("#rentee").empty()

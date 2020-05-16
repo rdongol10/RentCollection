@@ -83,13 +83,25 @@ public class TransactionService {
 			}
 
 		}
-		
+
 		return transactionRepository.save(transaction);
-		
+
 	}
 
 	public void deleteById(Long id) {
 		transactionRepository.deleteById(id);
+	}
+
+	public TransactionDetailModel getTransactionDetail(long id) {
+		Transaction transaction = findById(id);
+
+		if (transaction == null) {
+			
+			ResponseEntity.badRequest().build();
+
+		}
+
+		return getTransactDetail(transaction);
 	}
 
 	public TransactionDetailModel getTransactDetail(Transaction transaction) {
@@ -152,33 +164,33 @@ public class TransactionService {
 		transaction.setNote(getTransactionNote(numberOfMonths, contract.getExpireDate()));
 		return transaction;
 	}
-	
+
 	private String getTransactionNote(int numberOfMonths, Date expireDate) {
-		
+
 		StringBuffer note = new StringBuffer();
-		
-		int monthCounts =-1;
-		for(int i =1;i<=numberOfMonths ; i++) {
+
+		int monthCounts = -1;
+		for (int i = 1; i <= numberOfMonths; i++) {
 			Calendar paymentDate = Calendar.getInstance();
 			paymentDate.setTime(expireDate);
-			paymentDate.add(Calendar.DAY_OF_MONTH, monthCounts*30);
+			paymentDate.add(Calendar.DAY_OF_MONTH, monthCounts * 30);
 			note.append(paymentDate.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.US));
 			note.append(" ");
 			note.append(paymentDate.get(Calendar.YEAR));
-			
-			if(i<numberOfMonths) {
+
+			if (i < numberOfMonths) {
 				note.append(" , ");
 			}
-			
+
 			monthCounts++;
-			
+
 		}
-		if(note.toString().trim().isEmpty()) {
+		if (note.toString().trim().isEmpty()) {
 			return "";
-					
+
 		}
-		return "Invoice for " + note.toString();		
-		
+		return "Invoice for " + note.toString();
+
 	}
 
 	public TransactionDetail calculateTransactionDetail(int numberOfMonths,
@@ -321,21 +333,21 @@ public class TransactionService {
 		}
 		return transactionServiceDetails;
 	}
-	
+
 	public Transaction billTransaction(Transaction transaction) {
 		transaction.setPaid(0);
 		transaction.setPaidDate(null);
 		return save(transaction, true);
 	}
-	
+
 	public Transaction payTransaction(Transaction transaction) {
-		
+
 		transaction.setPaid(1);
 		transaction.setPaidDate(new Date());
-		
+
 		return save(transaction, true);
 	}
-	
+
 	public Transaction save(Transaction transaction, boolean updateRelated) {
 
 		Contract contract = contractService.findById(transaction.getContractId());
@@ -351,10 +363,10 @@ public class TransactionService {
 					contractService.getExpireDate(contract.getExpireDate(), transaction.getNumberOfMonths()));
 			contractService.save(contract);
 		}
-		
-		for(TransactionDetail transactionDetail : transaction.getTransactionDetail()) {
+
+		for (TransactionDetail transactionDetail : transaction.getTransactionDetail()) {
 			RentingFacility rentingFacility = rentingFacilityService.findById(transactionDetail.getRentingFacilityId());
-			if(rentingFacility.getService().getType().equalsIgnoreCase("unit")) {
+			if (rentingFacility.getService().getType().equalsIgnoreCase("unit")) {
 				rentingFacility.setUnits(transactionDetail.getCurrentUnit());
 				rentingFacilityService.save(rentingFacility);
 			}

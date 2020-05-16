@@ -152,7 +152,7 @@ public class TransactionListDataTableBackend extends AbstractDataTableBackend {
 			data.add(formatDate(object[6]));
 			data.add(String.valueOf(object[7]));
 			data.add(String.valueOf(object[8]));
-			data.add(" ");
+			data.add(getActionButtons(String.valueOf(object[0])));
 
 			tableData.add(data);
 
@@ -241,6 +241,21 @@ public class TransactionListDataTableBackend extends AbstractDataTableBackend {
 
 		searchFilterCriteria = searchFilter.toString();
 
+	}
+	
+	protected String getActionButtons(String transactionId) {
+		StringBuffer actionButtons = new StringBuffer();
+		actionButtons.append(getTransactionDetailsAction(transactionId));
+		return actionButtons.toString();
+
+
+	}
+
+	protected String getTransactionDetailsAction(String transactionId) {
+		StringBuffer transactionDetails = new StringBuffer();
+		transactionDetails.append("<i class='actionButton details fas fa-info-circle' transactionId='" + transactionId
+				+ "' title='details' style = 'color:#666666'> </i>");
+		return transactionDetails.toString();
 	}
 
 }

@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +32,7 @@ public class TransactionController {
 	@Autowired
 	@Qualifier("transactionListDataTableBackend")
 	private AbstractDataTableBackend transactionListDataTableBackend;
-	
+
 	@PostMapping("/calculateBill")
 	public ResponseEntity<TransactionDetailModel> calculateBill(@RequestBody String billData) throws Exception {
 		ObjectMapper mapper = new ObjectMapper();
@@ -58,8 +60,13 @@ public class TransactionController {
 	}
 
 	@PostMapping("/listTransactions")
-	public String listTransactions(@RequestBody String dataTableRequest) throws Exception{
+	public String listTransactions(@RequestBody String dataTableRequest) throws Exception {
 		transactionListDataTableBackend.intialize(dataTableRequest);
 		return transactionListDataTableBackend.getTableData();
+	}
+
+	@GetMapping("/getTransactionDetail/{id}")
+	public ResponseEntity<TransactionDetailModel> getTransactionDetail(@PathVariable long id) {
+		return ResponseEntity.ok(transactionService.getTransactionDetail(id));
 	}
 }
