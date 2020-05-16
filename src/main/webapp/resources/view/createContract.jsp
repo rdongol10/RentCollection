@@ -6,6 +6,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <link href="<c:url value="/resources/css/select2.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/select2-bootstrap.min.css" />" rel="stylesheet">
 <link href="<c:url value="/resources/css/displayDetails.css" />" rel="stylesheet">
 
 <title>create contract</title>
@@ -43,8 +44,8 @@
 													</div>
 								                </div>
 							                 	<div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1">
-							                 		<br>
-							                 		<i class="actionButton details fas fa-info-circle" id ="rentingDetails"></i>
+							                 		<br><br>
+							                 		<i class="actionButton details fas fa-info-circle fa-lg" id ="rentingDetails"></i>
 							                 	</div>
 							                 	
 												<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
@@ -57,8 +58,8 @@
 				                                </div>
 				                                
 				                                <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1">
-					                                <br>
-								                 	<i class="actionButton details fas fa-info-circle" id ="renteeDetails"></i>
+					                                <br><br>
+								                 	<i class="actionButton details fas fa-info-circle fa-lg" id ="renteeDetails"></i>
 							                 	</div>
 							                 	
                                             </div>
@@ -112,8 +113,12 @@
 		
 		loadSelectOptions(rentingId);
 		
-		jQuery("#renting").select2();
-		jQuery("#rentee").select2();
+		jQuery("#renting").select2({
+			theme: "bootstrap"
+		});
+		jQuery("#rentee").select2({
+			theme: "bootstrap"
+		});
 		
 		jQuery("#createContract").on("click",function(){
 			event.preventDefault()
