@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rdongol.rentcollection.model.Rentee;
-import com.rdongol.rentcollection.model.RenteeContractModel;
 import com.rdongol.rentcollection.model.RenteeModel;
+import com.rdongol.rentcollection.model.Select2Model;
 import com.rdongol.rentcollection.service.RenteeService;
 import com.rdongol.rentcollection.service.datatable.AbstractDataTableBackend;
 
@@ -54,8 +54,10 @@ public class RenteeController {
 		return ResponseEntity.ok(renteeService.update(id, renteeModel));
 	}
 
-	@GetMapping("/getRenteeContractModel")
-	public ResponseEntity<List<RenteeContractModel>> getRenteeContractModels() {
-		return ResponseEntity.ok(renteeService.getRenteeContractModels());
+	@PostMapping("/getRenteeForSelect2")
+	public ResponseEntity<List<Select2Model>> getRenteeForSelect2(String search) {
+
+		return ResponseEntity.ok(renteeService.getRenteesForSelect2(search));
+
 	}
 }

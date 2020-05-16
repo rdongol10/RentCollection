@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rdongol.rentcollection.model.Renting;
-import com.rdongol.rentcollection.model.RentingContractModel;
 import com.rdongol.rentcollection.model.RentingDisplayModal;
 import com.rdongol.rentcollection.model.RentingModel;
+import com.rdongol.rentcollection.model.Select2Model;
 import com.rdongol.rentcollection.service.ImageService;
 import com.rdongol.rentcollection.service.RentingService;
 import com.rdongol.rentcollection.service.datatable.AbstractDataTableBackend;
@@ -83,14 +83,15 @@ public class RentingController {
 
 	}
 
-	@GetMapping("/getAvailableRentings")
-	public ResponseEntity<List<RentingContractModel>> getAvailableRentings() {
-		return ResponseEntity.ok(rentingService.getAvailableRentingContractModels());
-	}
-
 	@GetMapping("/getRentingDetails/{id}")
 	public ResponseEntity<RentingDisplayModal> getRentingDetails(@PathVariable long id) {
 		return ResponseEntity.ok(rentingService.getRentingDetails(id));
 	}
 
+	@PostMapping("/getRentingForSelect2")
+	public ResponseEntity<List<Select2Model>> getRentingForSelect2(String search) {
+
+		return ResponseEntity.ok(rentingService.getAvailableRentingsForSelect2(search));
+
+	}
 }

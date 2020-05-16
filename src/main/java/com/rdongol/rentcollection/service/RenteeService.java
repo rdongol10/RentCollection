@@ -4,15 +4,19 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.rdongol.rentcollection.model.Rentee;
-import com.rdongol.rentcollection.model.RenteeContractModel;
 import com.rdongol.rentcollection.model.RenteeDependent;
 import com.rdongol.rentcollection.model.RenteeDependentModel;
 import com.rdongol.rentcollection.model.RenteeModel;
+import com.rdongol.rentcollection.model.Select2Model;
 import com.rdongol.rentcollection.repository.RenteeRepository;
 
 @Service
@@ -26,6 +30,9 @@ public class RenteeService {
 
 	@Autowired
 	private ImageService imageService;
+	
+	@PersistenceContext
+	protected EntityManager entityManager;
 
 	public List<Rentee> findAll() {
 
@@ -169,18 +176,31 @@ public class RenteeService {
 
 		return renteeModel;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Select2Model> getRenteesForSelect2(String searchParam) {
+		List<Select2Model> select2Models = new LinkedList<Select2Model>();
 
-	public List<RenteeContractModel> getRenteeContractModels() {
-		List<Rentee> rentees = findAll();
-		List<RenteeContractModel> renteeContractModels = new LinkedList<RenteeContractModel>();
-		for (Rentee rentee : rentees) {
-			RenteeContractModel renteeContractModel = new RenteeContractModel(rentee.getId(),
-					rentee.getFirstName() + " " + rentee.getMiddleName() + " " + rentee.getLastName());
-			renteeContractModels.add(renteeContractModel);
+		if (searchParam == null || searchParam.trim().isEmpty()) {
+			return select2Models;
 		}
 
-		return renteeContractModels;
+		String stringQuery = "Select rentee.id ,rentee.first_name, rentee.last_name, rentee.middle_name From rentee where rentee.first_name like '%"
+				+ searchParam + "%' OR rentee.last_name like '%" + searchParam + "%' OR rentee.middle_name like '%"
+				+ searchParam + "%'";
+		Query query = entityManager.createNativeQuery(stringQuery);
+		List<Object[]> rentees = query.getResultList();
+		for (Object[] rentee : rentees) {
+			Select2Model select2Model = new Select2Model();
+			select2Model.setId(rentee[0].toString());
+			String firstName = rentee[1].toString();
+			String lastName = rentee[2].toString();
+			String middleName = rentee[3].toString();
 
+			select2Model.setText(firstName + " " + middleName + " " + lastName);
+			select2Models.add(select2Model);
+		}
+		return select2Models;
 	}
 
 }

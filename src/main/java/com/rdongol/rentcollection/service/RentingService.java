@@ -16,11 +16,11 @@ import com.rdongol.rentcollection.model.Contract;
 import com.rdongol.rentcollection.model.Rentee;
 import com.rdongol.rentcollection.model.RenteeModel;
 import com.rdongol.rentcollection.model.Renting;
-import com.rdongol.rentcollection.model.RentingContractModel;
 import com.rdongol.rentcollection.model.RentingDisplayModal;
 import com.rdongol.rentcollection.model.RentingFacility;
 import com.rdongol.rentcollection.model.RentingFacilityModel;
 import com.rdongol.rentcollection.model.RentingModel;
+import com.rdongol.rentcollection.model.Select2Model;
 import com.rdongol.rentcollection.repository.RentingRepository;
 
 @Service
@@ -208,17 +208,47 @@ public class RentingService {
 
 	}
 
-	public List<RentingContractModel> getAvailableRentingContractModels() {
-		List<Renting> rentings = getAvailableRentings();
-
-		List<RentingContractModel> rentingContractModels = new LinkedList<RentingContractModel>();
-
+	public List<Select2Model> getAvailableRentingsForSelect2(String searchParam) {
+		List<Renting> rentings = getAvailableRentings(searchParam);
+		List<Select2Model> select2Models = new LinkedList<Select2Model>();
 		for (Renting renting : rentings) {
-			RentingContractModel rentingContractModel = new RentingContractModel(renting.getId(), renting.getName());
-			rentingContractModels.add(rentingContractModel);
+			Select2Model select2Model = new Select2Model();
+			select2Model.setId(String.valueOf(renting.getId()));
+			select2Model.setText(renting.getName());
+			select2Models.add(select2Model);
 		}
-		return rentingContractModels;
 
+		return select2Models;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Renting> getAvailableRentings(String searchParam) {
+		StringBuilder stringQuery = new StringBuilder();
+		stringQuery.append(
+				" Select renting.id,renting.name,renting.type,renting.number_of_rooms,renting.price,renting.status From renting LEFT JOIN contract ON renting.id = contract.renting_id ");
+		stringQuery.append(" WHERE (contract.id is null AND renting.status = 1 )");
+		stringQuery.append(" And renting.name like '%" + searchParam + "%' ");
+		stringQuery.append(" GROUP BY renting.id ");
+		
+		
+		Query query = entityManager.createNativeQuery(stringQuery.toString());
+		List<Object[]> rentingObjects = query.getResultList();
+
+		List<Renting> rentings = new LinkedList<Renting>();
+		for (Object[] rentingObject : rentingObjects) {
+
+			Renting renting = new Renting();
+			renting.setId(Long.valueOf(rentingObject[0].toString()));
+			renting.setName(rentingObject[1].toString());
+			renting.setType(rentingObject[2].toString());
+			renting.setNumberOfRooms(Integer.valueOf(rentingObject[3].toString()));
+			renting.setPrice(Double.valueOf(rentingObject[4].toString()));
+			renting.setStatus(Integer.valueOf(rentingObject[5].toString()));
+			rentings.add(renting);
+
+		}
+
+		return rentings;
 	}
 
 	@SuppressWarnings("unchecked")
