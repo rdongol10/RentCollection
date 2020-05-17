@@ -69,6 +69,7 @@
 				<div class="modal-body">
 				</div>
 				<div class="modal-footer">
+					<button type="button" class="btn btn-success"id="payInvoice">Pay</button>
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 				</div>
 			</div>
@@ -79,6 +80,8 @@
 <script src="<c:url value="/resources/js/displayDetails.js" />" ></script>
 
 <script type="text/javascript">
+	var table;
+	var transactionId=0;
 	jQuery(document).ready(function(){
 		
 		loadTableData()
@@ -87,8 +90,16 @@
 			displayTransactionsDetail(jQuery(this).attr("transactionid"))
 		})
 		
+		jQuery("#payInvoice").on("click",function(){
+			payTransaction(transactionId);
+		})
+		
 		jQuery("#transactionTable").on("click",".payment",function(){
 			payTransaction(jQuery(this).attr("transactionid"))
+		})
+		
+		jQuery('#transactionModal').on('hidden.bs.modal', function (e) {
+			transactionId=0;
 		})
 		
 	});
@@ -101,14 +112,16 @@
 
 		}).done(function(data){
 			$('#transactionTable').DataTable().ajax.reload();
+			$('#transactionModal').modal('toggle');
 		})
 	}
 	
-	function displayTransactionsDetail(transactionId){
+	function displayTransactionsDetail(id){
 		jQuery.ajax({
 			method:"GET",
-			url:"${contextPath}/transaction/getTransactionDetail/"+transactionId,
+			url:"${contextPath}/transaction/getTransactionDetail/"+id,
 		}).done(function(data){
+			transactionId=id
 			jQuery(".modal-title").html("Transaction");
 			jQuery(".modal-body").html(getTransactionDetailHTML(data));
 			jQuery('#transactionModal').modal('show');
