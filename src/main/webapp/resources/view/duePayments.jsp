@@ -1,17 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
+
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<link href="<c:url value="/resources/css/select2.css" />" rel="stylesheet">
-<link href="<c:url value="/resources/css/select2-bootstrap.min.css" />" rel="stylesheet">
 <link href="<c:url value="/resources/css/displayDetails.css" />" rel="stylesheet">
-<link href="<c:url value="/resources/css/daterangepicker.css" />" rel="stylesheet">
 
-<title>Transactions</title>
+<title>Due payments</title>
 </head>
 <body>
 	<div class="dashboard-main-wrapper">
@@ -34,40 +32,6 @@
 	                   		
 	                   		<div class="card-body">
 	                   		
-	                   			<div class="row">
-									<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12  col3 form-group">
-										<label for="billedDate" class="col-form-label" > Billed Date </label>
-										<input type="text" id="billedDate" class="dateRangePicer form-control ">
-									</div>
-									
-									<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12  col3 form-group">
-										<label for="rentee" class="col-form-label " > Rentee </label>
-										<select class="form-control rentee" id="rentee"></select>
-									</div>
-									
-									<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12  col3 form-group">
-										<label for="renting" class="col-form-label col3" > Renting </label>
-										<select class="form-control rentee" id="renting"></select>
-										
-									</div>
-									
-	                   			</div>
-	                   			<br>
-	                   			<div class="row">
-	                   				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 form-group">
-									
-										<button class="btn btn-success" id="clearSelection"><i class="fas fa-sync-alt" ></i>&nbsp; Clear</button>
-										
-										<button class="btn btn-success" id="searchTransaction"><i class="fas fa-search"></i> &nbsp; Search</button>
-									
-									</div>
-									
-									<div class="col-xl-2 col-lg-2 col-md-2 col-sm-12 form-group">
-											
-									</div>
-								</div>	
-									
-	                   			<hr>
 	                   			<div class="table-responsive">
 	                   				<table class="table table-striped table-bordered first" id="transactionTable">
 										<thead>
@@ -110,79 +74,20 @@
 			</div>
 		</div>
 	</div>
-			
-</body>
 </body>
 
-<script src="<c:url value="/resources/js/select2.min.js" />" ></script>
 <script src="<c:url value="/resources/js/displayDetails.js" />" ></script>
-<script src="<c:url value="/resources/js/moment.min.js" />"></script>
-<script src="<c:url value="/resources/js/daterangepicker.js" />"></script>
-
 
 <script type="text/javascript">
-	
-	var table;
-	
 	jQuery(document).ready(function(){
-
-		jQuery(".dateRangePicer").daterangepicker({
-		});
-
-		jQuery("#rentee").select2({
-			theme: "bootstrap",
-			ajax:{
-				method : "POST",
-				url :"${contextPath}/rentee/getRenteeForSelect2",
-				dataType: 'json',
-				data:function(param){
-					var value ={search : param.term}
-					return value;
-				}, 
-				processResults: function (data) {
-					return {
-						results: data
-					};
-				}
-			}
-		});
 		
-		jQuery("#renting").select2({
-			theme: "bootstrap",
-			ajax:{
-				method : "POST",
-				url :"${contextPath}/renting/getAllRentingForSelect2",
-				dataType: 'json',
-				data:function(param){
-					var value ={search : param.term}
-					return value;
-				}, 
-				processResults: function (data) {
-					return {
-						results: data
-					};
-				}
-			}
-		});
-		
-		jQuery("#searchTransaction").on("click",function(){
-			$('#transactionTable').DataTable().ajax.reload();
-		})
+		loadTableData()
 		
 		jQuery("#transactionTable").on("click",".details",function(){
 			displayTransactionsDetail(jQuery(this).attr("transactionid"))
 		})
 		
-		jQuery("#clearSelection").on("click",function(){
-			clearRentee();
-			clearRenting();
-			//TODO clear date
-		})
-		
-		
-		loadTableData()
-		
-	})
+	});
 	
 	function displayTransactionsDetail(transactionId){
 		jQuery.ajax({
@@ -195,16 +100,6 @@
 		})
 	}
 	
-	function clearRentee(){
-		jQuery("#rentee").empty()
-
-	}
-	
-	function clearRenting(){
-		jQuery("#renting").empty()
-
-	}
-	
 	function loadTableData(){
 		table = jQuery("#transactionTable").DataTable({
 			"processing": true,
@@ -214,10 +109,8 @@
 				 "type": "POST",
 				 "contentType": "application/json",
 				 "data": function(data){
-				 	data.billedDate = jQuery("#billedDate").val();
-				 	data.renteeId = jQuery("#rentee").val();
-				 	data.rentingId = jQuery("#renting").val();
-
+				 	
+					 data.unpaidOnly = "true"
 				 	
 					return JSON.stringify(data);
 				}
@@ -236,5 +129,4 @@
 		
 	}
 </script>
-
 </html>

@@ -24,6 +24,7 @@ public class TransactionListDataTableBackend extends AbstractDataTableBackend {
 	public Date endBilledDate = null;
 	public int renteeId = 0;
 	public int rentingId = 0;
+	public boolean unpaidOnly = false;
 
 	@Override
 	public void intialize(String dataTableRequest) {
@@ -35,21 +36,41 @@ public class TransactionListDataTableBackend extends AbstractDataTableBackend {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			JsonNode rootNode = mapper.readTree(new StringReader(dataTableRequest));
-			String billedDate = rootNode.get("billedDate").asText();
-			if (billedDate != null && !billedDate.trim().equals("")) {
-				DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-				startBilledDate = df.parse(billedDate.split("-")[0].trim());
-				endBilledDate = df.parse(billedDate.split("-")[1].trim());
+
+			JsonNode billedDateNode = rootNode.get("billedDate");
+			JsonNode renteeIdNode = rootNode.get("renteeId");
+			JsonNode rentingIdNode = rootNode.get("rentingId");
+			JsonNode unPaidOnlyNode = rootNode.get("unpaidOnly");
+
+			if (billedDateNode != null && renteeIdNode != null && rentingIdNode != null) {
+
+				String billedDate = rootNode.get("billedDate").asText();
+				if (billedDate != null && !billedDate.trim().equals("")) {
+
+					DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+					startBilledDate = df.parse(billedDate.split("-")[0].trim());
+					endBilledDate = df.parse(billedDate.split("-")[1].trim());
+
+				}
+
+				if (rootNode.get("renteeId").asText() != null && !rootNode.get("renteeId").asText().trim().equals("")) {
+
+					renteeId = rootNode.get("renteeId").asInt();
+
+				}
+
+				if (rootNode.get("rentingId").asText() != null
+						&& !rootNode.get("rentingId").asText().trim().equals("")) {
+
+					rentingId = rootNode.get("rentingId").asInt();
+
+				}
+
 			}
 
-			if (rootNode.get("renteeId").asText() != null && !rootNode.get("renteeId").asText().trim().equals("")) {
-				renteeId = rootNode.get("renteeId").asInt();
+			if (unPaidOnlyNode != null) {
+				unpaidOnly = unPaidOnlyNode.asBoolean();
 			}
-
-			if (rootNode.get("rentingId").asText() != null && !rootNode.get("rentingId").asText().trim().equals("")) {
-				rentingId = rootNode.get("rentingId").asInt();
-			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -135,6 +156,10 @@ public class TransactionListDataTableBackend extends AbstractDataTableBackend {
 			}
 
 		}
+
+		if (unpaidOnly) {
+			whereCriteria += " AND transaction.paid = 0 AND transaction.paid_date IS NULL ";
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -199,7 +224,7 @@ public class TransactionListDataTableBackend extends AbstractDataTableBackend {
 
 		return (BigInteger) entityManager.createNativeQuery(query.toString()).getSingleResult();
 	}
-	
+
 	protected void setSearchFilterCriteria() {
 
 		if (searchValue == null || searchValue.isEmpty() || searchValue.trim().equals("")) {
@@ -215,7 +240,7 @@ public class TransactionListDataTableBackend extends AbstractDataTableBackend {
 
 		if (!whereCriteria.toUpperCase().contains("WHERE")) {
 			searchFilter.append(" WHERE ");
-		}else {
+		} else {
 			searchFilter.append(" AND ");
 		}
 
@@ -224,12 +249,13 @@ public class TransactionListDataTableBackend extends AbstractDataTableBackend {
 		int length = 1;
 		for (String tableColumn : tableColumns) {
 
-			if(tableColumn.equalsIgnoreCase("rentee.first_name")) {
-				searchFilter.append(" rentee.first_name Like '%" + searchValue + "%' OR rentee.middle_name Like '%" + searchValue + "%' OR rentee.last_name Like '%" + searchValue + "%' ");
-			}else {
+			if (tableColumn.equalsIgnoreCase("rentee.first_name")) {
+				searchFilter.append(" rentee.first_name Like '%" + searchValue + "%' OR rentee.middle_name Like '%"
+						+ searchValue + "%' OR rentee.last_name Like '%" + searchValue + "%' ");
+			} else {
 
 				searchFilter.append(tableColumn + " Like '%" + searchValue + "%'");
-				
+
 			}
 			if (length != tableColumns.size()) {
 				searchFilter.append(" OR ");
@@ -242,12 +268,11 @@ public class TransactionListDataTableBackend extends AbstractDataTableBackend {
 		searchFilterCriteria = searchFilter.toString();
 
 	}
-	
+
 	protected String getActionButtons(String transactionId) {
 		StringBuffer actionButtons = new StringBuffer();
 		actionButtons.append(getTransactionDetailsAction(transactionId));
 		return actionButtons.toString();
-
 
 	}
 

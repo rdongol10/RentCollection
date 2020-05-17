@@ -138,7 +138,7 @@
                                             <a class="nav-link" href="${contextPath}/resources/view/listTransactions.jsp">List Transactions</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="#">Remaining Payments</a>
+                                            <a class="nav-link" href="${contextPath}/resources/view/duePayments.jsp">Remaining Payments</a>
                                         </li>
                                     </ul>
                                 </div>
