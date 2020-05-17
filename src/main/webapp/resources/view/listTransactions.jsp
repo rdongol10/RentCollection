@@ -77,8 +77,8 @@
 											    <th>Rentee Name</th>
 											    <th>Billed Date</th>
 											    <th>Paid Date</th>
-											    <th>Total Charge</th>
    											    <th>Note</th>
+											    <th>Total Charge</th>
    											    <th>Actions</th>
 											</tr>
 										</thead>
@@ -228,8 +228,8 @@
 				{data : 2 , name:"first_name"},
 				{data : 3 , name:"billed_date"},
 				{data : 4 , name:"paid_Date"},
-				{data : 5 , name:"total_charge"},
-				{data : 6 , name:"note"},
+				{data : 5 , name:"note"},
+				{data : 6 , name:"total_charge"},
 				{data : 7 , name:"actions",searchable : false , orderable:false}
 			]
 		});

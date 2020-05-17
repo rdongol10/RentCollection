@@ -34,6 +34,13 @@ public class TransactionListDataTableBackend extends AbstractDataTableBackend {
 		}
 
 		ObjectMapper mapper = new ObjectMapper();
+
+		startBilledDate = null;
+		endBilledDate = null;
+		renteeId = 0;
+		rentingId = 0;
+		unpaidOnly = false;
+
 		try {
 			JsonNode rootNode = mapper.readTree(new StringReader(dataTableRequest));
 
@@ -175,9 +182,9 @@ public class TransactionListDataTableBackend extends AbstractDataTableBackend {
 			data.add(getFullName(String.valueOf(object[2]), String.valueOf(object[3]), String.valueOf(object[4])));
 			data.add(formatDate(object[5]));
 			data.add(formatDate(object[6]));
-			data.add(String.valueOf(object[7]));
 			data.add(String.valueOf(object[8]));
-			data.add(getActionButtons(String.valueOf(object[0]) ,object[6]) );
+			data.add(String.valueOf(object[7]));
+			data.add(getActionButtons(String.valueOf(object[0]), object[6]));
 
 			tableData.add(data);
 
@@ -276,22 +283,22 @@ public class TransactionListDataTableBackend extends AbstractDataTableBackend {
 			actionButtons.append(" ");
 			actionButtons.append(getPayTransactionAction(transactionId));
 		}
-		
+
 		return actionButtons.toString();
 
 	}
 
 	protected String getTransactionDetailsAction(String transactionId) {
 		StringBuffer transactionDetails = new StringBuffer();
-		transactionDetails.append("<i class='actionButton details fas fa-info-circle fa-lg' transactionId='" + transactionId
-				+ "' title='details' style = 'color:#666666'> </i>");
+		transactionDetails.append("<i class='actionButton details fas fa-info-circle fa-lg' transactionId='"
+				+ transactionId + "' title='details' style = 'color:#666666'> </i>");
 		return transactionDetails.toString();
 	}
-	
+
 	protected String getPayTransactionAction(String transactionId) {
 		StringBuffer payTransaction = new StringBuffer();
-		payTransaction.append("<i class='actionButton payment fas fa-money-check-alt fa-lg' transactionId='" + transactionId
-				+ "' title='pay' style = 'color:#009B33'> </i>");
+		payTransaction.append("<i class='actionButton payment fas fa-money-check-alt fa-lg' transactionId='"
+				+ transactionId + "' title='pay' style = 'color:#009B33'> </i>");
 		return payTransaction.toString();
 	}
 
