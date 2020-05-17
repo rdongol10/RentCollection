@@ -96,7 +96,7 @@ public class TransactionService {
 		Transaction transaction = findById(id);
 
 		if (transaction == null) {
-			
+
 			ResponseEntity.badRequest().build();
 
 		}
@@ -340,12 +340,22 @@ public class TransactionService {
 		return save(transaction, true);
 	}
 
-	public Transaction payTransaction(Transaction transaction) {
+	public Transaction payTransaction(long transactionId, boolean updateRelated) {
+		Transaction transaction = findById(transactionId);
+
+		if (transaction == null) {
+			ResponseEntity.badRequest().build();
+		}
+
+		return payTransaction(transaction, updateRelated);
+	}
+
+	public Transaction payTransaction(Transaction transaction, boolean updateRelated) {
 
 		transaction.setPaid(1);
 		transaction.setPaidDate(new Date());
 
-		return save(transaction, true);
+		return save(transaction, updateRelated);
 	}
 
 	public Transaction save(Transaction transaction, boolean updateRelated) {

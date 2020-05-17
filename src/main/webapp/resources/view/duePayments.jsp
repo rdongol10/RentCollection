@@ -87,7 +87,22 @@
 			displayTransactionsDetail(jQuery(this).attr("transactionid"))
 		})
 		
+		jQuery("#transactionTable").on("click",".payment",function(){
+			payTransaction(jQuery(this).attr("transactionid"))
+		})
+		
 	});
+	
+	function payTransaction(transactionId){
+		jQuery.ajax({
+			
+			method:"PUT",
+			url:"${contextPath}/transaction/payInvoice/"+transactionId
+
+		}).done(function(data){
+			$('#transactionTable').DataTable().ajax.reload();
+		})
+	}
 	
 	function displayTransactionsDetail(transactionId){
 		jQuery.ajax({
