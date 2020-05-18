@@ -41,13 +41,13 @@
 	                                            
 	                                           <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">
 	                                                <label for="minimumCharge" class="col-form-label">Minimum Charge</label>
-	                                                <input id="minimumCharge" name="minimumCharge" type="number" class="form-control" value=''>
+	                                                <input id="minimumCharge" name="minimumCharge" type="number" min=0 class="form-control number" value=''>
 													<div class="errorFeedback" id="minimumCharge-errorFeedback"></div>
 	                                            </div>
 	                                            
 	                                            <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">
 	                                                <label for="charge" class="col-form-label">Charge</label>
-	                                                <input id="charge" name="charge" type="number" class="form-control" value=''>
+	                                                <input id="charge" name="charge" type="number" min=0 class="form-control number" value=''>
 													<div class="errorFeedback" id="charge-errorFeedback"></div>
 	                                            </div>
     
@@ -205,17 +205,17 @@
 			html +='<input id="serviceDetailId-'+serviceDetailsCount+'" name="id" type="hidden" class="serviceDetailId" value="'+serviceDetails[i].id+'">'
 			html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 			html += '<label for="rate-'+serviceDetailsCount+'" class="col-form-label">Rate<span class="requiredField">*</span></label>'
-			html += '<input id="rate-'+serviceDetailsCount+'" name="rate" type="number" class="rate form-control requiredInputs" value="'+serviceDetails[i].rate+'">'
+			html += '<input id="rate-'+serviceDetailsCount+'" name="rate" type="number" min=0 class="rate form-control requiredInputs number" value="'+serviceDetails[i].rate+'">'
 			html += '<div class="errorFeedback" id="rate-'+serviceDetailsCount+'-errorFeedback"></div>'
 			html += '</div>'
 			html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 			html += '<label for="volumeCutoff-'+serviceDetailsCount+'" class="col-form-label">Volume Cutoff<span class="requiredField">*</span></label>'
-			html += '<input id="volumeCutoff-'+serviceDetailsCount+'" name="volumeCutoff" type="number" class="volumeCutoff form-control requiredInputs" value="'+serviceDetails[i].volumeCutoff+'">'
+			html += '<input id="volumeCutoff-'+serviceDetailsCount+'" name="volumeCutoff" type="number" min=0 class="volumeCutoff form-control requiredInputs number" value="'+serviceDetails[i].volumeCutoff+'">'
 			html += '<div class="errorFeedback" id="volumeCutoff-'+serviceDetailsCount+'-errorFeedback"></div>'
 			html += '</div>'
 			html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 			html += '<label for="serviceCharge-'+serviceDetailsCount+'" class="col-form-label">Service Charge</label>'
-			html += '<input id="serviceCharge-'+serviceDetailsCount+'" name="serviceCharge" type="number" class="serviceCharge form-control " value="'+serviceDetails[i].serviceCharge+'">'
+			html += '<input id="serviceCharge-'+serviceDetailsCount+'" name="serviceCharge" type="number" min=0 class="serviceCharge form-control number" value="'+serviceDetails[i].serviceCharge+'">'
 			html += '<div class="errorFeedback" id="serviceCharge-'+serviceDetailsCount+'-errorFeedback"></div>'
 			html += '</div>'
 			html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
@@ -288,10 +288,21 @@
 			doesServiceNameExists()
 		}
 		validateServiceDetails();
+		validateNumberFields();
 		return !errorFields.length > 0;
 		
 	}
 	
+	function validateNumberFields(){
+		jQuery(".number:visible").each(function() {
+			var errorField = {};
+			if (this.value.trim() != "" && parseInt(this.value.trim()) <0 ) {
+				errorField.id = jQuery(this).attr("id");
+				errorField.message = "Cannot be less than 0";
+				errorFields.push(errorField)
+			}
+		})
+	}
 	
 	function validateServiceDetails(){
 		
@@ -336,17 +347,17 @@
 		html +='<input id="serviceDetailId-'+serviceDetailsCount+'" name="id" type="hidden" class="serviceDetailId">'
 		html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 		html += '<label for="rate-'+serviceDetailsCount+'" class="col-form-label">Rate<span class="requiredField">*</span></label>'
-		html += '<input id="rate-'+serviceDetailsCount+'" name="rate" type="number" class="rate form-control requiredInputs" value="">'
+		html += '<input id="rate-'+serviceDetailsCount+'" name="rate" type="number" min=0 class="rate form-control requiredInputs number" value="">'
 		html += '<div class="errorFeedback" id="rate-'+serviceDetailsCount+'-errorFeedback"></div>'
 		html += '</div>'
 		html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 		html += '<label for="volumeCutoff-'+serviceDetailsCount+'" class="col-form-label">Volume Cutoff<span class="requiredField">*</span></label>'
-		html += '<input id="volumeCutoff-'+serviceDetailsCount+'" name="volumeCutoff" type="number" class="volumeCutoff form-control requiredInputs" value="">'
+		html += '<input id="volumeCutoff-'+serviceDetailsCount+'" name="volumeCutoff" min=0 type="number" class="volumeCutoff form-control requiredInputs number" value="">'
 		html += '<div class="errorFeedback" id="volumeCutoff-'+serviceDetailsCount+'-errorFeedback"></div>'
 		html += '</div>'
 		html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 		html += '<label for="serviceCharge-'+serviceDetailsCount+'" class="col-form-label">Service Charge</label>'
-		html += '<input id="serviceCharge-'+serviceDetailsCount+'" name="serviceCharge" type="number" class="serviceCharge form-control " value="">'
+		html += '<input id="serviceCharge-'+serviceDetailsCount+'" name="serviceCharge" min=0 type="number" class="serviceCharge form-control number" value="">'
 		html += '<div class="errorFeedback" id="serviceCharge-'+serviceDetailsCount+'-errorFeedback"></div>'
 		html += '</div>'
 		html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'

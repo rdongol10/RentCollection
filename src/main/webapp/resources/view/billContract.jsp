@@ -273,9 +273,20 @@
 		errorFields = []
 		validateNumberofMonths()
 		validateUnits()
+		validateNumberFields()
 		return !errorFields.length > 0;;
 	}
 	
+	function validateNumberFields(){
+		jQuery(".number:visible").each(function() {
+			var errorField = {};
+			if (this.value.trim() != "" && parseInt(this.value.trim()) <0 ) {
+				errorField.id = jQuery(this).attr("id");
+				errorField.message = "Cannot be less than 0";
+				errorFields.push(errorField)
+			}
+		})
+	}
 	function validateNumberofMonths(){
 		
 		if(parseInt(jQuery("#months").val())<=0){
@@ -301,7 +312,7 @@
 			
 			var currentUnit =  jQuery(this).val();
 			
-			if(currentUnit <= lastUnit){
+			if(currentUnit < lastUnit){
 				errorField.id = jQuery(this).attr("id");
 				errorField.message = "Current unit should be greater than last unit";
 				errorFields.push(errorField)
@@ -360,7 +371,7 @@
 				html += '<div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 serviceCharge"  id="serviceCharge-'+i+'" >-</div>'
 				html += '<div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 lastUnit" id="lastUnit-'+i+'" >'+data[i].lastUnit+'</div>'
 				html += '<div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">'
-				html += '<input type="number" id="currentUnit-'+i+'" class="form-control requiredInputs currentUnits" min="0" count="'+i+'">'
+				html += '<input type="number" id="currentUnit-'+i+'" class="number form-control requiredInputs currentUnits" min="0" count="'+i+'">'
 				html += '<div class="errorFeedback" id="currentUnit-'+i+'-errorFeedback"></div>'
 				html += '</div>'
 

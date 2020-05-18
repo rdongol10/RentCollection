@@ -60,13 +60,13 @@
 	                                            
 	                                           <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">
 	                                                <label for="numberOfRooms" class="col-form-label">Number of Rooms</label>
-	                                                <input id="numberOfRooms" name="numberOfRooms" type="number" class="form-control" value=''>
+	                                                <input id="numberOfRooms" name="numberOfRooms" type="number" min=0 class="number form-control" value=''>
 													<div class="errorFeedback" id="numberOfRooms-errorFeedback"></div>
 	                                            </div>
 	                                            
 	                                            <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">
 	                                                <label for="price" class="col-form-label">Price<span class="requiredField">*</span></label>
-	                                                <input id="price" name="price" type="number" class="form-control requiredInputs" value=''>
+	                                                <input id="price" name="price" type="number" min=0 class="number form-control requiredInputs" value=''>
 													<div class="errorFeedback" id="price-errorFeedback"></div>
 	                                            </div>
     
@@ -290,7 +290,7 @@
 			
 			html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 			html += '<label for="units-'+rentingFacilityCount+'" class="col-form-label">Units</label>'
-			html += '<input id="units-'+rentingFacilityCount+'" name="units" type="number" class="units form-control " value="'+rentingFacilities[i].units+'">'
+			html += '<input id="units-'+rentingFacilityCount+'" name="units" type="number" min=0 class="number units form-control " value="'+rentingFacilities[i].units+'">'
 			html += '<div class="errorFeedback" id="units-'+rentingFacilityCount+'-errorFeedback"></div>'
 			html += '</div>'
 			
@@ -348,8 +348,23 @@
 		validateServiceName();
 		
 		validateImages();
+		
+		validateNumberFields();
+		
 		return !errorFields.length > 0;
 		
+	}
+	
+	
+	function validateNumberFields(){
+		jQuery(".number:visible").each(function() {
+			var errorField = {};
+			if (this.value.trim() != "" && parseInt(this.value.trim()) <0 ) {
+				errorField.id = jQuery(this).attr("id");
+				errorField.message = "Cannot be less than 0";
+				errorFields.push(errorField)
+			}
+		})
 	}
 	
 	function doesRentingeNameExists(){
@@ -523,7 +538,7 @@
 		
 		html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 		html += '<label for="units-'+rentingFacilityCount+'" class="col-form-label">Units</label>'
-		html += '<input id="units-'+rentingFacilityCount+'" name="units" type="number" class="units form-control " value="">'
+		html += '<input id="units-'+rentingFacilityCount+'" name="units" type="number" min=0 class="number units form-control " value="">'
 		html += '<div class="errorFeedback" id="units-'+rentingFacilityCount+'-errorFeedback"></div>'
 		html += '</div>'
 		
