@@ -150,7 +150,7 @@ public class ServiceService {
 
 		List<ServiceModel> serviceModels = new LinkedList<ServiceModel>();
 		for (com.rdongol.rentcollection.model.Service service : services) {
-			ServiceModel serviceModel = new ServiceModel(service.getId(), service.getName());
+			ServiceModel serviceModel = new ServiceModel(service.getId(), service.getName() , service.getType());
 			serviceModels.add(serviceModel);
 		}
 		return serviceModels;

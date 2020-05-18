@@ -4,6 +4,7 @@ public class ServiceModel {
 
 	private Long id;
 	private String serviceName;
+	private String serviceType;
 
 	public Long getId() {
 		return id;
@@ -21,10 +22,19 @@ public class ServiceModel {
 		this.serviceName = serviceName;
 	}
 
-	public ServiceModel(Long id, String serviceName) {
+	public String getServiceType() {
+		return serviceType;
+	}
+
+	public void setServiceType(String serviceType) {
+		this.serviceType = serviceType;
+	}
+
+	public ServiceModel(Long id, String serviceName, String serviceType) {
 		super();
 		this.id = id;
 		this.serviceName = serviceName;
+		this.serviceType = serviceType;
 	}
 
 }

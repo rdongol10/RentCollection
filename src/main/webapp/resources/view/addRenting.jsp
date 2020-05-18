@@ -182,6 +182,7 @@
 		jQuery("#addRentingFacility").on("click",function(){
 			event.preventDefault();
 			jQuery("#rentingFacilities").append(getRentingFacilityHTML())
+			toggleUnits(jQuery("#serviceId-" + (rentingFacilityCount-1) ))
 		})
 		
 		jQuery("#rentingFacilities").on("click",".RemoveRentingFacility" ,function(){
@@ -191,6 +192,11 @@
 			
 		})
 		
+		jQuery("#rentingFacilities").on("change",".serviceId" ,function(){
+			console.log("here")
+			toggleUnits(this);
+		})
+
 		$('.dropzone-wrapper').on('dragover', function(e) {
 			e.preventDefault();
 			e.stopPropagation();
@@ -228,7 +234,30 @@
 				highlightErrorFields()
 			}
 		});
+		
+
 	})
+	
+	function toggleAllUnits(){
+		console.log(jQuery(".serviceId:visible").length)
+		jQuery(".serviceId:visible").each(function() {
+			
+			toggleUnits(this)
+		});
+	}
+	
+	function toggleUnits(serviceElement){
+		var count = jQuery(serviceElement).attr("count")
+		console.log(count)
+		console.log(jQuery(serviceElement).find(":selected").attr("serviceType"))
+		
+		if(jQuery(serviceElement).find(":selected").attr("serviceType") == "unit" ){
+			jQuery("#unitsHolder-"+count).show();
+		}else{
+			jQuery("#unitsHolder-"+count).hide();
+		}
+		
+	}
 	
 	function getURLParameter(param){
 		
@@ -249,6 +278,8 @@
 			url:"${contextPath}/renting/getRentingModel/"+id
 		}).done(function(data){
 			loadRentingData(data)
+			toggleAllUnits()
+
 		});	
 	}
 	
@@ -273,10 +304,10 @@
 			html += '<input type="hidden" class="rentingFacilityId" id="rentingFacilityId-'+rentingFacilityCount+'" value="'+rentingFacilities[i].id+'">'
 			html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 			html += '<label for="serviceId-'+rentingFacilityCount+'" class="col-form-label">Service</label>'
-			html += '<select class="form-control serviceId" id="serviceId-'+rentingFacilityCount+'" name="serviceId">'
+			html += '<select class="form-control serviceId" id="serviceId-'+rentingFacilityCount+'" name="serviceId" count="'+rentingFacilityCount+'">'
 			for(var j=0;j<serviceModels.length;j++){
 				
-				html += '<option value="'+serviceModels[j].id+'"';
+				html += '<option value="'+serviceModels[j].id+'" serviceType="'+serviceModels[j].serviceType+'"';
 				if(rentingFacilities[i].serviceId == serviceModels[j].id ){
 					html += ' selected '; 
 				}
@@ -285,11 +316,11 @@
 			}		
 			
 			html += '</select>'
-			html += '<div class="errorFeedback" id="serviceId-'+ rentingFacilityCount+'-errorFeedback"></div>'
+			html += '<div class="errorFeedback" id="serviceId-'+ rentingFacilityCount+'-errorFeedback" ></div>'
 			html += '</div>'
 			
-			html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
-			html += '<label for="units-'+rentingFacilityCount+'" class="col-form-label">Units</label>'
+			html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3 unitsHolder" id="unitsHolder-'+rentingFacilityCount+'" style="display : none">'
+			html += '<label for="units-'+rentingFacilityCount+'" class="col-form-label">Meter Reading</label>'
 			html += '<input id="units-'+rentingFacilityCount+'" name="units" type="number" min=0 class="number units form-control " value="'+rentingFacilities[i].units+'">'
 			html += '<div class="errorFeedback" id="units-'+rentingFacilityCount+'-errorFeedback"></div>'
 			html += '</div>'
@@ -524,11 +555,11 @@
 		html += '<div class="row rentingFacility" id="rentingFacility-'+rentingFacilityCount+'">'
 		html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 		html += '<input type="hidden" class="rentingFacilityId" id="rentingFacilityId-"'+rentingFacilityCount+'">'
-		html += '<label for="serviceId-'+rentingFacilityCount+'" class="col-form-label">Service</label>'
-		html += '<select class="form-control serviceId" id="serviceId-'+rentingFacilityCount+'" name="serviceId">'
+		html += '<label for="serviceId-'+rentingFacilityCount+'"  class="col-form-label">Service</label>'
+		html += '<select class="form-control serviceId" id="serviceId-'+rentingFacilityCount+'" name="serviceId" count="'+rentingFacilityCount+'">'
 		for(var i=0;i<serviceModels.length;i++){
 			
-			html += '<option value="'+serviceModels[i].id+'" >'+serviceModels[i].serviceName+'</option>'
+			html += '<option value="'+serviceModels[i].id+'" serviceType="'+serviceModels[i].serviceType+'" >'+serviceModels[i].serviceName+'</option>'
 			
 		}		
 		
@@ -536,8 +567,8 @@
 		html += '<div class="errorFeedback" id="serviceId-'+ rentingFacilityCount+'-errorFeedback"></div>'
 		html += '</div>'
 		
-		html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
-		html += '<label for="units-'+rentingFacilityCount+'" class="col-form-label">Units</label>'
+		html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3 unitsHolder" id="unitsHolder-'+rentingFacilityCount+'" style="display : none">'
+		html += '<label for="units-'+rentingFacilityCount+'" class="col-form-label">Meter reading</label>'
 		html += '<input id="units-'+rentingFacilityCount+'" name="units" type="number" min=0 class="number units form-control " value="">'
 		html += '<div class="errorFeedback" id="units-'+rentingFacilityCount+'-errorFeedback"></div>'
 		html += '</div>'
