@@ -33,25 +33,25 @@
 									 	<div class="card-body">
 								 			<div class="row">
 								 				<input id="id" name="id" type="hidden">
-								 				<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+								 				<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">
 	                                                <label for="name" class="col-form-label">Name<span class="requiredField">*</span></label>
 	                                                <input id="name" name="name" type="text" class="form-control requiredInputs" value=''>
 													<div class="errorFeedback" id="name-errorFeedback"></div>
 	                                            </div>
 	                                            
-	                                           <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+	                                           <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">
 	                                                <label for="minimumCharge" class="col-form-label">Minimum Charge</label>
 	                                                <input id="minimumCharge" name="minimumCharge" type="number" class="form-control" value=''>
 													<div class="errorFeedback" id="minimumCharge-errorFeedback"></div>
 	                                            </div>
 	                                            
-	                                            <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+	                                            <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">
 	                                                <label for="charge" class="col-form-label">Charge</label>
 	                                                <input id="charge" name="charge" type="number" class="form-control" value=''>
 													<div class="errorFeedback" id="charge-errorFeedback"></div>
 	                                            </div>
     
-                                                <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                                <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">
                                             
 		                                            <label for="type" class="col-form-label">Type</label>
 													<select class="form-control" id="type" name="type">
@@ -67,16 +67,16 @@
 									 	
 									 	<div class="card-body border-top" id="serviceDetails">
 									 		<div class="row">
-                                    	    	<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                    	    	<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col3">
                                     	    		Service Details
                                     	    	</div>
                                     	    	
-                                    	    	<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                                    	    	<div class="col-xl-5 col-lg-5 col-md-6 col-sm-12 col6">
                                     	    		<div class="errorFeedback" id="serviceDetails-errorFeedback">
 													</div>
                                     	    	</div>
                                     	    	
-                                    	    	<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                    	    	<div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">
 										
 											        <Button class="btn btn-success topAddButton" id="addServiceDetail" >
 												    	<i class="fas fa-plus"></i>  &nbsp; Add Service Details
@@ -197,24 +197,28 @@
 
 		var html="";
 		for(var i = 0 ; i<serviceDetails.length; i++){
+			
+			if(i>0){
+				html += '<hr>'
+			}
 			html += '<div class="row serviceDetail" id="serviceDetail-'+serviceDetailsCount+'">'
 			html +='<input id="serviceDetailId-'+serviceDetailsCount+'" name="id" type="hidden" class="serviceDetailId" value="'+serviceDetails[i].id+'">'
-			html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+			html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 			html += '<label for="rate-'+serviceDetailsCount+'" class="col-form-label">Rate<span class="requiredField">*</span></label>'
 			html += '<input id="rate-'+serviceDetailsCount+'" name="rate" type="number" class="rate form-control requiredInputs" value="'+serviceDetails[i].rate+'">'
 			html += '<div class="errorFeedback" id="rate-'+serviceDetailsCount+'-errorFeedback"></div>'
 			html += '</div>'
-			html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+			html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 			html += '<label for="volumeCutoff-'+serviceDetailsCount+'" class="col-form-label">Volume Cutoff<span class="requiredField">*</span></label>'
 			html += '<input id="volumeCutoff-'+serviceDetailsCount+'" name="volumeCutoff" type="number" class="volumeCutoff form-control requiredInputs" value="'+serviceDetails[i].volumeCutoff+'">'
 			html += '<div class="errorFeedback" id="volumeCutoff-'+serviceDetailsCount+'-errorFeedback"></div>'
 			html += '</div>'
-			html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+			html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 			html += '<label for="serviceCharge-'+serviceDetailsCount+'" class="col-form-label">Service Charge</label>'
 			html += '<input id="serviceCharge-'+serviceDetailsCount+'" name="serviceCharge" type="number" class="serviceCharge form-control " value="'+serviceDetails[i].serviceCharge+'">'
 			html += '<div class="errorFeedback" id="serviceCharge-'+serviceDetailsCount+'-errorFeedback"></div>'
 			html += '</div>'
-			html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+			html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 			html += '<i class="actionButton RemoveServiceDetail fas fa-trash-alt" style = "color:red" id="RemoveServiceDetail-'+serviceDetailsCount+'" count ="'+serviceDetailsCount+'"></i>'
 			html += '</div>'
 			html += '</div>'
@@ -324,28 +328,32 @@
 	
 	function getServiceDetail(){
 		var html="";
-		
+
+		if(serviceDetailsCount>0){
+			html += '<hr>'
+		}
 		html += '<div class="row serviceDetail" id="serviceDetail-'+serviceDetailsCount+'">'
 		html +='<input id="serviceDetailId-'+serviceDetailsCount+'" name="id" type="hidden" class="serviceDetailId">'
-		html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+		html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 		html += '<label for="rate-'+serviceDetailsCount+'" class="col-form-label">Rate<span class="requiredField">*</span></label>'
 		html += '<input id="rate-'+serviceDetailsCount+'" name="rate" type="number" class="rate form-control requiredInputs" value="">'
 		html += '<div class="errorFeedback" id="rate-'+serviceDetailsCount+'-errorFeedback"></div>'
 		html += '</div>'
-		html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+		html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 		html += '<label for="volumeCutoff-'+serviceDetailsCount+'" class="col-form-label">Volume Cutoff<span class="requiredField">*</span></label>'
 		html += '<input id="volumeCutoff-'+serviceDetailsCount+'" name="volumeCutoff" type="number" class="volumeCutoff form-control requiredInputs" value="">'
 		html += '<div class="errorFeedback" id="volumeCutoff-'+serviceDetailsCount+'-errorFeedback"></div>'
 		html += '</div>'
-		html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+		html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 		html += '<label for="serviceCharge-'+serviceDetailsCount+'" class="col-form-label">Service Charge</label>'
 		html += '<input id="serviceCharge-'+serviceDetailsCount+'" name="serviceCharge" type="number" class="serviceCharge form-control " value="">'
 		html += '<div class="errorFeedback" id="serviceCharge-'+serviceDetailsCount+'-errorFeedback"></div>'
 		html += '</div>'
-		html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+		html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 		html += '<i class="actionButton RemoveServiceDetail fas fa-trash-alt" style = "color:red" id="RemoveServiceDetail-'+serviceDetailsCount+'" count ="'+serviceDetailsCount+'"></i>'
 		html += '</div>'
 		html += '</div>'
+		
 		
 		serviceDetailsCount++;
 		

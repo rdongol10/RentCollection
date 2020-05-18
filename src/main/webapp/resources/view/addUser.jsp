@@ -38,19 +38,18 @@
                         			<div class="card-body">
                         				<form id="userForm">
                         					<div class="row">
-	                        					<div class="form-group col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
+	                        					<div class="form-group col-xl-5 col-lg-5 col-md-6 col-sm-12 col5">
 	                                                <label for="firstName" class="col-form-label">First Name<span class="requiredField">*</span></label>
 	                                                <input id="firstName" name="firstName" type="text" class="form-control requiredInputs" value=''>
 													<div class="errorFeedback" id="firstName-errorFeedback"></div>
 	                                            </div>
-	                                            
-	                                            <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">
+	                                            <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 col2">
 	                                                <label for="middleName" class="col-form-label">Middle Name</label>
 	                                                <input id="middleName" name="middleName" type="text" class="form-control required"  value=''>
 	                                            	<div class="errorFeedback" id="middleName-errorFeedback"></div>
 	                                            </div>
 	                                            
-	                                            <div class="form-group col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
+	                                            <div class="form-group col-xl-5 col-lg-5 col-md-6 col-sm-12 col5">
 	                                                <label for="lastName" class="col-form-label">Last Name<span class="requiredField">*</span></label>
 	                                                <input id="lastName" type="text" name="lastName" class="form-control requiredInputs"  value=''>
 	                                            	<div class="errorFeedback" id="lastName-errorFeedback"></div>
@@ -59,19 +58,19 @@
                         					</div>
                         			
                         					<div class="row">
-                        						<div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+                        						<div class="form-group col-xl-4 col-lg-4 col-md-6 col-sm-12 col4">
 	                                                <label for="phoneNumber" class="col-form-label"><span class="requiredField">*</span>Phone Number</label>
 	                                                <input id="phoneNumber" name="phoneNumber" type="text" class="form-control phonenumber-inputmask requiredInputs"  value=''>
 	                                           		<div class="errorFeedback" id="phoneNumber-errorFeedback"></div>
 	                                            </div>
 	                                            
-	                                            <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+	                                            <div class="form-group col-xl-4 col-lg-4 col-md-6 col-sm-12 col4">
 	                                                <label for="emailAddress" class="col-form-label">Email Address</label>
 	                                                <input id="emailAddress" name="emailAddress" type="text" class="form-control email-inputmask"  value=''>
 	                                                <div class="errorFeedback" id="emailAddress-errorFeedback"></div>
 	                                            </div>
 	                                            
-	                                            <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">
+	                                            <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 col2">
 													<label for="sex" class="col-form-label">Sex</label>
 													<select class="form-control" id="sex" name="sex">
 														<option value="Male" >Male</option>
@@ -83,7 +82,7 @@
 													</div>
 	                                            </div>
                         					
-                        						<div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">
+                        						<div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 col2">
 													<label for="typeOfUser" class="col-form-label">Type of User</label>
 													<select class="form-control" id="typeOfUser" name="typeOfUser">
 														<option value="Admin" >Admin</option>
@@ -95,7 +94,7 @@
                         					</div>
                         					
 											<div class="row">
-												<div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+												<div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm12 col6">
 	                                                <label for="loginName" class="col-form-label">User Name<span class="requiredField">*</span></label>
 	                                                <input id="loginName" type="text" class="form-control requiredInputs" name="loginName"  value=''>
 	                                                <div class="errorFeedback" id="loginName-errorFeedback">
@@ -105,7 +104,7 @@
 											</div>
 											
 											<div class="row passwordRow">
-												<div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+												<div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12 col6">
 	                                                <label for="password" class="col-form-label">Password<span class="requiredField">*</span></label>
 	                                                <input id="password" type="password" class="form-control requiredInputs" name="password">
 	                                                <div class="errorFeedback" id="password-errorFeedback">
@@ -115,7 +114,7 @@
 											</div>
 											
 											<div class="row passwordRow">
-												<div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+												<div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12 col6">
 	                                                <label for="rePassword" class="col-form-label">Re-enter Password<span class="requiredField">*</span></label>
 	                                                <input id="rePassword" type="password" class="form-control requiredInputs" name="rePassword">
 	                                                <div class="errorFeedback" id="rePassword-errorFeedback">
@@ -125,7 +124,7 @@
 											</div>
 											<br>
 											<div class="row">
-												<div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">
+												<div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-12 col2">
 													<button class="btn btn-primary" id="addUser">
 								 						Add User
 													</button>

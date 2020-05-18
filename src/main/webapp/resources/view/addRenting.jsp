@@ -40,13 +40,13 @@
 								 			<div class="row">
 								 				<input id="id" name="id" type="hidden">
 								 				
-								 				<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+								 				<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">
 	                                                <label for="name" class="col-form-label">Name<span class="requiredField">*</span></label>
 	                                                <input id="name" name="name" type="text" class="form-control requiredInputs" value=''>
 													<div class="errorFeedback" id="name-errorFeedback"></div>
 	                                            </div>
 	                                            
-							 				    <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+							 				    <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">
                                             
 		                                            <label for="type" class="col-form-label">Type</label>
 													<select class="form-control" id="type" name="type">
@@ -58,13 +58,13 @@
 													</div>
 												</div>	
 	                                            
-	                                           <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+	                                           <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">
 	                                                <label for="numberOfRooms" class="col-form-label">Number of Rooms</label>
 	                                                <input id="numberOfRooms" name="numberOfRooms" type="number" class="form-control" value=''>
 													<div class="errorFeedback" id="numberOfRooms-errorFeedback"></div>
 	                                            </div>
 	                                            
-	                                            <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+	                                            <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">
 	                                                <label for="price" class="col-form-label">Price<span class="requiredField">*</span></label>
 	                                                <input id="price" name="price" type="number" class="form-control requiredInputs" value=''>
 													<div class="errorFeedback" id="price-errorFeedback"></div>
@@ -75,16 +75,16 @@
 									 	
 									 	<div class="card-body border-top" id="rentingFacilities">
 									 		<div class="row">
-                                    	    	<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                    	    	<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col4">
                                     	    		Renting Facilities
                                     	    	</div>
                                     	    	
-                                    	    	<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                                    	    	<div class="col-xl-5 col-lg-5 col-md-6 col-sm-12 col5">
                                     	    		<div class="errorFeedback" id="rentingFacilities-errorFeedback">
 													</div>
                                     	    	</div>
                                     	    	
-                                    	    	<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                    	    	<div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">
 										
 											        <Button class="btn btn-success topAddButton" id="addRentingFacility" >
 												    	<i class="fas fa-plus"></i>  &nbsp; Add Renting Facility
@@ -96,10 +96,10 @@
 									 	
 									 	<div class="card-body border-top" id="imageFiles">
 									 		<div class="row">
-									 			<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+									 			<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col3">
                                     	    		Upload Renting Image
                                     	    	</div>
-                                    	    	<div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9 errorFeedback" id="images-errorFeedback">
+                                    	    	<div class="col-xl-8 col-lg-8 col-md-6 col-sm-12 col8 errorFeedback" id="images-errorFeedback">
                                     	    	</div>
 									 		</div>
 									 		
@@ -266,9 +266,12 @@
 	function loadRentingFacilityData(rentingFacilities){
 		var html="";
 		for(var i=0 ; i<rentingFacilities.length ; i++){
+			if(i>0){
+				html += '<hr>'
+			}
 			html += '<div class="row rentingFacility" id="rentingFacility-'+rentingFacilityCount+'" >'
 			html += '<input type="hidden" class="rentingFacilityId" id="rentingFacilityId-'+rentingFacilityCount+'" value="'+rentingFacilities[i].id+'">'
-			html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+			html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 			html += '<label for="serviceId-'+rentingFacilityCount+'" class="col-form-label">Service</label>'
 			html += '<select class="form-control serviceId" id="serviceId-'+rentingFacilityCount+'" name="serviceId">'
 			for(var j=0;j<serviceModels.length;j++){
@@ -285,13 +288,13 @@
 			html += '<div class="errorFeedback" id="serviceId-'+ rentingFacilityCount+'-errorFeedback"></div>'
 			html += '</div>'
 			
-			html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+			html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 			html += '<label for="units-'+rentingFacilityCount+'" class="col-form-label">Units</label>'
 			html += '<input id="units-'+rentingFacilityCount+'" name="units" type="number" class="units form-control " value="'+rentingFacilities[i].units+'">'
 			html += '<div class="errorFeedback" id="units-'+rentingFacilityCount+'-errorFeedback"></div>'
 			html += '</div>'
 			
-			html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+			html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 			html += '<i class="actionButton RemoveRentingFacility fas fa-trash-alt" style = "color:red" id="RemoveRentingFacility-'+rentingFacilityCount+'" count ="'+rentingFacilityCount+'"></i>'
 			html += '</div>'
 			html +='</div>'
@@ -310,8 +313,8 @@
 			html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
 			html += '<img src="data:image/png;base64,'+base64s[i]+'" class="img-thumbnail rentImage" alt="Renting image" id="rentImage-'+imageCounts+'">'
 			html += '</div>'
-			html += '<div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1">'
-			html += '<i class="actionButton removeImage fas fa-trash-alt" style = "color:red" id="removeImage-'+imageCounts+'" index ="'+imageCounts+'"></i>'
+			html += '<div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1 align-middle">'
+			html += '<i class="actionButton removeImage  fas fa-trash-alt fa-lg" style = "color:red" id="removeImage-'+imageCounts+'" index ="'+imageCounts+'"></i>'
 			html += '</div>'
 			html += '</div>'
 			
@@ -488,8 +491,8 @@
 		html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
 		html += '<img src="'+base64+'" class="img-thumbnail rentImage" alt="Renting image" id="rentImage-'+imageCounts+'">'
 		html += '</div>'
-		html += '<div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1">'
-		html += '<i class="actionButton removeImage fas fa-trash-alt" style = "color:red" id="removeImage-'+imageCounts+'" index ="'+imageCounts+'"></i>'
+		html += '<div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1 align-middle">'
+		html += '<i class="actionButton removeImage  fas fa-trash-alt fa-lg" style = "color:red" id="removeImage-'+imageCounts+'" index ="'+imageCounts+'"></i>'
 		html += '</div>'
 		html += '</div>'
 		
@@ -500,8 +503,11 @@
 	
 	function getRentingFacilityHTML(){
 		var html="";
+		if(rentingFacilityCount>0){
+			html += '<hr>'
+		}
 		html += '<div class="row rentingFacility" id="rentingFacility-'+rentingFacilityCount+'">'
-		html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+		html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 		html += '<input type="hidden" class="rentingFacilityId" id="rentingFacilityId-"'+rentingFacilityCount+'">'
 		html += '<label for="serviceId-'+rentingFacilityCount+'" class="col-form-label">Service</label>'
 		html += '<select class="form-control serviceId" id="serviceId-'+rentingFacilityCount+'" name="serviceId">'
@@ -515,13 +521,13 @@
 		html += '<div class="errorFeedback" id="serviceId-'+ rentingFacilityCount+'-errorFeedback"></div>'
 		html += '</div>'
 		
-		html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+		html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 		html += '<label for="units-'+rentingFacilityCount+'" class="col-form-label">Units</label>'
 		html += '<input id="units-'+rentingFacilityCount+'" name="units" type="number" class="units form-control " value="">'
 		html += '<div class="errorFeedback" id="units-'+rentingFacilityCount+'-errorFeedback"></div>'
 		html += '</div>'
 		
-		html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+		html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 		html += '<i class="actionButton RemoveRentingFacility fas fa-trash-alt" style = "color:red" id="RemoveRentingFacility-'+rentingFacilityCount+'" count ="'+rentingFacilityCount+'"></i>'
 		html += '</div>'
 		html +='</div>'
@@ -623,8 +629,7 @@
 	}
 	
 	.removeImage{
-		padding-top: 50px;
-		float : right;
+		padding-top: 50%;
 	}
 	
 	.rentImageRow{
