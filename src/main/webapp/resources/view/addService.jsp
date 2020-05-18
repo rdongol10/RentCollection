@@ -67,16 +67,16 @@
 									 	
 									 	<div class="card-body border-top" id="serviceDetails">
 									 		<div class="row">
-                                    	    	<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col3">
+                                    	    	<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
                                     	    		Service Details
                                     	    	</div>
                                     	    	
-                                    	    	<div class="col-xl-5 col-lg-5 col-md-6 col-sm-12 col6">
+                                    	    	<div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
                                     	    		<div class="errorFeedback" id="serviceDetails-errorFeedback">
 													</div>
                                     	    	</div>
                                     	    	
-                                    	    	<div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">
+                                    	    	<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
 										
 											        <Button class="btn btn-success topAddButton" id="addServiceDetail" >
 												    	<i class="fas fa-plus"></i>  &nbsp; Add Service Details

@@ -78,7 +78,6 @@
 		
 		.removeRenteeDependentHolder .btn{
 		    margin-top: 220px;
-    		margin-left: 70px;
     		cursor: pointer;
  			border-radius: 50%;
  			line-height: unset;
@@ -121,7 +120,7 @@
 										
 											<div class="row">
 											
-	                                             <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3 imageColumn">
+	                                             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col3 imageColumn">
 													<label for="renteeImage" class="col-form-label">Rentee Image<span class="requiredField">*</span></label>
 	                                             
 													<div class="dropzone-wrapper profileImageWrapper">
@@ -141,7 +140,7 @@
 													<div class="errorFeedback" id="displayRenteeImage-errorFeedback"></div>
 												</div>
 												
-												<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 imageColumn">
+												<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col4 imageColumn">
 													<label for="citizenshipImage" class="col-form-label">Citizenship Image<span class="requiredField">*</span></label>
 	                                             
 													<div class="dropzone-wrapper ">
@@ -163,7 +162,7 @@
 													
 												</div>
 												
-												<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 imageColumn">
+												<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col4 imageColumn">
 													<label for="citizenshipBackImage" class="col-form-label">Citizenship Back Image<span class="requiredField">*</span></label>
 	                                             
 													<div class="dropzone-wrapper ">
@@ -190,22 +189,22 @@
 											
 											<div class="row">
 												<input id="id" name="id" type="hidden">
-												<div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+												<div class="form-group col-xl-4 col-lg-4 col-md-6 col-sm-12 col4">
 	                                                <label for="firstName" class="col-form-label">First Name<span class="requiredField">*</span></label>
 	                                                <input id="firstName" name="firstName" type="text" class="form-control requiredInputs" value=''>
 													<div class="errorFeedback" id="firstName-errorFeedback"></div>
 	                                            </div>
-	                                            <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">
+	                                            <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 col2">
 	                                                <label for="middleName" class="col-form-label">Middle Name</label>
 	                                                <input id="middleName" name="middleName" type="text" class="form-control" value=''>
 													<div class="errorFeedback" id="middleName-errorFeedback"></div>
 	                                            </div>
-												<div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+												<div class="form-group col-xl-4 col-lg-4 col-md-6 col-sm-12 col4">
 	                                                <label for="lastName" class="col-form-label">Last Name<span class="requiredField">*</span></label>
 	                                                <input id="lastName" name="lastName" type="text" class="form-control requiredInputs" value=''>
 													<div class="errorFeedback" id="lastName-errorFeedback"></div>
 	                                            </div>
-	                                           <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">
+	                                           <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 col2">
 													<label for="sex" class="col-form-label">Sex</label>
 													<select class="form-control" id="sex" name="sex">
 														<option value="Male" >Male</option>
@@ -219,22 +218,22 @@
 											</div>
 											
 											<div class="row">
-												<div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+												<div class="form-group col-xl-4 col-lg-4 col-md-6 col-sm-12 col4">
 	                                                <label for="address" class="col-form-label">Address<span class="requiredField">*</span></label>
 	                                                <input id="address" name="address" type="text" class="form-control requiredInputs" value=''>
 													<div class="errorFeedback" id="address-errorFeedback"></div>
 	                                            </div>
-	                                            <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+	                                            <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">
 	                                                <label for="phoneNumber" class="col-form-label">Phone Number<span class="requiredField">*</span></label>
 	                                                <input id="phoneNumber" name="phoneNumber" type="text" class="form-control requiredInputs phonenumber-inputmask" value=''>
 													<div class="errorFeedback" id="phoneNumber-errorFeedback"></div>
 	                                            </div>
-	                                             <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+	                                             <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">
 	                                                <label for="emailId" class="col-form-label">Email</label>
 	                                                <input id="emailId" name="emailId" type="text" class="form-control email-inputmask" value=''>
 													<div class="errorFeedback" id="emailId-errorFeedback"></div>
 	                                            </div>
-	                                            <div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">
+	                                            <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 col2">
 	                                                <label for="citizenshipNumber" class="col-form-label">Citizenship No.<span class="requiredField">*</span></label>
 	                                                <input id="citizenshipNumber" name="citizenshipNumber" type="text" class="form-control requiredInputs" value=''>
 													<div class="errorFeedback" id="citizenshipNumber-errorFeedback"></div>
@@ -242,7 +241,7 @@
 											</div>
 											
 											<div class="row">
-												<div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+												<div class="form-group col-xl-4 col-lg-4 col-md-6 col-sm-12 col4">
 	                                                <label for="dob" class="col-form-label">Date of Birth<span class="requiredField">*</span></label>
 	                                                <input id="dob" name="dob" type="text" class="form-control requiredInputs dob date" value=''>
 													<div class="errorFeedback" id="dob-errorFeedback"></div>
@@ -814,7 +813,7 @@
 		html += '<div class="form-group col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10">'
 		
 		html += '<div class="row">'
-		html += '<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3 imageColumn">'
+		html += '<div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col3 imageColumn">'
 		html += '<label for="renteeDependentImage" class="col-form-label">Rentee Dependent Image<span class="requiredField">*</span></label>'
 		html += '<div class="dropzone-wrapper profileImageWrapper">'
 		html += '<div class="dropzone-desc">'
@@ -835,22 +834,22 @@
 		
 		html += '<div class="row">'
 		html += '<input type="hidden" class="renteeDependentId" id="renteeDependentId-'+renteeDependentCount+'" value="">'
-		html += '<div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">'
+		html += '<div class="form-group col-xl-4 col-lg-4 col-md-6 col-sm-12 col4">'
 		html += '<label for="renteeDependentFirstName" class="col-form-label">First Name<span class="requiredField">*</span></label>'
 		html += '<input id="renteeDependentFirstName-'+renteeDependentCount+'" name="renteeDependentFirstName" type="text" class="form-control requiredInputs renteeDependentFirstName" value="">'
 		html += '<div class="errorFeedback" id="renteeDependentFirstName-'+renteeDependentCount+'-errorFeedback"></div>'
 		html += '</div>'
-		html += '<div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">'
+		html += '<div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 col2">'
 		html += '<label for="renteeDependentMiddleName" class="col-form-label">Middle Name</label>'
 		html += '<input id="renteeDependentMiddleName-'+renteeDependentCount+'" name="renteeDependentMiddleName" type="text" class="form-control renteeDependentMiddleName" value="">'
 		html += '<div class="errorFeedback" id="renteeDependentMiddleName-'+renteeDependentCount+'-errorFeedback"></div>'
 		html += '</div>'
-		html += '<div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">'
+		html += '<div class="form-group col-xl-4 col-lg-4 col-md-6 col-sm-12 col4">'
 		html += '<label for="renteeDependentLastName" class="col-form-label">Last Name<span class="requiredField">*</span></label>'
 		html += '<input id="renteeDependentLastName-'+renteeDependentCount+'" name="renteeDependentLastName" type="text" class="form-control requiredInputs renteeDependentLastName" value="">'
 		html += '<div class="errorFeedback" id="renteeDependentLastName-'+renteeDependentCount+'-errorFeedback"></div>'
 		html += '</div>'
-		html += '<div class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">'
+		html += '<div class="form-group col-xl-2 col-lg-2 col-md-12 col-sm-12 col2">'
 		html += '<label for="renteeDependentSex" class="col-form-label">Sex</label>'
 		html += '<select class="form-control renteeDependentSex" id="renteeDependentSex-'+renteeDependentCount+'" name="renteeDependentSex">'
 		html += '<option value="male" >Male</option>'
@@ -862,22 +861,22 @@
 		html += '</div>'
 		
 		html += '<div class="row">'
-		html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+		html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 		html += '<label for="renteeDependentAddress" class="col-form-label">Address</label>'
 		html += '<input id="renteeDependentAddress-'+renteeDependentCount+'" name="renteeDependentAddress" type="text" class="form-control renteeDependentAddress" value="">'
 		html += '<div class="errorFeedback" id="renteeDependentAddress-'+renteeDependentCount+'-errorFeedback"></div>'
 		html += '</div>'
-		html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+		html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 		html += '<label for="renteeDependentPhoneNumber" class="col-form-label">Phone Number</label>'
 		html += '<input id="renteeDependentPhoneNumber-'+renteeDependentCount+'" name="renteeDependentPhoneNumber" type="text" class="form-control renteeDependentPhoneNumber phonenumber-inputmask" value="">'
 		html += '<div class="errorFeedback" id="renteeDependentPhoneNumber-'+renteeDependentCount+'-errorFeedback"></div>'
 		html += '</div>'
-		html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+		html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 		html += '<label for="renteeDependentEmailId" class="col-form-label">Email</label>'
 		html += '<input id="renteeDependentEmailId-'+renteeDependentCount+'" name="renteeDependentEmailId" type="text" class="form-control email renteeDependentEmailId" value="">'
 		html += '<div class="errorFeedback" id="renteeDependentEmailId-'+renteeDependentCount+'-errorFeedback"></div>'
 		html += '</div>'
-		html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+		html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 		html += '<label for="renteeDependentCitizenshipNumber" class="col-form-label">Citizenship No.</label>'
 		html += '<input id="renteeDependentCitizenshipNumber-'+renteeDependentCount+'" name="renteeDependentCitizenshipNumber" type="text" class="form-control renteeDependentCitizenshipNumber" value="">'
 		html += '<div class="errorFeedback" id="renteeDependentCitizenshipNumber-'+renteeDependentCount+'-errorFeedback"></div>'
@@ -885,7 +884,7 @@
 		html += '</div>'
 	
 		html += '<div class="row">'
-		html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+		html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 		html += '<label for="renteeDependentRelationship" class="col-form-label">Relationship</label>'
 		html += '<select class="form-control renteeDependentRelationship" id="renteeDependentRelationship-'+renteeDependentCount+'" name="renteeDependentRelationship">'
 		html += '<option value="spouse" >Spauce</option>'
@@ -896,7 +895,7 @@
 		html += '</select>'
 		html += '<div class="errorFeedback" id="renteeDependentRelationship-'+renteeDependentCount+'-errorFeedback"></div>'
 		html += '</div>'
-		html += '<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">'
+		html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 		html += '<label for="renteeDependentDob" class="col-form-label">Date of Birth<span class="requiredField">*</span></label>'
 		html += '<input id="renteeDependentDob-'+renteeDependentCount+'" name="renteeDependentDob" type="text" class="form-control requiredInputs renteeDependentDob date" value="">'
 		html += '<div class="errorFeedback" id="renteeDependentDob-'+renteeDependentCount+'-errorFeedback"></div>'
