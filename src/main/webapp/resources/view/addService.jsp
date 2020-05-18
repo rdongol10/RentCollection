@@ -150,6 +150,8 @@
 		jQuery("#serviceDetails").on("click",".RemoveServiceDetail" ,function(){
 			
 			var count = jQuery(this).attr("count");
+			jQuery("#serviceDetail-"+count).prev("hr").remove()
+
 			jQuery("#serviceDetail-"+count).remove();
 			
 		})
@@ -196,11 +198,11 @@
 	function loadServiceDetailData(serviceDetails){
 
 		var html="";
+		
+
 		for(var i = 0 ; i<serviceDetails.length; i++){
+			html += '<hr>'    
 			
-			if(i>0){
-				html += '<hr>'
-			}
 			html += '<div class="row serviceDetail" id="serviceDetail-'+serviceDetailsCount+'">'
 			html +='<input id="serviceDetailId-'+serviceDetailsCount+'" name="id" type="hidden" class="serviceDetailId" value="'+serviceDetails[i].id+'">'
 			html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
@@ -340,9 +342,7 @@
 	function getServiceDetail(){
 		var html="";
 
-		if(serviceDetailsCount>0){
-			html += '<hr>'
-		}
+		html += '<hr>'
 		html += '<div class="row serviceDetail" id="serviceDetail-'+serviceDetailsCount+'">'
 		html +='<input id="serviceDetailId-'+serviceDetailsCount+'" name="id" type="hidden" class="serviceDetailId">'
 		html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'

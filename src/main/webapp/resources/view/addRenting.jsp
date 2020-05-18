@@ -188,6 +188,8 @@
 		jQuery("#rentingFacilities").on("click",".RemoveRentingFacility" ,function(){
 			
 			var count = jQuery(this).attr("count");
+			
+			jQuery("#rentingFacility-"+count).prev("hr").remove()
 			jQuery("#rentingFacility-"+count).remove();
 			
 		})
@@ -297,9 +299,7 @@
 	function loadRentingFacilityData(rentingFacilities){
 		var html="";
 		for(var i=0 ; i<rentingFacilities.length ; i++){
-			if(i>0){
-				html += '<hr>'
-			}
+			html += '<hr>'
 			html += '<div class="row rentingFacility" id="rentingFacility-'+rentingFacilityCount+'" >'
 			html += '<input type="hidden" class="rentingFacilityId" id="rentingFacilityId-'+rentingFacilityCount+'" value="'+rentingFacilities[i].id+'">'
 			html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
@@ -549,9 +549,7 @@
 	
 	function getRentingFacilityHTML(){
 		var html="";
-		if(rentingFacilityCount>0){
-			html += '<hr>'
-		}
+		html += '<hr>'
 		html += '<div class="row rentingFacility" id="rentingFacility-'+rentingFacilityCount+'">'
 		html += '<div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 col3">'
 		html += '<input type="hidden" class="rentingFacilityId" id="rentingFacilityId-"'+rentingFacilityCount+'">'
