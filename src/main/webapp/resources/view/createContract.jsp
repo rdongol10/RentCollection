@@ -35,7 +35,7 @@
 								 	<div class="card-body">
 										<form id="contractForm">
 											<div class="row">
-				                                <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+				                                <div class="form-group col-xl-3 col-lg-3 col-md-10 col-sm-10 col3">
 													<label for="renting" class="col-form-label">Renting<span class="requiredField">*</span></label>
 													<select class="form-control requiredInputs" id="renting" name="renting">
 													</select>
@@ -43,12 +43,12 @@
 														
 													</div>
 								                </div>
-							                 	<div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1">
+							                 	<div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-1 col1">
 							                 		<br><br>
 							                 		<i class="actionButton details fas fa-info-circle fa-lg" id ="rentingDetails"></i>
 							                 	</div>
 							                 	
-												<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+												<div class="form-group col-xl-3 col-lg-3 col-md-10 col-sm-10 col3">
 													<label for="rentee" class="col-form-label">Rentee<span class="requiredField">*</span></label>
 													<select class="form-control requiredInputs" id="rentee" name="rentee">
 													</select>
@@ -57,7 +57,7 @@
 													</div>
 				                                </div>
 				                                
-				                                <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1">
+				                                <div class="form-group col-xl-1 col-lg-1 col-md-1 col-sm-1 col1">
 					                                <br><br>
 								                 	<i class="actionButton details fas fa-info-circle fa-lg" id ="renteeDetails"></i>
 							                 	</div>
