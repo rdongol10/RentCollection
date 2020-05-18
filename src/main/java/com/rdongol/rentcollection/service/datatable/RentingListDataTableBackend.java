@@ -137,14 +137,14 @@ public class RentingListDataTableBackend extends AbstractDataTableBackend {
 	
 	protected String getRentingDetailsAction(String rentingId) {
 		StringBuffer rentingDetails = new StringBuffer();
-		rentingDetails.append("<i class='actionButton details fas fa-info-circle' rentingId='" + rentingId
+		rentingDetails.append("<i class='actionButton details fas fa-info-circle fa-lg' rentingId='" + rentingId
 				+ "' title='details' style = 'color:#666666'> </i>");
 		return rentingDetails.toString();
 	}
 
 	protected String getEditRengingAction(String rentingId) {
 		StringBuffer editRenting = new StringBuffer();
-		editRenting.append("<i class='actionButton editRenting fas fa-edit' rentingId='" + rentingId
+		editRenting.append("<i class='actionButton editRenting fas fa-edit fa-lg' rentingId='" + rentingId
 				+ "' title='edit' style = 'color:#3559BA'> </i>");
 		return editRenting.toString();
 	}
@@ -157,11 +157,11 @@ public class RentingListDataTableBackend extends AbstractDataTableBackend {
 
 		StringBuffer deleteRenting = new StringBuffer();
 		if (active == 1) {
-			deleteRenting.append("<i class='actionButton toggleRenting fas fa-toggle-off' rentingId='" + rentingId
-					+ "' title='disable' style = 'color:#FF686B'></i>");
+			deleteRenting.append("<i class='actionButton toggleRenting fas fa-toggle-on fa-lg' rentingId='" + rentingId
+					+ "' title='disable' style = 'color:#009B33'></i>");
 		} else {
-			deleteRenting.append("<i class='actionButton toggleRenting fas fa-toggle-on' rentingId='" + rentingId
-					+ "' title='enable' style = 'color:#009B33'></i>");
+			deleteRenting.append("<i class='actionButton toggleRenting fas fa-toggle-off fa-lg' rentingId='" + rentingId
+					+ "' title='enable' style = 'color:#FF686B'></i>");
 		}
 		return deleteRenting.toString();
 	}
@@ -176,7 +176,7 @@ public class RentingListDataTableBackend extends AbstractDataTableBackend {
 		}
 		StringBuffer contractRenting = new StringBuffer();
 
-		contractRenting.append("<i class='actionButton contractRenting fas fa-file-signature' rentingId='" + rentingId
+		contractRenting.append("<i class='actionButton contractRenting fas fa-file-signature fa-lg' rentingId='" + rentingId
 				+ "' title='add contract' style ='color : #1CBC94' ></i>");
 		return contractRenting.toString();
 	}

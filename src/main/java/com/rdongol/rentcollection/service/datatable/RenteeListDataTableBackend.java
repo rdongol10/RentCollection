@@ -76,14 +76,14 @@ public class RenteeListDataTableBackend extends AbstractDataTableBackend {
 
 	protected String getEditRenteeAction(String renteeId) {
 		StringBuffer editRentee = new StringBuffer();
-		editRentee.append("<i class='actionButton editRentee fas fa-edit' rentee='" + renteeId
+		editRentee.append("<i class='actionButton editRentee fas fa-edit fa-lg' rentee='" + renteeId
 				+ "' title='edit' style = 'color:#3559BA'> </i>");
 		return editRentee.toString();
 	}
 	
 	protected String getRenteeDetailsAction(String renteeId) {
 		StringBuffer renteeDetails = new StringBuffer();
-		renteeDetails.append("<i class='actionButton details fas fa-info-circle' rentee='" + renteeId
+		renteeDetails.append("<i class='actionButton details fas fa-info-circle fa-lg' rentee='" + renteeId
 				+ "' title='details' style = 'color:#666666'> </i>");
 		return renteeDetails.toString();
 	}

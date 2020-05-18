@@ -80,7 +80,7 @@ public class ContractListDataTableBackend extends AbstractDataTableBackend {
 	protected String getDeleteContractAction(String contractId) {
 
 		StringBuffer deleteContract = new StringBuffer();
-		deleteContract.append("<i class='actionButton deleteContract fas fa-store-alt-slash' contractId='" + contractId
+		deleteContract.append("<i class='actionButton deleteContract fas fa-store-alt-slash fa-lg' contractId='" + contractId
 				+ "' title='terminate contract' style = 'color:#FF686B'></i>");
 		return deleteContract.toString();
 
@@ -88,7 +88,7 @@ public class ContractListDataTableBackend extends AbstractDataTableBackend {
 
 	protected String getContractDetailsAction(String rentingId) {
 		StringBuffer contractDetails = new StringBuffer();
-		contractDetails.append("<i class='actionButton details fas fa-info-circle' rentingId='" + rentingId
+		contractDetails.append("<i class='actionButton details fas fa-info-circle fa-lg' rentingId='" + rentingId
 				+ "' title='details' style = 'color:#666666'> </i>");
 		return contractDetails.toString();
 	}
@@ -96,7 +96,7 @@ public class ContractListDataTableBackend extends AbstractDataTableBackend {
 	protected String getBillContractAaction(String contractId) {
 
 		StringBuffer billContract = new StringBuffer();
-		billContract.append("<i class='actionButton billContract fas fa-file-invoice-dollar' contractId='" + contractId
+		billContract.append("<i class='actionButton billContract fas fa-file-invoice-dollar fa-lg' contractId='" + contractId
 				+ "' title='bill contract' style = 'color:#009B33'></i>");
 		return billContract.toString();
 
