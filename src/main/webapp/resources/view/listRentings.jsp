@@ -7,6 +7,8 @@
 <head>
 	<meta charset="ISO-8859-1">
 	<link href="<c:url value="/resources/css/displayDetails.css" />" rel="stylesheet">
+	<link href="<c:url value="/resources/css/alertify.css" />" rel="stylesheet"> 
+	<link href="<c:url value="/resources/css/alertify-bootstrap.css" />" rel="stylesheet">
 	
 	<title>Rentings</title>
 	
@@ -89,17 +91,36 @@
 	
 </body>
 
+<script src="<c:url value="/resources/js/alertify.js" />" ></script>
 <script src="<c:url value="/resources/js/displayDetails.js" />" ></script>
 
 <script>
 	var table;
+	
+	function initializeAlertifyTheme(){
+		alertify.defaults.transition = "slide";
+		alertify.defaults.theme.ok = "btn btn-primary";
+		alertify.defaults.theme.cancel = "btn btn-danger";
+		alertify.defaults.theme.input = "form-control";
+	}	
+	
 	jQuery(document).ready(function(){
 			
+		initializeAlertifyTheme()
+		
 		loadTableData();
 		
 		jQuery("#RentingTable").on("click",".toggleRenting",function(){
 			
-			toggleRenting(jQuery(this).attr("rentingid"))
+			var rentingid=jQuery(this).attr("rentingid")
+			
+			alertify.confirm(
+				"Confirm",
+				"Are you sure you !!",
+				function(){toggleRenting(rentingid)},
+				function(){}
+			)
+			
 		})
 		
 		jQuery("#RentingTable").on("click",".editRenting",function(){

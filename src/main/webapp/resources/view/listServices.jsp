@@ -6,6 +6,8 @@
 <html>
 <head>
 	<meta charset="ISO-8859-1">
+	<link href="<c:url value="/resources/css/alertify.css" />" rel="stylesheet"> 
+	<link href="<c:url value="/resources/css/alertify-bootstrap.css" />" rel="stylesheet">
 	<title>Services</title>
 </head>
 <body>
@@ -59,9 +61,20 @@
 	
 </body>
 
+<script src="<c:url value="/resources/js/alertify.js" />" ></script>
 <script>
 	var table;
+	
+	function initializeAlertifyTheme(){
+		alertify.defaults.transition = "slide";
+		alertify.defaults.theme.ok = "btn btn-primary";
+		alertify.defaults.theme.cancel = "btn btn-danger";
+		alertify.defaults.theme.input = "form-control";
+	}	
+	
 	jQuery(document).ready(function(){
+		
+		initializeAlertifyTheme()
 		
 		loadTableData();
 		
@@ -73,7 +86,14 @@
 		
 		jQuery("#serviceTable").on("click",".toggleService",function(){
 			
-			toggleService(jQuery(this).attr("serviceId"));
+			var serviceId=jQuery(this).attr("serviceId")
+			
+			alertify.confirm(
+				"Confirm",
+				"Are you sure you !!",
+				function(){toggleService(serviceId)},
+				function(){}
+			)
 			
 		})
 		
