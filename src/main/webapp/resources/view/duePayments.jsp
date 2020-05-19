@@ -8,6 +8,8 @@
 <head>
 <meta charset="ISO-8859-1">
 <link href="<c:url value="/resources/css/displayDetails.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/alertify.css" />" rel="stylesheet"> 
+<link href="<c:url value="/resources/css/alertify-bootstrap.css" />" rel="stylesheet">
 
 <title>Due payments</title>
 </head>
@@ -77,12 +79,23 @@
 	</div>
 </body>
 
+<script src="<c:url value="/resources/js/alertify.js" />" ></script>
 <script src="<c:url value="/resources/js/displayDetails.js" />" ></script>
 
 <script type="text/javascript">
 	var table;
 	var transactionId=0;
+	
+	function initializeAlertifyTheme(){
+		alertify.defaults.transition = "slide";
+		alertify.defaults.theme.ok = "btn btn-primary";
+		alertify.defaults.theme.cancel = "btn btn-danger";
+		alertify.defaults.theme.input = "form-control";
+	}	
+	
 	jQuery(document).ready(function(){
+		
+		initializeAlertifyTheme()
 		
 		loadTableData()
 		
@@ -91,11 +104,19 @@
 		})
 		
 		jQuery("#payInvoice").on("click",function(){
-			payTransaction(transactionId);
+			payTransaction(transactionId,true);
 		})
 		
 		jQuery("#transactionTable").on("click",".payment",function(){
-			payTransaction(jQuery(this).attr("transactionid"))
+
+			var transactionid=jQuery(this).attr("transactionid")
+			
+			alertify.confirm(
+				"Confirm",
+				"Are you sure you !!",
+				function(){payTransaction(transactionid,false)},
+				function(){}
+			)
 		})
 		
 		jQuery('#transactionModal').on('hidden.bs.modal', function (e) {
@@ -104,7 +125,7 @@
 		
 	});
 	
-	function payTransaction(transactionId){
+	function payTransaction(transactionId , toggle){
 		jQuery.ajax({
 			
 			method:"PUT",
@@ -112,7 +133,9 @@
 
 		}).done(function(data){
 			$('#transactionTable').DataTable().ajax.reload();
-			$('#transactionModal').modal('toggle');
+			if(toggle){
+				$('#transactionModal').modal('toggle');
+			}
 		})
 	}
 	
