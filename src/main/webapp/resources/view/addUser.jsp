@@ -236,6 +236,7 @@
 	}
 	
 	function updateUser(userId){
+		jQuery(".loading").show();
 		jQuery.ajax({
 			method : "PUT",
 			url : "${contextPath}/user/"+userId,
@@ -244,6 +245,11 @@
 			}
 		}).done(function(data){
 			window.location.href="${contextPath}/resources/view/listUsers.jsp";
+		}).fail(function(){
+			jQuery(".loading").hide();
+			jQuery("#addUser").prop("disabled",false);
+			alertify.alert("<div style='color:red'>An Error occured while creating the user.</div>").setHeader("<b>Error</b>");
+		
 		});
 	}
 	
