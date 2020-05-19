@@ -59,6 +59,10 @@
 		</div>	
 	</div>
 	
+	<div class="loading" style="display:none">
+		<img src="${contextPath}/resources/images/loading.gif" class="spinner" >
+	</div>
+	
 </body>
 
 <script src="<c:url value="/resources/js/alertify.js" />" ></script>
@@ -85,14 +89,14 @@
 		})
 		
 		jQuery("#serviceTable").on("click",".toggleService",function(){
-			
+			jQuery(".actionButton").prop('disabled', true);
 			var serviceId=jQuery(this).attr("serviceId")
 			
 			alertify.confirm(
 				"Confirm",
 				"Are you sure you !!",
 				function(){toggleService(serviceId)},
-				function(){}
+				function(){jQuery(".actionButton").prop('disabled', false);}
 			)
 			
 		})
@@ -106,6 +110,7 @@
 	
 	
 	function toggleServiceDetails(clickedColumn){
+		
 		var tr = jQuery(clickedColumn).closest("tr");
 		var row= table.row( tr );
 		console.log(row)
@@ -170,11 +175,19 @@
 	}
 	
 	function toggleService(serviceId){
+		jQuery(".loading").show();
+
 		jQuery.ajax({
 			method : "PUT",
 			url : "${contextPath}/service/toggleStatus/"+serviceId,
 		}).done(function(data){
+			jQuery(".loading").hide();
 			$('#serviceTable').DataTable().ajax.reload();
+		}).fail(function(){
+			jQuery(".loading").hide();
+			jQuery(".actionButton").prop('disabled', false);
+			alertify.alert("<div style='color:red'>An Error occured .</div>").setHeader("<b>Error</b>");
+
 		});
 	}
 	

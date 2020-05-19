@@ -139,6 +139,11 @@
 			</div>
 		</div>
 	</div>
+	
+	<div class="loading" style="display:none">
+		<img src="${contextPath}/resources/images/loading.gif" class="spinner" >
+	</div>
+	
 </body>
 
 <script src="<c:url value="/resources/js/alertify.js" />" ></script>
@@ -223,6 +228,9 @@
 		})
 		
 		jQuery("#addRenting").on("click",function(){
+			
+			jQuery("#addRenting").prop('disabled',true);
+
 			event.preventDefault();
 			removeErrorHighlights()
 			if(validateInputs()){
@@ -233,6 +241,8 @@
 				}
 				
 			}else{
+				jQuery("#addRenting").prop('disabled',false);
+
 				highlightErrorFields()
 			}
 		});
@@ -594,7 +604,7 @@
 
 	
 	function saveRenting(){
-		
+		jQuery(".loading").show();
 		var renting = getRentingData(mode)
 	
 		jQuery.ajax({
@@ -606,10 +616,15 @@
 			
 		}).done(function(data){
 			window.location.href="${contextPath}/resources/view/listRentings.jsp";
+		}).fail(function(){
+			jQuery(".loading").hide();
+			jQuery("#addUser").prop("disabled",false);
+			alertify.alert("<div style='color:red'>An Error occured while creating the Renting.</div>").setHeader("<b>Error</b>");
 		});
 	}
 	
 	function updateRenting(id){
+		jQuery(".loading").show();
 		var renting = getRentingData(mode)
 		
 		jQuery.ajax({
@@ -620,6 +635,10 @@
 			
 		}).done(function(data){
 			window.location.href="${contextPath}/resources/view/listRentings.jsp";
+		}).fail(function(){
+			jQuery(".loading").hide();
+			jQuery("#addUser").prop("disabled",false);
+			alertify.alert("<div style='color:red'>An Error occured while editing the Renting.</div>").setHeader("<b>Error</b>");
 		});
 	}
 	

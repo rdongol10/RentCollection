@@ -89,6 +89,10 @@
 		</div>
 	</div>
 	
+	<div class="loading" style="display:none">
+		<img src="${contextPath}/resources/images/loading.gif" class="spinner" >
+	</div>
+	
 </body>
 
 <script src="<c:url value="/resources/js/alertify.js" />" ></script>
@@ -111,14 +115,14 @@
 		loadTableData();
 		
 		jQuery("#RentingTable").on("click",".toggleRenting",function(){
-			
+			jQuery(".actionButton").prop('disabled', true);
 			var rentingid=jQuery(this).attr("rentingid")
 			
 			alertify.confirm(
 				"Confirm",
 				"Are you sure you !!",
 				function(){toggleRenting(rentingid)},
-				function(){}
+				function(){jQuery(".actionButton").prop('disabled', false);}
 			)
 			
 		})
@@ -168,11 +172,18 @@
 	} 
 	
 	function toggleRenting(rentingId){
+		jQuery(".loading").show();
 		jQuery.ajax({
 			method : "PUT",
 			url : "${contextPath}/renting/toggleStatus/"+rentingId,
 		}).done(function(data){
+			jQuery(".loading").hide();
 			$('#RentingTable').DataTable().ajax.reload();
+		}).fail(function(){
+			jQuery(".loading").hide();
+			jQuery(".actionButton").prop('disabled', false);
+			alertify.alert("<div style='color:red'>An Error occured. </div>").setHeader("<b>Error</b>");
+
 		});
 	}
 	

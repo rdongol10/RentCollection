@@ -1,9 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<link href="<c:url value="/resources/css/alertify.css" />" rel="stylesheet"> 
+<link href="<c:url value="/resources/css/alertify-bootstrap.css" />" rel="stylesheet">
+
 <title>Add Service</title>
 </head>
 <body>
@@ -111,7 +116,14 @@
 		</div>
 		
 	</div>
+	
+	<div class="loading" style="display:none">
+		<img src="${contextPath}/resources/images/loading.gif" class="spinner" >
+	</div>
+	
 </body>
+
+<script src="<c:url value="/resources/js/alertify.js" />" ></script>
 
 <script>
 	
@@ -120,8 +132,15 @@
 	var mode ="save";
 	var id=0;
 	
+	function initializeAlertifyTheme(){
+		alertify.defaults.transition = "slide";
+		alertify.defaults.theme.ok = "btn btn-primary";
+		alertify.defaults.theme.cancel = "btn btn-danger";
+		alertify.defaults.theme.input = "form-control";
+	}	
+	
 	jQuery(document).ready(function() {
-		
+		initializeAlertifyTheme()
 		id=getURLParameter("id")
 		
 		if(id != undefined){
@@ -157,6 +176,7 @@
 		})
 		
 		jQuery("#addService").on("click",function(){
+			jQuery("#addService").prop('disabled',true);
 			event.preventDefault();
 			removeErrorHighlights()
 			if (validateInputs()) {
@@ -166,7 +186,9 @@
 					updateService(id)
 				}
 			} else {
+				jQuery("#addService").prop('disabled',false);
 				highlightErrorFields()
+
 			}
 		})
 	});
@@ -411,7 +433,7 @@
 	}
 	
 	function saveService(){
-		console.log(getServiceData(mode))
+		jQuery(".loading").show();
 		jQuery.ajax({
 			"method" : "POST",
 			"url" : "${contextPath}/service",
@@ -419,13 +441,17 @@
 			"data":getServiceData(mode)
 		}).done(function(data){
 			window.location.href="${contextPath}/resources/view/listServices.jsp";
+		}).fail(function(){
+			jQuery(".loading").hide();
+			jQuery("#addUser").prop("disabled",false);
+			alertify.alert("<div style='color:red'>An Error occured while creating the Service.</div>").setHeader("<b>Error</b>");
+		
 		});
 		
 	}
 	
 	function updateService(id){
-		console.log(getServiceData(mode))
-		
+		jQuery(".loading").show();
 		jQuery.ajax({
 			"method" : "PUT",
 			"url" : "${contextPath}/service/"+id,
@@ -433,6 +459,11 @@
 			"data":getServiceData(mode)
 		}).done(function(data){
 			window.location.href="${contextPath}/resources/view/listServices.jsp";
+		}).fail(function(){
+			jQuery(".loading").hide();
+			jQuery("#addUser").prop("disabled",false);
+			alertify.alert("<div style='color:red'>An Error occured while editing the Service.</div>").setHeader("<b>Error</b>");
+		
 		});
 	}
 	
