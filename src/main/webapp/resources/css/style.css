@@ -6995,6 +6995,11 @@ Media Query
 
 .actionButton{
 	cursor:pointer;
+	opacity : 0.75;
+}
+
+.actionButton:hover{
+	opacity : 1;
 }
 /* Custom, iPhone Retina */
 @media only screen and (max-width:320px) {}
