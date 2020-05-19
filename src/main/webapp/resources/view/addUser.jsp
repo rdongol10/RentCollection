@@ -1,9 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<link href="<c:url value="/resources/css/alertify.css" />" rel="stylesheet"> 
+<link href="<c:url value="/resources/css/alertify-bootstrap.css" />" rel="stylesheet">
 <title>Add User</title>
 </head>
 <body>
@@ -145,8 +149,14 @@
 			</div>	
 		</div>	
 	</div>
+	
+	<div class="loading" style="display:none">
+		<img src="${contextPath}/resources/images/loading.gif" class="spinner" >
+	</div>
+	
 </body>
 
+<script src="<c:url value="/resources/js/alertify.js" />" ></script>
 <script src="<c:url value="/resources/js/jquery.inputmask.bundle.js" />" ></script>
 <script src="<c:url value="/resources/js/inputmask.js" />" ></script>
 
@@ -156,35 +166,44 @@
 	var mode ="save";
 	var id=0;
 	
+	function initializeAlertifyTheme(){
+		alertify.defaults.transition = "slide";
+		alertify.defaults.theme.ok = "btn btn-primary";
+		alertify.defaults.theme.cancel = "btn btn-danger";
+		alertify.defaults.theme.input = "form-control";
+	}	
+	
 	jQuery(document).ready(function() {
-
+		initializeAlertifyTheme()
 		id=getURLParameter("id")
 		
 		if(id != undefined){
-			mode="edit"
+			mode = "edit"
 			jQuery("#loginName").attr("disabled","disabled");
 			jQuery(".passwordRow").hide();
 			jQuery("#addUser").html("Edit User")
 			jQuery("#pageheader-title").html("Edit User")
 
-			getUser(id)
+			getUser(id);
 		}else{
-			var mode ="save";
+			mode ="save";
 			jQuery("#addUser").html("Add User")
 			jQuery("#pageheader-title").html("Add User")
 		}
 		
 		jQuery("#addUser").on("click", function(event) {
+			jQuery("#addUser").prop('disabled',true);
 			event.preventDefault()
 			removeErrorHighlights()
 			if (validateInputs()) {
 				if(mode =="save"){
 					saveUser()
-				}else if(mode="edit"){
+				}else if(mode=="edit"){
 					updateUser(id)
 				}
 			} else {
 				highlightErrorFields()
+				jQuery("#addUser").prop('disabled',false);
 			}
 
 		});
@@ -197,7 +216,7 @@
 
 	}
 	function saveUser(){
-		
+		jQuery(".loading").show();
 		jQuery.ajax({
 			method : "POST",
 			url : "${contextPath}/user",
@@ -205,7 +224,14 @@
 				 loginName : jQuery("#loginName").val() , firstName : jQuery("#firstName").val(),lastName : jQuery("#lastName").val(),middleName : jQuery("#middleName").val(),phoneNumber : jQuery("#phoneNumber").val(),password : jQuery("#password").val(),emailAddress : jQuery("#emailAddress").val(),sex : jQuery("#sex").val(),typeOfUser : jQuery("#typeOfUser").val() 
 			}
 		}).done(function(data){
+		
 			window.location.href="${contextPath}/resources/view/listUsers.jsp";
+		
+		}).fail(function(){
+			jQuery(".loading").hide();
+			jQuery("#addUser").prop("disabled",false);
+			alertify.alert("<div style='color:red'>An Error occured while creating the user.</div>").setHeader("<b>Error</b>");
+		
 		});
 	}
 	

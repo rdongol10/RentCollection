@@ -9,7 +9,6 @@
 	
 	<link href="<c:url value="/resources/css/alertify.css" />" rel="stylesheet"> 
 	<link href="<c:url value="/resources/css/alertify-bootstrap.css" />" rel="stylesheet">
-	
 	<title>User list</title>
 </head>
 <body>
@@ -26,8 +25,8 @@
 						 		<div class="row">
 				                    <h2 class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9 topCardHeader">
 					 				
-						 				User Lists
-						 				
+						 				User Lists 
+						 					
 									</h2>
 									
 				                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
@@ -64,6 +63,10 @@
 			</div>	
 		</div>	
 	</div>
+
+	<div class="loading" style="display:none">
+		<img src="${contextPath}/resources/images/loading.gif" class="spinner" >
+	</div>
 	
 </body>
 
@@ -91,12 +94,13 @@
 		})
 		
 		jQuery("#userTable").on("click",".deleteUser",function(){
+			jQuery(".actionButton").prop('disabled', true);
 			var userId=jQuery(this).attr("userId")
 			alertify.confirm(
 				"Confirm",
 				"Are you sure you want to delete the User",
 				function(){deleteUser(userId)},
-				function(){}
+				function(){jQuery(".actionButton").prop('disabled', false);}
 			)
 		})
 		
@@ -108,11 +112,19 @@
 	}
 	
 	function deleteUser(userId){
+		jQuery(".loading").show();
 		jQuery.ajax({
 			method : "DELETE",
 			url : "${contextPath}/user/"+userId,
 		}).done(function(data){
+			jQuery(".loading").hide();
 			$('#userTable').DataTable().ajax.reload();
+			jQuery(".actionButton").prop('disabled', false);
+		}).fail(function(){
+			jQuery(".loading").hide();
+			jQuery(".actionButton").prop('disabled', false);
+			alertify.alert("<div style='color:red'>An Error occured while trying to delete the user.</div>").setHeader("<b>Error</b>");
+
 		});
 	}
 	
