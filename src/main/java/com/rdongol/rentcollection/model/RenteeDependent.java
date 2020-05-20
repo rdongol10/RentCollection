@@ -51,7 +51,7 @@ public class RenteeDependent {
 	}
 	
 	public RenteeDependent(RenteeDependentModel renteeDependentModel) {
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 		try {
 			this.id = renteeDependentModel.getId();
 			this.firstName = renteeDependentModel.getFirstName();
