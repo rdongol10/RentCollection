@@ -8,6 +8,8 @@
 <link href="<c:url value="/resources/css/select2.css" />" rel="stylesheet">
 <link href="<c:url value="/resources/css/select2-bootstrap.min.css" />" rel="stylesheet">
 <link href="<c:url value="/resources/css/displayDetails.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/alertify.css" />" rel="stylesheet"> 
+<link href="<c:url value="/resources/css/alertify-bootstrap.css" />" rel="stylesheet">
 
 <title>create contract</title>
 </head>
@@ -99,16 +101,32 @@
 			</div>
 		</div>
 	</div>
+	
+	<div class="loading" style="display:none">
+		<img src="${contextPath}/resources/images/loading.gif" class="spinner" >
+	</div>
+	
 </body>
 <script src="<c:url value="/resources/js/select2.min.js" />" ></script>
 <script src="<c:url value="/resources/js/displayDetails.js" />" ></script>
+<script src="<c:url value="/resources/js/alertify.js" />" ></script>
 
 <script type="text/javascript">
 	
 	var errorFields = []
 
+	function initializeAlertifyTheme(){
+		
+		alertify.defaults.transition = "slide";
+		alertify.defaults.theme.ok = "btn btn-primary";
+		alertify.defaults.theme.cancel = "btn btn-danger";
+		alertify.defaults.theme.input = "form-control";
+		
+	}	
+	
 	jQuery(document).ready(function(){
 		
+		initializeAlertifyTheme();
 		var rentingId = getURLParameter("rentingId")
 		
 		jQuery("#renting").select2({
@@ -149,6 +167,7 @@
 		
 		jQuery("#createContract").on("click",function(){
 			event.preventDefault()
+			jQuery("#createContract").prop('disabled',true);
 			removeErrorHighlights()
 			if (validateInputs()) {
 				saveContract()
@@ -204,7 +223,6 @@
 	}
 	
 	function displayRentingDetails(data){
-		console.log(data)
 		jQuery(".modal-title").html("Renting Details")
 		
 		jQuery(".modal-body").html(getRentingDetailsHTML(data));
@@ -212,6 +230,7 @@
 	}
 	
 	function saveContract(){
+		jQuery(".loading").show();
 		var contract = getContractData();
 		jQuery.ajax({
 			method : "POST",
@@ -220,6 +239,10 @@
 			data:contract
 		}).done(function(data){
 			window.location.href="${contextPath}/resources/view/listContracts.jsp";
+		}).fail(function(){
+			jQuery(".loading").hide();
+			jQuery("#createContract").prop("disabled",false);
+			alertify.alert("<div style='color:red'>An Error occured while creating the Rentee.</div>").setHeader("<b>Error</b>");
 		});
 	}
 	

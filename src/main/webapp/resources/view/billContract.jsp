@@ -9,6 +9,8 @@
 <title>Bill Contract</title>
 
 <link href="<c:url value="/resources/css/displayDetails.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/alertify.css" />" rel="stylesheet"> 
+<link href="<c:url value="/resources/css/alertify-bootstrap.css" />" rel="stylesheet">
 
 </head>
 <body>
@@ -97,25 +99,44 @@
 				</div>
 			</div>
 		</div>
-	</div>		
+	</div>	
+	
+	<div class="loading" style="display:none">
+		<img src="${contextPath}/resources/images/loading.gif" class="spinner" >
+	</div>
+		
 </body>
 
 <script src="<c:url value="/resources/js/displayDetails.js" />" ></script>
+<script src="<c:url value="/resources/js/alertify.js" />" ></script>
 
 <script type="text/javascript">
 	var id=0;
 	var errorFields = []
 	var transactionData="";
 	
+	function initializeAlertifyTheme(){
+		
+		alertify.defaults.transition = "slide";
+		alertify.defaults.theme.ok = "btn btn-primary";
+		alertify.defaults.theme.cancel = "btn btn-danger";
+		alertify.defaults.theme.input = "form-control";
+		
+	}	
+	
 	jQuery(document).ready(function() {
 		
+		initializeAlertifyTheme()
+		
 		id= getURLParameter("id");
+		
 		if(id!=undefined){
 			getServices(id)
 		}
 		
 		jQuery("#billContract").on("click",function(){
 			event.preventDefault()
+			jQuery("#billContract").prop('disabled',true);
 			removeErrorHighlights()
 			
 			if(validateInputs()){
@@ -130,15 +151,24 @@
 		})
 		
 		jQuery('#bilInvoice').on('click',function(){
+
+			jQuery("#bilInvoice").prop('disabled',true);
+
 			billInvoice()
+			
 		})
 		
 		jQuery('#payInvoice').on('click',function(){
+			
+			jQuery("#payInvoice").prop('disabled',true);
+
 			payInvoice()
 		})
 	});	
 	
 	function billInvoice(){
+		jQuery(".loading").show();
+		
 		jQuery.ajax({
 			
 			method:"POST",
@@ -147,11 +177,18 @@
 			data:transactionData
 			
 		}).done(function(data){
-			window.location.href="${contextPath}/resources/view/listContracts.jsp";
-		})
+			window.location.href="${contextPath}/resources/view/duePayments.jsp";
+		}).fail(function(){
+			jQuery(".loading").hide();
+			jQuery("#payInvoice").prop("disabled",false);
+			alertify.alert("<div style='color:red'>An Error occured while creating the Rentee.</div>").setHeader("<b>Error</b>");
+		});
 	}
 	
 	function payInvoice(){
+		
+		jQuery(".loading").show();
+
 		jQuery.ajax({
 			
 			method:"POST",
@@ -160,12 +197,16 @@
 			data:transactionData
 			
 		}).done(function(data){
-			window.location.href="${contextPath}/resources/view/listContracts.jsp";
-		})
+			window.location.href="${contextPath}/resources/view/listTransactions.jsp";
+		}).fail(function(){
+			jQuery(".loading").hide();
+			jQuery("#bilInvoice").prop("disabled",false);
+			alertify.alert("<div style='color:red'>An Error occured while creating the Rentee.</div>").setHeader("<b>Error</b>");
+		});
 	}
 	
 	function submitBill(){
-		
+		jQuery(".loading").show();
 		jQuery.ajax({
 			method:"POST",
 			url:"${contextPath}/transaction/calculateBill",
@@ -173,8 +214,14 @@
 			data:getBillData()
 			
 		}).done(function(data){
+			jQuery(".loading").hide();
+			jQuery("#billContract").prop("disabled",false);
 			displayTransactionsDetail(data)
-		})
+		}).fail(function(){
+			jQuery(".loading").hide();
+			jQuery("#billContract").prop("disabled",false);
+			alertify.alert("<div style='color:red'>An Error occured while creating the Rentee.</div>").setHeader("<b>Error</b>");
+		});
 	}
 	
 	function displayTransactionsDetail(data){
