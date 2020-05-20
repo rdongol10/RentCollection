@@ -294,11 +294,17 @@
 		</div>
 		
 	</div>	
+	
+	<div class="loading" style="display:none">
+		<img src="${contextPath}/resources/images/loading.gif" class="spinner" >
+	</div>
+	
 </body>
 
 <script src="<c:url value="/resources/js/jquery.inputmask.bundle.js" />" ></script>
 <script src="<c:url value="/resources/js/inputmask.js" />" ></script>
 <script src="<c:url value="/resources/js/alertify.js" />" ></script>
+
 <script type="text/javascript">
 	var errorFields= [];
 	var mode ="save";
@@ -328,15 +334,19 @@
 		
 		initializeAlertifyTheme();
 		id=getURLParameter("id");
+		
+		
+		
 		jQuery("#renteeForm").on("focus",".date",function(){
 			initializeDatePicker(this);
 		})
 		
 		function initializeDatePicker(element){
+			console.log(element)
 			jQuery(element).datepicker({
 				changeMonth : true,
 				changeYear : true,
-				changeDay : true
+				changeDay : true,
 			});
 		}
 		
@@ -396,6 +406,8 @@
 		})
 		
 		jQuery("#addRentee").on("click",function(){
+			jQuery("#addRentee").prop('disabled',true);
+
 			event.preventDefault();
 			removeErrorHighlights();
 			if(validateInputs()){
@@ -405,6 +417,7 @@
 					updateRentee(id)
 				}	
 			}else{
+				jQuery("#addRentee").prop('disabled',false);
 				highlightErrorFields()
 			}
 		})
@@ -596,6 +609,8 @@
 	}
 	
 	function updateRentee(id){
+		
+		jQuery(".loading").show();
 		var rentee = getRenteeData(mode)
 		
 		jQuery.ajax({
@@ -607,10 +622,15 @@
 			
 		}).done(function(data){
 			window.location.href="${contextPath}/resources/view/listRentee.jsp";
+		}).fail(function(){
+			jQuery(".loading").hide();
+			jQuery("#addUser").prop("disabled",false);
+			alertify.alert("<div style='color:red'>An Error occured while editing the Renting.</div>").setHeader("<b>Error</b>");
 		});
 	}
 	
 	function saveRentee(){
+		jQuery(".loading").show();
 		var rentee = getRenteeData(mode)
 		
 		jQuery.ajax({
@@ -622,6 +642,10 @@
 			
 		}).done(function(data){
 			window.location.href="${contextPath}/resources/view/listRentee.jsp";
+		}).fail(function(){
+			jQuery(".loading").hide();
+			jQuery("#addUser").prop("disabled",false);
+			alertify.alert("<div style='color:red'>An Error occured while creating the Rentee.</div>").setHeader("<b>Error</b>");
 		});
 	}
 	
@@ -711,7 +735,24 @@
 		errorFields = []
 		validateImages();
 		validateDate();
+		validatePhoneNumber();
 		return !errorFields.length > 0;
+	}
+	
+	function validatePhoneNumber() {
+		
+		jQuery(".phonenumber-inputmask").each(function(){
+			if(jQuery(this).val().trim() == ""){
+				return;
+			}
+			if(!/^[0-9]{10}$/.test(jQuery(this).val())){
+				var errorField = {};
+				errorField.id = jQuery(this).attr("id");
+				errorField.message = "Phone Number should be of 10 digits";
+				errorFields.push(errorField)
+			}
+		})
+
 	}
 	
 	function validateDate(){
