@@ -123,10 +123,13 @@
 <script type="text/javascript">
 	
 	var table;
-	
+	var start = moment().subtract(7,"days");
+	var end = moment()
 	jQuery(document).ready(function(){
 
 		jQuery(".dateRangePicer").daterangepicker({
+			startDate : start,
+			endDate : end
 		});
 
 		jQuery("#rentee").select2({
@@ -176,7 +179,7 @@
 		jQuery("#clearSelection").on("click",function(){
 			clearRentee();
 			clearRenting();
-			//TODO clear date
+			clearDateRange();
 		})
 		
 		
@@ -184,6 +187,10 @@
 		
 	})
 	
+	function clearDateRange(){
+		$('.dateRangePicer').data('daterangepicker').setStartDate(start);
+		$('.dateRangePicer').data('daterangepicker').setEndDate(end);
+	}
 	function displayTransactionsDetail(transactionId){
 		jQuery.ajax({
 			method:"GET",
