@@ -90,7 +90,6 @@ public class ContractListDataTableBackend extends AbstractDataTableBackend {
 	protected List<List<String>> getQueryResults() {
 		List<List<String>> tableData = new LinkedList<List<String>>();
 		Query query = entityManager.createNativeQuery(getQuery());
-		System.out.println(getQuery());
 		List<Object[]> objects = query.getResultList();
 		for (Object[] object : objects) {
 
@@ -113,9 +112,12 @@ public class ContractListDataTableBackend extends AbstractDataTableBackend {
 	protected String getActionButtons(String contractId, String rentingId) {
 
 		StringBuffer actionButtons = new StringBuffer();
-		actionButtons.append(getDeleteContractAction(contractId));
-		actionButtons.append(" ");
+
 		actionButtons.append(getContractDetailsAction(rentingId));
+		if (!expired) {
+			actionButtons.append(" ");
+			actionButtons.append(getDeleteContractAction(contractId));
+		}
 		actionButtons.append(" ");
 		actionButtons.append(getBillContractAaction(contractId));
 
