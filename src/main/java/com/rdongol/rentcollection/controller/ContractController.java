@@ -31,7 +31,7 @@ public class ContractController {
 
 	@Autowired
 	@Qualifier("contractListDataTableBackend")
-	private AbstractDataTableBackend rentingListDataTableBackend;
+	private AbstractDataTableBackend contractListDataTableBackend;
 
 	@PostMapping
 	public ResponseEntity<Contract> create(@RequestBody ContractModel contractModel) {
@@ -42,8 +42,8 @@ public class ContractController {
 
 	@PostMapping("/listContracts")
 	public String listContracts(@RequestBody String dataTableRequest) throws Exception {
-		rentingListDataTableBackend.intialize(dataTableRequest);
-		return rentingListDataTableBackend.getTableData();
+		contractListDataTableBackend.intialize(dataTableRequest);
+		return contractListDataTableBackend.getTableData();
 	}
 
 	@GetMapping("/billContractService/{id}")
@@ -51,6 +51,12 @@ public class ContractController {
 
 		return ResponseEntity.ok(contractService.getBillContractServiceModels(id));
 
+	}
+	
+	@PostMapping("/expiredContracts")
+	public String listExpiredConracts(@RequestBody String dataTableRequest) throws Exception {
+		contractListDataTableBackend.intialize(dataTableRequest);
+		return contractListDataTableBackend.getTableData();
 	}
 
 }

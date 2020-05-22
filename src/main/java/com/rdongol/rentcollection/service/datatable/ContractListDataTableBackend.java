@@ -1,6 +1,10 @@
 package com.rdongol.rentcollection.service.datatable;
 
+import java.io.StringReader;
 import java.math.BigInteger;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,9 +13,44 @@ import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Service
 @Qualifier("contractListDataTableBackend")
 public class ContractListDataTableBackend extends AbstractDataTableBackend {
+
+	public boolean expired = false;
+
+	@Override
+	protected void initializeTableData(String dataTableRequest) {
+
+		expired = false;
+
+		if (dataTableRequest == null || dataTableRequest.isEmpty()) {
+			setDefaultTableData();
+			return;
+		}
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		try {
+
+			JsonNode rootNode = mapper.readTree(new StringReader(dataTableRequest));
+			JsonNode expiredNode = rootNode.get("expired");
+
+			if (expiredNode != null) {
+				expired = expiredNode.asBoolean();
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			setDefaultTableData();
+		}
+
+		super.initializeTableData(dataTableRequest);
+
+	}
 
 	@Override
 	protected void initializeTableColumns() {
@@ -37,7 +76,12 @@ public class ContractListDataTableBackend extends AbstractDataTableBackend {
 
 	@Override
 	protected void setWhereCriteria() {
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		whereCriteria = " where contract.renting_id=renting.id and contract.rentee_id=rentee.id ";
+
+		if (expired) {
+			whereCriteria += " AND contract.expire_date < '" + df.format(new Date()) + "'";
+		}
 
 	}
 
@@ -46,6 +90,7 @@ public class ContractListDataTableBackend extends AbstractDataTableBackend {
 	protected List<List<String>> getQueryResults() {
 		List<List<String>> tableData = new LinkedList<List<String>>();
 		Query query = entityManager.createNativeQuery(getQuery());
+		System.out.println(getQuery());
 		List<Object[]> objects = query.getResultList();
 		for (Object[] object : objects) {
 
@@ -53,7 +98,7 @@ public class ContractListDataTableBackend extends AbstractDataTableBackend {
 
 			data.add(String.valueOf(object[1]));
 			data.add(String.valueOf(object[2]));
-			
+
 			data.add(formatDate(object[3]));
 			data.add(formatDate(object[4]));
 			data.add(formatDate(object[5]));
@@ -64,9 +109,9 @@ public class ContractListDataTableBackend extends AbstractDataTableBackend {
 
 		return tableData;
 	}
-	
-	protected String getActionButtons(String contractId , String rentingId) {
-		
+
+	protected String getActionButtons(String contractId, String rentingId) {
+
 		StringBuffer actionButtons = new StringBuffer();
 		actionButtons.append(getDeleteContractAction(contractId));
 		actionButtons.append(" ");
@@ -80,8 +125,8 @@ public class ContractListDataTableBackend extends AbstractDataTableBackend {
 	protected String getDeleteContractAction(String contractId) {
 
 		StringBuffer deleteContract = new StringBuffer();
-		deleteContract.append("<i class='actionButton deleteContract fas fa-store-alt-slash fa-lg' contractId='" + contractId
-				+ "' title='terminate contract' style = 'color:#FF686B'></i>");
+		deleteContract.append("<i class='actionButton deleteContract fas fa-store-alt-slash fa-lg' contractId='"
+				+ contractId + "' title='terminate contract' style = 'color:#FF686B'></i>");
 		return deleteContract.toString();
 
 	}
@@ -96,8 +141,8 @@ public class ContractListDataTableBackend extends AbstractDataTableBackend {
 	protected String getBillContractAaction(String contractId) {
 
 		StringBuffer billContract = new StringBuffer();
-		billContract.append("<i class='actionButton billContract fas fa-file-invoice-dollar fa-lg' contractId='" + contractId
-				+ "' title='bill contract' style = 'color:#009B33'></i>");
+		billContract.append("<i class='actionButton billContract fas fa-file-invoice-dollar fa-lg' contractId='"
+				+ contractId + "' title='bill contract' style = 'color:#009B33'></i>");
 		return billContract.toString();
 
 	}
