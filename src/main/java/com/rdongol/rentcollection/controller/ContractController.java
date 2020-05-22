@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rdongol.rentcollection.model.BillContractServiceModel;
 import com.rdongol.rentcollection.model.Contract;
 import com.rdongol.rentcollection.model.ContractModel;
+import com.rdongol.rentcollection.model.Renting;
 import com.rdongol.rentcollection.service.ContractLogService;
 import com.rdongol.rentcollection.service.ContractService;
 import com.rdongol.rentcollection.service.datatable.AbstractDataTableBackend;
@@ -33,6 +34,7 @@ public class ContractController {
 	@Qualifier("contractListDataTableBackend")
 	private AbstractDataTableBackend contractListDataTableBackend;
 
+	
 	@PostMapping
 	public ResponseEntity<Contract> create(@RequestBody ContractModel contractModel) {
 		Contract contract = contractService.save(contractModel);
@@ -57,6 +59,17 @@ public class ContractController {
 	public String listExpiredConracts(@RequestBody String dataTableRequest) throws Exception {
 		contractListDataTableBackend.intialize(dataTableRequest);
 		return contractListDataTableBackend.getTableData();
+	}
+	
+	@GetMapping("/getRentingFromContract/{id}")
+	public ResponseEntity<Renting> getRentingFromContract(@PathVariable Long id) {
+		Contract contract = contractService.findById(id);
+
+		if (contract == null) {
+			ResponseEntity.badRequest().build();
+		}
+
+		return ResponseEntity.ok(contract.getRenting());
 	}
 
 }

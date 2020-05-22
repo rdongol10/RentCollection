@@ -40,6 +40,11 @@
 								 	
 								 	<form id="billingForm">
 								 		<div class="card-body">
+								 		
+								 			<div class="rentingContainer">
+								 			
+								 			</div>
+								 			
 								 			<div class="row">
 								 				<div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
 								 					<label for="months" class="col-form-label">Number of months</label>
@@ -114,6 +119,7 @@
 	var id=0;
 	var errorFields = []
 	var transactionData="";
+	var renting={};
 	
 	function initializeAlertifyTheme(){
 		
@@ -131,6 +137,7 @@
 		id= getURLParameter("id");
 		
 		if(id!=undefined){
+			getRenting(id)
 			getServices(id)
 		}
 		
@@ -368,6 +375,14 @@
 		});
 	}
 	
+	function getRenting(id){
+		jQuery.ajax({
+			method:"GET",
+			url:"${contextPath}/contract/getRentingFromContract/"+id
+		}).done(function(data){
+			loadRentingData(data)
+		});	
+	}
 	function getServices(id){
 		jQuery.ajax({
 			method:"GET",
@@ -375,6 +390,24 @@
 		}).done(function(data){
 			loadServiceData(data)
 		});	
+	}
+	
+	function loadRentingData(data){
+		
+		var html ="";
+		
+		html +='<div class="row">'
+		html +='<div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4">'
+		html +='<label class="col-form-label">Renting name : '+data.name+'</label>'
+		html +='</div>'
+		html +='</div>'
+		html +='<div class="row">'
+		html +='<div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4">'
+		html +='<label class="col-form-label">Charge : '+data.price+'</label>'
+		html +='</div>'
+		html +='</div>'
+
+		jQuery(".rentingContainer").html(html)
 	}
 	
 	function loadServiceData(data){
