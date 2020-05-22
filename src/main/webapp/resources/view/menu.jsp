@@ -126,6 +126,9 @@
                                         <li class="nav-item">
                                             <a class="nav-link" href="${contextPath}/resources/view/createContract.jsp">Create Contract</a>
                                         </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="${contextPath}/resources/view/expiredContracts.jsp">Expired Contracts</a>
+                                        </li>
                                     </ul>
                                 </div>
                             </li>
