@@ -29,6 +29,8 @@ public class Transaction {
 
 	private double contractCharge;
 
+	private double charge;
+	
 	private double totalCharge;
 
 	private String note;
@@ -41,7 +43,7 @@ public class Transaction {
 	}
 
 	public Transaction(long id, String transactionNumber, long contractId, Date billedDate, int paid, Date paidDate,
-			int numberOfMonths, double contractCharge, double totalCharge, List<TransactionDetail> transactionDetail,
+			int numberOfMonths, double contractCharge,double charge , double totalCharge, List<TransactionDetail> transactionDetail,
 			String note) {
 		super();
 		this.id = id;
@@ -51,6 +53,7 @@ public class Transaction {
 		this.paidDate = paidDate;
 		this.numberOfMonths = numberOfMonths;
 		this.contractCharge = contractCharge;
+		this.charge = charge;
 		this.totalCharge = totalCharge;
 		this.transactionDetail = transactionDetail;
 		this.note = note;
@@ -110,6 +113,14 @@ public class Transaction {
 
 	public void setContractCharge(double contractCharge) {
 		this.contractCharge = contractCharge;
+	}
+	
+	public double getCharge() {
+		return charge;
+	}
+
+	public void setCharge(double charge) {
+		this.charge = charge;
 	}
 
 	public double getTotalCharge() {

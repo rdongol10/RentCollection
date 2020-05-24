@@ -283,7 +283,7 @@ function getTransactionDetailHTML(data){
 	html += '<td>'+ transaction.contractCharge+'</td>'
 	html += '<td>'+ transaction.numberOfMonths+'</td>'
 
-	html += '<td>'+ parseInt(transaction.contractCharge) * parseInt(transaction.numberOfMonths) +'</td>'
+	html += '<td>'+ transaction.charge +'</td>'
 
 	html += '</tr>'
 	

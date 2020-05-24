@@ -147,6 +147,7 @@ public class TransactionService {
 		transaction.setNumberOfMonths(numberOfMonths);
 		transaction.setContractCharge(renting.getPrice());
 		transaction.setBilledDate(new Date());
+		transaction.setCharge(renting.getPrice() * numberOfMonths);
 		List<TransactionDetail> transactionDetails = new LinkedList<TransactionDetail>();
 		for (BillContractServiceModel billContractServiceModel : billContractServiceModels) {
 
