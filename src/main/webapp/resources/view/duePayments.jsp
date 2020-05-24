@@ -93,6 +93,11 @@
 			</div>
 		</div>
 	</div>
+	
+	<div class="loading" style="display:none">
+		<img src="${contextPath}/resources/images/loading.gif" class="spinner" >
+	</div>
+	
 </body>
 
 <script src="<c:url value="/resources/js/alertify.js" />" ></script>
@@ -188,17 +193,23 @@
 	}
 	
 	function payTransaction(transactionId , toggle){
+		jQuery(".loading").show();
+
 		jQuery.ajax({
 			
 			method:"PUT",
 			url:"${contextPath}/transaction/payInvoice/"+transactionId
 
 		}).done(function(data){
+			jQuery(".loading").hide();
 			$('#transactionTable').DataTable().ajax.reload();
 			if(toggle){
 				$('#transactionModal').modal('toggle');
 			}
-		})
+		}).fail(function(){
+			jQuery(".loading").hide();
+			alertify.alert("<div style='color:red'>An Error occured .</div>").setHeader("<b>Error</b>");
+		});
 	}
 	
 	function paySelectedTransactions(){
@@ -207,6 +218,7 @@
 			return;
 		}
 		
+		jQuery(".loading").show();
 		jQuery.ajax({
 			
 			method:"PUT",
@@ -215,10 +227,14 @@
 			data : selectedTransactionIds.toString()
 
 		}).done(function(data){
+			jQuery(".loading").hide();
 			$('#transactionTable').DataTable().ajax.reload();
 			unselectTableRows()
 			displaySelectedTotal()
-		})
+		}).fail(function(){
+			jQuery(".loading").hide();
+			alertify.alert("<div style='color:red'>An Error occured .</div>").setHeader("<b>Error</b>");
+		});
 	}
 	
 	function displayTransactionsDetail(id){
