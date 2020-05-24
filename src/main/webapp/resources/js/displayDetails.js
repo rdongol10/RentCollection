@@ -293,7 +293,7 @@ function getTransactionDetailHTML(data){
 		html += '<td class="align-top">'+ transaction.transactionDetail[i].serviceName + '</td>'
 		var transactionServiceDetail = transaction.transactionDetail[i].transactionServiceDetail;
 		
-		if(transactionServiceDetail != null){
+		if(transactionServiceDetail != null && transactionServiceDetail.length>0){
 			html += '<td>'
 			
 			html += '<div class="table-responsive">'
