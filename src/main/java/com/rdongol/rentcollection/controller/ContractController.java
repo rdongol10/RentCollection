@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,7 @@ import com.rdongol.rentcollection.model.BillContractServiceModel;
 import com.rdongol.rentcollection.model.Contract;
 import com.rdongol.rentcollection.model.ContractModel;
 import com.rdongol.rentcollection.model.Renting;
+import com.rdongol.rentcollection.model.Transaction;
 import com.rdongol.rentcollection.service.ContractLogService;
 import com.rdongol.rentcollection.service.ContractService;
 import com.rdongol.rentcollection.service.datatable.AbstractDataTableBackend;
@@ -34,7 +36,6 @@ public class ContractController {
 	@Qualifier("contractListDataTableBackend")
 	private AbstractDataTableBackend contractListDataTableBackend;
 
-	
 	@PostMapping
 	public ResponseEntity<Contract> create(@RequestBody ContractModel contractModel) {
 		Contract contract = contractService.save(contractModel);
@@ -54,13 +55,13 @@ public class ContractController {
 		return ResponseEntity.ok(contractService.getBillContractServiceModels(id));
 
 	}
-	
+
 	@PostMapping("/expiredContracts")
 	public String listExpiredConracts(@RequestBody String dataTableRequest) throws Exception {
 		contractListDataTableBackend.intialize(dataTableRequest);
 		return contractListDataTableBackend.getTableData();
 	}
-	
+
 	@GetMapping("/getRentingFromContract/{id}")
 	public ResponseEntity<Renting> getRentingFromContract(@PathVariable Long id) {
 		Contract contract = contractService.findById(id);
@@ -72,4 +73,19 @@ public class ContractController {
 		return ResponseEntity.ok(contract.getRenting());
 	}
 
+	@GetMapping("/areAllBillsCleared/{id}")
+	public boolean areAllBillsCleared(@PathVariable long id) {
+
+		return contractService.areAllBillsCleared(id);
+	}
+
+	@PostMapping("/terminateContract")
+	public void terminateContract(@RequestBody String id) {
+		contractService.terminateContract(Long.valueOf(id));
+	}
+
+	@PostMapping("/payAndTerminateContract")
+	public void payAndTerminateContract(@RequestBody Transaction transaction) {
+		contractService.payAndTerminatecontract(transaction);
+	}
 }

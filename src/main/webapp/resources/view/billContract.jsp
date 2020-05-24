@@ -227,7 +227,7 @@
 		}).fail(function(){
 			jQuery(".loading").hide();
 			jQuery("#billContract").prop("disabled",false);
-			alertify.alert("<div style='color:red'>An Error occured while creating the Rentee.</div>").setHeader("<b>Error</b>");
+			alertify.alert("<div style='color:red'>An Error occured</div>").setHeader("<b>Error</b>");
 		});
 	}
 	

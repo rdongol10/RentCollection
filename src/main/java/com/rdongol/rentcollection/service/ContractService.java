@@ -12,10 +12,12 @@ import org.springframework.stereotype.Service;
 
 import com.rdongol.rentcollection.model.BillContractServiceModel;
 import com.rdongol.rentcollection.model.Contract;
+import com.rdongol.rentcollection.model.ContractLog;
 import com.rdongol.rentcollection.model.ContractModel;
 import com.rdongol.rentcollection.model.Rentee;
 import com.rdongol.rentcollection.model.Renting;
 import com.rdongol.rentcollection.model.RentingFacility;
+import com.rdongol.rentcollection.model.Transaction;
 import com.rdongol.rentcollection.repository.ContractRepository;
 
 @Service
@@ -29,6 +31,12 @@ public class ContractService {
 
 	@Autowired
 	private RentingService rentingService;
+	
+	@Autowired
+	private TransactionService transactionService;
+	
+	@Autowired
+	private ContractLogService contractLogService;
 
 	public List<Contract> findAll() {
 
@@ -123,4 +131,29 @@ public class ContractService {
 		return billContractServiceModels;
 
 	}
+	
+	public boolean areAllBillsCleared(long contractId) {
+		List<Transaction> transactions = transactionService.getUnpaidBills(contractId);
+		return transactions.size() <= 0;
+	}
+
+	public void terminateContract(long contractId) {
+		Contract contract = findById(contractId);
+		if(contract == null) {
+			ResponseEntity.badRequest().build();
+		}
+		
+		ContractLog contractLog = contractLogService.getContractLogByContractId(contractId);
+		contractLog.setTerminatedDate(new Date());
+		
+		deleteById(contractId);
+		
+	}
+	
+	public void payAndTerminatecontract(Transaction transaction) {
+	
+		transactionService.payTransaction(transaction, true);
+		terminateContract(transaction.getContractId());
+	}
+
 }

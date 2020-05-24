@@ -1,5 +1,6 @@
 package com.rdongol.rentcollection.service;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -123,7 +124,7 @@ public class TransactionService {
 
 	}
 
-	public TransactionDetailModel getTransactionDetail(long contractId, int numberOfMonths,
+	public TransactionDetailModel getTransactionDetail(long contractId, double numberOfMonths,
 			List<BillContractServiceModel> billContractServiceModels) {
 
 		Transaction transaction = calculateBill(contractId, numberOfMonths, billContractServiceModels);
@@ -131,7 +132,26 @@ public class TransactionService {
 		return getTransactDetail(transaction);
 	}
 
-	public Transaction calculateBill(long contractId, int numberOfMonths,
+	public TransactionDetailModel calculateForTermination(long contractId,
+			List<BillContractServiceModel> billContractServiceModels) {
+
+		DecimalFormat df2 = new DecimalFormat("#.##");
+		Contract contract = contractService.findById(contractId);
+		if (contract == null) {
+			ResponseEntity.badRequest().build();
+		}
+
+		double daysDiference = (contract.getExpireDate().getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24);
+
+		double remainingDays = 30 - daysDiference;
+		double daysInMonth = Double.valueOf(df2.format((Double)remainingDays / 30));
+		
+		Transaction transaction = calculateBill(contractId, daysInMonth, billContractServiceModels);
+		transaction.setNote("Terminate Contract");
+		return getTransactDetail(transaction);
+		
+	}
+	public Transaction calculateBill(long contractId, double numberOfMonths,
 			List<BillContractServiceModel> billContractServiceModels) {
 
 		Contract contract = contractService.findById(contractId);
@@ -162,7 +182,7 @@ public class TransactionService {
 		transaction.setTransactionDetail(transactionDetails);
 
 		transaction.setTotalCharge(getTransactionTotal(transactionDetails, renting.getPrice() * numberOfMonths));
-		transaction.setNote(getTransactionNote(numberOfMonths, contract.getExpireDate()));
+		transaction.setNote(getTransactionNote((int) numberOfMonths, contract.getExpireDate()));
 		return transaction;
 	}
 
@@ -194,7 +214,7 @@ public class TransactionService {
 
 	}
 
-	public TransactionDetail calculateTransactionDetail(int numberOfMonths,
+	public TransactionDetail calculateTransactionDetail(double numberOfMonths,
 			BillContractServiceModel billContractServiceModel) {
 
 		RentingFacility rentingFacility = rentingFacilityService
@@ -381,7 +401,7 @@ public class TransactionService {
 		if (updateRelated) {
 
 			contract.setExpireDate(
-					contractService.getExpireDate(contract.getExpireDate(), transaction.getNumberOfMonths()));
+					contractService.getExpireDate(contract.getExpireDate(), (int) transaction.getNumberOfMonths()));
 			contractService.save(contract);
 		}
 
@@ -394,5 +414,9 @@ public class TransactionService {
 		}
 
 		return save(transaction);
+	}
+	
+	public List<Transaction> getUnpaidBills(long contractId) {
+		return transactionRepository.getUnpaidBills(contractId);
 	}
 }

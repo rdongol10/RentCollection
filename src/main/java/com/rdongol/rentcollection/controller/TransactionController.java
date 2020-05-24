@@ -51,6 +51,18 @@ public class TransactionController {
 
 	}
 
+	@PostMapping("/calculateForTermination")
+	public ResponseEntity<TransactionDetailModel> calculateForTermination(@RequestBody String billData)
+			throws Exception {
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode rootNode = mapper.readTree(new StringReader(billData));
+		long contractId = rootNode.get("contractId").asLong();
+		List<BillContractServiceModel> billContractServiceModels = mapper.readValue(
+				rootNode.get("billContractServices").toString(), new TypeReference<List<BillContractServiceModel>>() {
+				});
+		return ResponseEntity.ok(transactionService.calculateForTermination(contractId, billContractServiceModels));
+	}
+
 	@PostMapping("/billInvoice")
 	public ResponseEntity<Transaction> billTransaction(@RequestBody Transaction transaction) {
 		return ResponseEntity.ok(transactionService.billTransaction(transaction));
@@ -61,22 +73,22 @@ public class TransactionController {
 		return ResponseEntity.ok(transactionService.payTransaction(transaction, true));
 	}
 
+	
 	@PutMapping("/payInvoice/{id}")
 	public ResponseEntity<Transaction> payTransaction(@PathVariable long id) {
 
 		return ResponseEntity.ok(transactionService.payTransaction(id, false));
 
 	}
-	
 
 	@PutMapping("/payInvoices")
 	public ResponseEntity<List<Transaction>> payTransactions(@RequestBody String ids) {
 
 		List<String> transactionIds = Arrays.asList(ids.split(","));
 		return ResponseEntity.ok(transactionService.payTransactions(transactionIds, false));
-		
+
 	}
-	
+
 	@PostMapping("/listTransactions")
 	public String listTransactions(@RequestBody String dataTableRequest) throws Exception {
 		transactionListDataTableBackend.intialize(dataTableRequest);
@@ -87,4 +99,5 @@ public class TransactionController {
 	public ResponseEntity<TransactionDetailModel> getTransactionDetail(@PathVariable long id) {
 		return ResponseEntity.ok(transactionService.getTransactionDetail(id));
 	}
+
 }
