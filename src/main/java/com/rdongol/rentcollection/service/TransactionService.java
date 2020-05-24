@@ -349,6 +349,16 @@ public class TransactionService {
 
 		return payTransaction(transaction, updateRelated);
 	}
+	
+	public List<Transaction> payTransactions(List<String> transationIds, boolean updateRelated) {
+
+		List<Transaction> transactions = new LinkedList<Transaction>();
+		for (String transactionId : transationIds) {
+			transactions.add(payTransaction(Long.valueOf(transactionId), updateRelated));
+		}
+
+		return transactions;
+	}
 
 	public Transaction payTransaction(Transaction transaction, boolean updateRelated) {
 

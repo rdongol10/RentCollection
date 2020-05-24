@@ -11,6 +11,13 @@
 <link href="<c:url value="/resources/css/alertify.css" />" rel="stylesheet"> 
 <link href="<c:url value="/resources/css/alertify-bootstrap.css" />" rel="stylesheet">
 
+<style type="text/css">
+	
+	#transactionTable tr.selected{
+		background-color : #CCCCCC
+	}
+
+</style>
 <title>Due payments</title>
 </head>
 <body>
@@ -48,6 +55,15 @@
    											    <th>Actions</th>
 											</tr>
 										</thead>
+										<tbody>
+										</tbody>
+										<tfoot class="transactionTableFoot">
+											<tr> 
+												<th colspan="6"  class="text-right"><strong>Total</strong></th>
+												<th id="selectedTotal"></th>
+												<th> <Button class="btn btn-success " id="paySelected" >Pay Selected</Button> </th>
+											</tr>
+										</tfoot>
 									</table>	
 	                   			</div>
 	                   		</div>
@@ -85,7 +101,8 @@
 <script type="text/javascript">
 	var table;
 	var transactionId=0;
-	
+	var selectedTransactionIds =[];
+	var total = 0;
 	function initializeAlertifyTheme(){
 		alertify.defaults.transition = "slide";
 		alertify.defaults.theme.ok = "btn btn-primary";
@@ -98,6 +115,8 @@
 		initializeAlertifyTheme()
 		
 		loadTableData()
+		
+		toggleTotalFooter();
 		
 		jQuery("#transactionTable").on("click",".details",function(){
 			displayTransactionsDetail(jQuery(this).attr("transactionid"))
@@ -123,7 +142,50 @@
 			transactionId=0;
 		})
 		
+		jQuery("#transactionTable").on("click",".checkForPayment",function(){
+			var tr = jQuery(this).closest("tr")
+			jQuery(tr).toggleClass('selected');
+			displaySelectedTotal()
+		})
+		
+		jQuery("#paySelected").on("click",function(){
+			
+			alertify.confirm(
+					"Confirm",
+					"Are you sure you !!",
+					function(){paySelectedTransactions()},
+					function(){}
+				)
+			
+		})
+		
 	});
+	
+	function unselectTableRows(){
+		jQuery("#transactionTable .selected").each(function(i,tr){
+			jQuery(tr).toggleClass('selected');
+		});	
+	}
+	
+	function toggleTotalFooter(){
+		if(selectedTransactionIds.length > 0){
+			jQuery(".transactionTableFoot").show();
+		}else{
+			jQuery(".transactionTableFoot").hide();
+		}
+	}
+	function displaySelectedTotal(){
+		selectedTransactionIds = [];
+		total = 0;
+		jQuery("#transactionTable .selected").each(function(i,tr){
+			var row= table.row( tr );
+			selectedTransactionIds.push(row.data()[0]);
+			total += parseFloat(row.data()[6])
+		})
+		
+		jQuery("#selectedTotal").html("<strong>"+total+"</strong>");
+		toggleTotalFooter();
+	}
 	
 	function payTransaction(transactionId , toggle){
 		jQuery.ajax({
@@ -136,6 +198,26 @@
 			if(toggle){
 				$('#transactionModal').modal('toggle');
 			}
+		})
+	}
+	
+	function paySelectedTransactions(){
+		
+		if(selectedTransactionIds.length<=0){
+			return;
+		}
+		
+		jQuery.ajax({
+			
+			method:"PUT",
+			url:"${contextPath}/transaction/payInvoices",
+			contentType: 'application/json; charset=UTF-8',		
+			data : selectedTransactionIds.toString()
+
+		}).done(function(data){
+			$('#transactionTable').DataTable().ajax.reload();
+			unselectTableRows()
+			displaySelectedTotal()
 		})
 	}
 	

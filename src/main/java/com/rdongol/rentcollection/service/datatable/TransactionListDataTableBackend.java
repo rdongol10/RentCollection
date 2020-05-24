@@ -282,6 +282,8 @@ public class TransactionListDataTableBackend extends AbstractDataTableBackend {
 		if (unpaidOnly && paidDate == null) {
 			actionButtons.append(" ");
 			actionButtons.append(getPayTransactionAction(transactionId));
+			actionButtons.append(" ");
+			actionButtons.append(getSelectForPaymentAction(transactionId));
 		}
 
 		return actionButtons.toString();
@@ -300,6 +302,19 @@ public class TransactionListDataTableBackend extends AbstractDataTableBackend {
 		payTransaction.append("<i class='actionButton payment fas fa-money-check-alt fa-lg' transactionId='"
 				+ transactionId + "' title='pay' style = 'color:#009B33'> </i>");
 		return payTransaction.toString();
+	}
+
+	protected String getSelectForPaymentAction(String transactionId) {
+		StringBuffer paymentRadio = new StringBuffer();
+		paymentRadio.append(  "<span class='custom-control custom-checkbox'>");
+		paymentRadio.append("<input type='checkbox' class='custom-control-input checkForPayment' id='customCheck"+transactionId+"' transactionId='"
+				+ transactionId + "' >");
+		paymentRadio.append("<label class='custom-control-label' for='customCheck"+transactionId+"'></label>");
+
+		paymentRadio.append("</span>");
+
+
+		return paymentRadio.toString();
 	}
 
 }

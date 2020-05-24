@@ -1,6 +1,7 @@
 package com.rdongol.rentcollection.controller;
 
 import java.io.StringReader;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +67,16 @@ public class TransactionController {
 		return ResponseEntity.ok(transactionService.payTransaction(id, false));
 
 	}
+	
 
+	@PutMapping("/payInvoices")
+	public ResponseEntity<List<Transaction>> payTransactions(@RequestBody String ids) {
+
+		List<String> transactionIds = Arrays.asList(ids.split(","));
+		return ResponseEntity.ok(transactionService.payTransactions(transactionIds, false));
+		
+	}
+	
 	@PostMapping("/listTransactions")
 	public String listTransactions(@RequestBody String dataTableRequest) throws Exception {
 		transactionListDataTableBackend.intialize(dataTableRequest);
