@@ -920,6 +920,14 @@ Background Color / Color
     background-color: #c5fad3 !important;
 }
 
+.bg-warning-light{
+	background-color: #ffffa9 !important
+}
+
+.bg-violet-light{
+	background-color : #f1ddf3 !important
+}
+
 
 /*-----------------------
 Borders
@@ -1004,6 +1012,10 @@ Borders
 
 .rating-color {
     color: #ffa811;
+}
+
+.text-violet{
+	color : #C361D6 !important;
 }
 
 
@@ -7078,4 +7090,55 @@ Media Query
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
+}
+
+.homeIcon{
+    height: 135px;
+    width: 135px;
+    border-radius: 50%;
+    margin: auto;
+    margin-top:20%;
+    margin-bottom :15%;
+}
+
+.homeIconImage {
+	position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.homeIconText {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+       color: #7E8889;
+    
+}
+
+.homeIconText:hover{
+	color : #009B33;
+}
+
+.homeIconContainer{
+	cursor:pointer;
+}
+
+.homeIconContainer:hover{
+   	border-color: #79fbf2;
+   	border-style: solid;
+}
+
+.homeIconContainer .notification {
+	position: absolute;
+	top: 10px;
+	left: 0px;
+	padding: 5px 10px;
+	background-color: #ef172c;
+	color: white;
+	height: 35px;
+	width: 120px;
+	text-align: center;
+	font-size: 18px;
 }
