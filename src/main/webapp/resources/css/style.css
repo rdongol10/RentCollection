@@ -7133,7 +7133,7 @@ Media Query
 .homeIconContainer .notification {
 	position: absolute;
 	top: 10px;
-	left: 0px;
+	left: -5px;
 	padding: 5px 10px;
 	background-color: #ef172c;
 	color: white;
