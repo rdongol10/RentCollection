@@ -11,4 +11,8 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
 
 	@Query( value = "Select t from Transaction t where t.contractId = :contractId and t.paid=0")
 	List<Transaction> getUnpaidBills(long contractId);
+	
+	
+	@Query(value = "Select count(t.id) from Transaction t where t.paid=0")
+	int countUnpaidBills();
 }

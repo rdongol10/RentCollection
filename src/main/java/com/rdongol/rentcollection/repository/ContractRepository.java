@@ -17,4 +17,7 @@ public interface ContractRepository extends CrudRepository<Contract, Long> {
 	@Query(value = "select c from Contract c where c.rentee = :rentee")
 	List<Contract> getContractByRentee(Rentee rentee);
 	
+	@Query(value ="Select count(c.id) from Contract c where c.expireDate < CURDATE() ")
+	int countExpiredContracts();
+	
 }

@@ -144,13 +144,14 @@ public class TransactionService {
 		double daysDiference = (contract.getExpireDate().getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24);
 
 		double remainingDays = 30 - daysDiference;
-		double daysInMonth = Double.valueOf(df2.format((Double)remainingDays / 30));
-		
+		double daysInMonth = Double.valueOf(df2.format((Double) remainingDays / 30));
+
 		Transaction transaction = calculateBill(contractId, daysInMonth, billContractServiceModels);
 		transaction.setNote("Terminate Contract");
 		return getTransactDetail(transaction);
-		
+
 	}
+
 	public Transaction calculateBill(long contractId, double numberOfMonths,
 			List<BillContractServiceModel> billContractServiceModels) {
 
@@ -370,7 +371,7 @@ public class TransactionService {
 
 		return payTransaction(transaction, updateRelated);
 	}
-	
+
 	public List<Transaction> payTransactions(List<String> transationIds, boolean updateRelated) {
 
 		List<Transaction> transactions = new LinkedList<Transaction>();
@@ -415,8 +416,12 @@ public class TransactionService {
 
 		return save(transaction);
 	}
-	
+
 	public List<Transaction> getUnpaidBills(long contractId) {
 		return transactionRepository.getUnpaidBills(contractId);
+	}
+
+	public int countUnpaidBills() {
+		return transactionRepository.countUnpaidBills();
 	}
 }

@@ -31,10 +31,10 @@ public class ContractService {
 
 	@Autowired
 	private RentingService rentingService;
-	
+
 	@Autowired
 	private TransactionService transactionService;
-	
+
 	@Autowired
 	private ContractLogService contractLogService;
 
@@ -78,11 +78,11 @@ public class ContractService {
 
 		return save(contract);
 	}
-	
+
 	public Date getExpireDate(Date previousExpiredDate, int numberOfMpnths) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(previousExpiredDate);
-		calendar.add(Calendar.DAY_OF_MONTH, 30*numberOfMpnths);
+		calendar.add(Calendar.DAY_OF_MONTH, 30 * numberOfMpnths);
 		return calendar.getTime();
 	}
 
@@ -131,7 +131,7 @@ public class ContractService {
 		return billContractServiceModels;
 
 	}
-	
+
 	public boolean areAllBillsCleared(long contractId) {
 		List<Transaction> transactions = transactionService.getUnpaidBills(contractId);
 		return transactions.size() <= 0;
@@ -139,21 +139,24 @@ public class ContractService {
 
 	public void terminateContract(long contractId) {
 		Contract contract = findById(contractId);
-		if(contract == null) {
+		if (contract == null) {
 			ResponseEntity.badRequest().build();
 		}
-		
+
 		ContractLog contractLog = contractLogService.getContractLogByContractId(contractId);
 		contractLog.setTerminatedDate(new Date());
-		
+
 		deleteById(contractId);
-		
+
 	}
-	
+
 	public void payAndTerminatecontract(Transaction transaction) {
-	
+
 		transactionService.payTransaction(transaction, true);
 		terminateContract(transaction.getContractId());
 	}
 
+	public int countExpiredContracts() {
+		return contractRepository.countExpiredContracts();
+	}
 }
