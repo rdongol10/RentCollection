@@ -99,5 +99,10 @@ public class TransactionController {
 	public ResponseEntity<TransactionDetailModel> getTransactionDetail(@PathVariable long id) {
 		return ResponseEntity.ok(transactionService.getTransactionDetail(id));
 	}
+	
+	@GetMapping("/countUnpaidBills")
+	public int countUnpaidBills() {
+		return transactionService.countUnpaidBills();
+	}
 
 }
