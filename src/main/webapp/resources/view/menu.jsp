@@ -161,5 +161,8 @@
 <script src="<c:url value="/resources/js/datatables.js" />" ></script>
 <script src="<c:url value="/resources/js/jquery-ui.js" />" ></script>
 <script src="<c:url value="/resources/js/bootstrap.bundle.js" />" ></script>
+<script src="<c:url value="/resources/js/jquery.slimscroll.js" />" ></script>
+<script src="<c:url value="/resources/js/main-js.js" />" ></script>
+
 </html>
  
