@@ -34,4 +34,8 @@ public class UserService {
 	public boolean existUserByLoginName(String loginName) {
 		return userRepository.existsUserByLoginName(loginName);
 	}
+
+	public User findUserByUserName(String loginName) {
+		return userRepository.findUserByLoginName(loginName);
+	}
 }
