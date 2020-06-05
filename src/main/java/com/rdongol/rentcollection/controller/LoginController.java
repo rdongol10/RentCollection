@@ -56,7 +56,9 @@ public class LoginController {
 			User user = passwordResetToken.getUser();
 			user.setPassword(password);
 			userService.save(user);
+			passwordResetTokenService.deletePasswordResetToken(passwordResetToken);
 			model.addAttribute("successmessage", "Password Updated");
+			
 
 		}else {
 			model.addAttribute("errorMessage", "Token Expired");
