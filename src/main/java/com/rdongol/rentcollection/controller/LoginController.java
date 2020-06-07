@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,30 +46,29 @@ public class LoginController {
 	public String forgetPassword() {
 		return "forgetPassword";
 	}
-	
+
 	@RequestMapping("/savePassword")
-	public String savePassword(Model model ,HttpServletRequest request) {
-		
-		String token =request.getParameter("token");
+	public String savePassword(Model model, HttpServletRequest request) {
+
+		String token = request.getParameter("token");
 		String password = request.getParameter("password");
-		if(passwordResetTokenService.isValidToken(token)) {
-			PasswordResetToken passwordResetToken =passwordResetTokenService.findByToken(token);
+		if (passwordResetTokenService.isValidToken(token)) {
+			PasswordResetToken passwordResetToken = passwordResetTokenService.findByToken(token);
 			User user = passwordResetToken.getUser();
-			user.setPassword(password);
+			user.setPassword(new BCryptPasswordEncoder().encode(password));
 			userService.save(user);
 			passwordResetTokenService.deletePasswordResetToken(passwordResetToken);
 			model.addAttribute("successmessage", "Password Updated");
-			
-
-		}else {
+		} else {
 			model.addAttribute("errorMessage", "Token Expired");
 		}
 		return "login";
 	}
-	
+
 	@PostMapping("/resetpassword")
 	@ResponseBody
-	public ResponseEntity<Map<String, String>> requestResetPassword(HttpServletRequest request, @RequestParam String email) {
+	public ResponseEntity<Map<String, String>> requestResetPassword(HttpServletRequest request,
+			@RequestParam String email) {
 
 		User user = userService.findUserByEmailAddress(email);
 		Map<String, String> responseMap = new HashMap<String, String>();
@@ -87,12 +87,11 @@ public class LoginController {
 		responseMap.put("result", "true");
 		return ResponseEntity.ok(responseMap);
 	}
-	
-	
+
 	@GetMapping("/changePassword")
 	public String showChagePasswordPage(Model model, @RequestParam("token") String token) {
-		
-		if(!passwordResetTokenService.isValidToken(token)){
+
+		if (!passwordResetTokenService.isValidToken(token)) {
 			model.addAttribute("errormessage", "Token Expired");
 			return "login";
 		}
@@ -117,8 +116,5 @@ public class LoginController {
 	private String getAppUrl(HttpServletRequest request) {
 		return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 	}
-	
-	
-	
 
 }
