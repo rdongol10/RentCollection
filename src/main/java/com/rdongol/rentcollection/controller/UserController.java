@@ -3,6 +3,8 @@ package com.rdongol.rentcollection.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rdongol.rentcollection.model.PasswordModel;
 import com.rdongol.rentcollection.model.User;
 import com.rdongol.rentcollection.service.UserService;
 import com.rdongol.rentcollection.service.datatable.AbstractDataTableBackend;
@@ -30,6 +33,9 @@ public class UserController {
 	@Autowired
 	@Qualifier("userListDataTableBackend")
 	private AbstractDataTableBackend userListDataTableBackend;
+
+	@Autowired
+	HttpSession session;
 
 	@GetMapping
 	public ResponseEntity<List<User>> findAll() {
@@ -99,5 +105,35 @@ public class UserController {
 		userListDataTableBackend.intialize(dataTableRequest);
 		return userListDataTableBackend.getTableData();
 
+	}
+
+	@PostMapping("/comparePassword")
+	public boolean comparePassword(@RequestBody String password) {
+
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		User user = userService.findUserByUserName(session.getAttribute("userId").toString());
+
+		return encoder.matches(password, user.getPassword());
+
+	}
+
+	@PutMapping("/updatePassword")
+	public boolean updatePassword(@RequestBody PasswordModel passwordModel) {
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+		User user = userService.findUserByUserName(session.getAttribute("userId").toString());
+
+		if (!encoder.matches(passwordModel.getOldPassword(), user.getPassword())) {
+			return false;
+		}
+
+		if (!passwordModel.getNewPassword().equals(passwordModel.getConfirmPassword())) {
+			return false;
+		}
+
+		user.setPassword(new BCryptPasswordEncoder().encode(passwordModel.getNewPassword()));
+		userService.save(user);
+
+		return true;
 	}
 }
