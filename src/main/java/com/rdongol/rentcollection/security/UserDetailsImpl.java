@@ -11,6 +11,10 @@ import com.rdongol.rentcollection.model.User;
 
 public class UserDetailsImpl implements UserDetails {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private User user;
 
 	public UserDetailsImpl() {
