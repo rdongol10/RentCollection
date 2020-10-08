@@ -128,24 +128,50 @@
 		
 		initializeAlertifyTheme();
 		var rentingId = getURLParameter("rentingId")
+		if(rentingId == undefined || isNaN(rentingId) ){
+			initilizeSelect2ForRenting();
+		}else{
+			dislpalySelectedRenting(rentingId)
+		}
 		
-		jQuery("#renting").select2({
-			theme: "bootstrap",
-			ajax:{
-				method : "POST",
-				url :"${contextPath}/renting/getRentingForSelect2",
-				dataType: 'json',
-				data:function(param){
-					var value ={search : param.term}
-					return value;
-				}, 
-				processResults: function (data) {
-					return {
-						results: data
-					};
+		function dislpalySelectedRenting(rentingId){
+			jQuery.ajax({
+				method:"GET",
+				url:"${contextPath}/renting/getRentingModel/"+rentingId,
+				success:function(data){
+					var html="<option value='"+data.id+"'>"
+					html += data.name
+					html += "</option>"
+					jQuery("#renting").html(html);
+					jQuery("#renting").prop("disabled",true)
+				},
+				error:function(data){
+					initilizeSelect2ForRenting();
 				}
-			}
-		});
+			});	
+		}
+		
+		function initilizeSelect2ForRenting(){
+			jQuery("#renting").select2({
+				theme: "bootstrap",
+				ajax:{
+					method : "POST",
+					url :"${contextPath}/renting/getRentingForSelect2",
+					dataType: 'json',
+					data:function(param){
+						console.log(param)
+						var value ={search : param.term}
+						return value;
+					}, 
+					processResults: function (data) {
+						console.log(data)
+						return {
+							results: data
+						};
+					}
+				}
+			});
+		}
 		
 		jQuery("#rentee").select2({
 			theme: "bootstrap",
