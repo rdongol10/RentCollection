@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.rdongol.rentcollection.model.Contract;
 import com.rdongol.rentcollection.model.ContractLog;
 import com.rdongol.rentcollection.repository.ContractLogRepository;
-import com.rdongol.rentcollection.repository.ContractRepository;
 
 @Service
 public class ContractLogService {

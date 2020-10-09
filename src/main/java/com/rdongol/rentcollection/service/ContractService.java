@@ -62,12 +62,12 @@ public class ContractService {
 		Rentee rentee = renteeService.findById(contractModel.getRenteeId());
 
 		if (rentee == null) {
-			ResponseEntity.badRequest().build();
+			return null;
 		}
 
 		Renting renting = rentingService.findById(contractModel.getRentingId());
 		if (renting == null) {
-			ResponseEntity.badRequest().build();
+			return null;
 		}
 
 		contract.setRentee(rentee);
@@ -101,7 +101,7 @@ public class ContractService {
 	public List<BillContractServiceModel> getBillContractServiceModels(long contractId) {
 		Contract contract = findById(contractId);
 		if (contract == null) {
-			ResponseEntity.badRequest().build();
+			return null;
 		}
 
 		Renting renting = contract.getRenting();
@@ -134,6 +134,9 @@ public class ContractService {
 
 	public boolean areAllBillsCleared(long contractId) {
 		List<Transaction> transactions = transactionService.getUnpaidBills(contractId);
+		if(transactions == null) {
+			return true;
+		}
 		return transactions.size() <= 0;
 	}
 

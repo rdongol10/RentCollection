@@ -38,6 +38,11 @@ public class ContractController {
 	@PostMapping
 	public ResponseEntity<Contract> create(@RequestBody ContractModel contractModel) {
 		Contract contract = contractService.save(contractModel);
+
+		if (contract == null) {
+			return ResponseEntity.badRequest().build();
+
+		}
 		contractLogService.save(contract);
 		return ResponseEntity.ok(contract);
 	}
@@ -50,6 +55,11 @@ public class ContractController {
 
 	@GetMapping("/billContractService/{id}")
 	public ResponseEntity<List<BillContractServiceModel>> getBillContractService(@PathVariable Long id) {
+
+		List<BillContractServiceModel> billContractServiceModels = contractService.getBillContractServiceModels(id);
+		if (billContractServiceModels == null) {
+			return ResponseEntity.badRequest().build();
+		}
 
 		return ResponseEntity.ok(contractService.getBillContractServiceModels(id));
 
@@ -66,7 +76,7 @@ public class ContractController {
 		Contract contract = contractService.findById(id);
 
 		if (contract == null) {
-			ResponseEntity.badRequest().build();
+			return ResponseEntity.badRequest().build();
 		}
 
 		return ResponseEntity.ok(contract.getRenting());
