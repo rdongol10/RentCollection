@@ -84,7 +84,7 @@ public class RenteeService {
 
 		if (findById(id) == null) {
 
-			ResponseEntity.badRequest().build();
+			return null;
 
 		}
 
@@ -164,7 +164,7 @@ public class RenteeService {
 		Rentee rentee = findById(id);
 
 		if (rentee == null) {
-			ResponseEntity.badRequest().build();
+			return null;
 		}
 
 		RenteeModel renteeModel = new RenteeModel(rentee);

@@ -45,13 +45,21 @@ public class RenteeController {
 	@GetMapping("/getRenteeModel/{id}")
 	public ResponseEntity<RenteeModel> getRenteeModel(@PathVariable long id) {
 
-		return ResponseEntity.ok(renteeService.getRenteeModel(id));
+		RenteeModel renteeModel = renteeService.getRenteeModel(id);
+		if(renteeModel == null){
+			return ResponseEntity.badRequest().build();
+		}
+		return ResponseEntity.ok(renteeModel);
 
 	}
 
 	@PutMapping("/{id}")
 	public ResponseEntity<Rentee> update(@PathVariable long id, @RequestBody RenteeModel renteeModel) {
-		return ResponseEntity.ok(renteeService.update(id, renteeModel));
+		Rentee rentee = renteeService.update(id, renteeModel);
+		if (rentee == null) {
+			return ResponseEntity.badRequest().build();
+		}
+		return ResponseEntity.ok(rentee);
 	}
 
 	@PostMapping("/getRenteeForSelect2")
