@@ -97,8 +97,7 @@ public class TransactionService {
 		Transaction transaction = findById(id);
 
 		if (transaction == null) {
-
-			ResponseEntity.badRequest().build();
+			return null;
 
 		}
 
@@ -138,7 +137,7 @@ public class TransactionService {
 		DecimalFormat df2 = new DecimalFormat("#.##");
 		Contract contract = contractService.findById(contractId);
 		if (contract == null) {
-			ResponseEntity.badRequest().build();
+			return null;
 		}
 
 		double daysDiference = (contract.getExpireDate().getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24);
@@ -147,6 +146,9 @@ public class TransactionService {
 		double daysInMonth = Double.valueOf(df2.format((Double) remainingDays / 30));
 
 		Transaction transaction = calculateBill(contractId, daysInMonth, billContractServiceModels);
+		if(transaction == null) {
+			return null;
+		}
 		transaction.setNote("Terminate Contract");
 		return getTransactDetail(transaction);
 
@@ -157,7 +159,7 @@ public class TransactionService {
 
 		Contract contract = contractService.findById(contractId);
 		if (contract == null) {
-			ResponseEntity.badRequest().build();
+			return null;
 		}
 
 		Renting renting = contract.getRenting();
@@ -366,7 +368,7 @@ public class TransactionService {
 		Transaction transaction = findById(transactionId);
 
 		if (transaction == null) {
-			ResponseEntity.badRequest().build();
+			return null;
 		}
 
 		return payTransaction(transaction, updateRelated);

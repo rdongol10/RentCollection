@@ -60,7 +60,13 @@ public class TransactionController {
 		List<BillContractServiceModel> billContractServiceModels = mapper.readValue(
 				rootNode.get("billContractServices").toString(), new TypeReference<List<BillContractServiceModel>>() {
 				});
-		return ResponseEntity.ok(transactionService.calculateForTermination(contractId, billContractServiceModels));
+
+		TransactionDetailModel transactionDetailModel = transactionService.calculateForTermination(contractId,
+				billContractServiceModels);
+		if (transactionDetailModel == null) {
+			return ResponseEntity.badRequest().build();
+		}
+		return ResponseEntity.ok(transactionDetailModel);
 	}
 
 	@PostMapping("/billInvoice")
@@ -73,11 +79,14 @@ public class TransactionController {
 		return ResponseEntity.ok(transactionService.payTransaction(transaction, true));
 	}
 
-	
 	@PutMapping("/payInvoice/{id}")
 	public ResponseEntity<Transaction> payTransaction(@PathVariable long id) {
 
-		return ResponseEntity.ok(transactionService.payTransaction(id, false));
+		Transaction transaction = transactionService.payTransaction(id, false);
+		if (transaction == null) {
+			return ResponseEntity.badRequest().build();
+		}
+		return ResponseEntity.ok(transaction);
 
 	}
 
@@ -97,9 +106,13 @@ public class TransactionController {
 
 	@GetMapping("/getTransactionDetail/{id}")
 	public ResponseEntity<TransactionDetailModel> getTransactionDetail(@PathVariable long id) {
-		return ResponseEntity.ok(transactionService.getTransactionDetail(id));
+		TransactionDetailModel transactionDetailModel = transactionService.getTransactionDetail(id);
+		if (transactionDetailModel == null) {
+			return ResponseEntity.badRequest().build();
+		}
+		return ResponseEntity.ok(transactionDetailModel);
 	}
-	
+
 	@GetMapping("/countUnpaidBills")
 	public int countUnpaidBills() {
 		return transactionService.countUnpaidBills();
