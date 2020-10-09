@@ -61,7 +61,12 @@ public class ServiceController {
 	@PutMapping("/{id}")
 	public ResponseEntity<Service> update(@PathVariable Long id, @RequestBody Service service) {
 
-		return ResponseEntity.ok(serviceService.update(id, service));
+		Service updatedService = serviceService.update(id, service);
+		if (updatedService == null) {
+			return ResponseEntity.badRequest().build();
+		}
+
+		return ResponseEntity.ok(updatedService);
 
 	}
 
@@ -72,7 +77,12 @@ public class ServiceController {
 
 	@GetMapping("/getServiceDetails/{id}")
 	public ResponseEntity<List<ServiceDetail>> getServiceDetails(@PathVariable Long id) {
-		return ResponseEntity.ok(serviceService.getServiceDetails(id));
+		List<ServiceDetail> detail = serviceService.getServiceDetails(id);
+		if (detail == null) {
+			return ResponseEntity.badRequest().build();
+
+		}
+		return ResponseEntity.ok(detail);
 	}
 
 	@GetMapping("/getServiceModels")

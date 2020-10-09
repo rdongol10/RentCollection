@@ -61,7 +61,7 @@ public class ServiceService {
 	public int toggleActiveStatus(Long id) {
 
 		if (findById(id) == null) {
-			ResponseEntity.badRequest().build();
+			return -1;
 		}
 
 		com.rdongol.rentcollection.model.Service service = findById(id);
@@ -79,7 +79,7 @@ public class ServiceService {
 	public com.rdongol.rentcollection.model.Service update(Long id, com.rdongol.rentcollection.model.Service service) {
 
 		if (findById(id) == null) {
-			ResponseEntity.badRequest().build();
+			return null;
 		}
 		adjustServiceDetailsforUpdate(service);
 		List<ServiceDetail> serviceDetails = service.getServiceDetail();
@@ -139,7 +139,7 @@ public class ServiceService {
 
 	public List<ServiceDetail> getServiceDetails(Long id) {
 		if (findById(id) == null) {
-			ResponseEntity.badRequest().build();
+			return null;
 		}
 		com.rdongol.rentcollection.model.Service service = findById(id);
 		return service.getServiceDetail();
