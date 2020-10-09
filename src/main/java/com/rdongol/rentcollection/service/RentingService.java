@@ -70,7 +70,7 @@ public class RentingService {
 	public List<RentingFacility> getRentingFacilities(Long id) {
 
 		if (findById(id) == null) {
-			ResponseEntity.badRequest().build();
+			return null;
 		}
 
 		return findById(id).getRentingFacility();
@@ -103,7 +103,7 @@ public class RentingService {
 
 	public Renting update(long id, RentingModel rentingModel) {
 		if (findById(id) == null) {
-			ResponseEntity.badRequest().build();
+			return null;
 		}
 
 		Renting currentRenting = findById(id);
@@ -176,12 +176,8 @@ public class RentingService {
 
 	public int toggleStatus(long id) {
 
-		if (findById(id) == null) {
-			ResponseEntity.badRequest().build();
-		}
-
 		Renting renting = findById(id);
-
+		
 		int status = 1;
 		if (renting.getStatus() == 1) {
 			status = 0;
@@ -198,7 +194,7 @@ public class RentingService {
 		Renting renting = findById(id);
 
 		if (renting == null) {
-			ResponseEntity.badRequest().build();
+			return null;
 		}
 
 		RentingModel rentingModel = new RentingModel(renting);
@@ -309,7 +305,7 @@ public class RentingService {
 
 		Renting renting = findById(rentingId);
 		if (renting == null) {
-			ResponseEntity.badRequest().build();
+			return null;
 		}
 
 		rentingDisplayModal.setImageBase64s(imageService.getImageBase64s(renting.getId(), "RENTING"));

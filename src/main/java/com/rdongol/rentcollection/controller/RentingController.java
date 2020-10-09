@@ -50,6 +50,9 @@ public class RentingController {
 			throws Exception {
 
 		Renting renting = rentingService.update(id, rentingModel);
+		if (renting == null) {
+			return ResponseEntity.badRequest().build();
+		}
 		imageService.deleteImages(renting.getId(), "RENTING");
 		imageService.save(renting.getId(), "RENTING", rentingModel.getImageBase64s());
 		return ResponseEntity.ok(renting);
@@ -78,14 +81,26 @@ public class RentingController {
 
 	@GetMapping("/getRentingModel/{id}")
 	public ResponseEntity<RentingModel> getRengingModel(@PathVariable long id) {
+		RentingModel rentingModel = rentingService.getRentingModel(id);
+		if (rentingModel == null) {
 
+			return ResponseEntity.badRequest().build();
+
+		}
 		return ResponseEntity.ok(rentingService.getRentingModel(id));
 
 	}
 
 	@GetMapping("/getRentingDetails/{id}")
 	public ResponseEntity<RentingDisplayModal> getRentingDetails(@PathVariable long id) {
-		return ResponseEntity.ok(rentingService.getRentingDetails(id));
+
+		RentingDisplayModal rentingDisplayModal = rentingService.getRentingDetails(id);
+		if (rentingDisplayModal == null) {
+
+			return ResponseEntity.badRequest().build();
+		}
+
+		return ResponseEntity.ok(rentingDisplayModal);
 	}
 
 	@PostMapping("/getRentingForSelect2")
@@ -94,12 +109,12 @@ public class RentingController {
 		return ResponseEntity.ok(rentingService.getAvailableRentingsForSelect2(search));
 
 	}
-	
+
 	@PostMapping("/getAllRentingForSelect2")
 	public ResponseEntity<List<Select2Model>> getAllRentingForSelect2(String search) {
 
 		return ResponseEntity.ok(rentingService.getAllRentingForSelect2(search));
 
 	}
-	
+
 }
